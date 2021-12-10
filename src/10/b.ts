@@ -1,20 +1,20 @@
-import { input10, input10mini, lookup10 } from './input';
+import { Chunk, input10, input10mini, lookup10 } from './input';
 import { Stack } from '../stack';
 
 function main() {
     let completionScores: number[] = [];
 
     for (const s of input10) {
-        const stack = new Stack<string>();
+        const stack = new Stack<Chunk>();
 
         let isCorrupt = false;
         for (const l of s) {
             const chunk = lookup10.get(l)!;
 
             if (l === chunk.start) {
-                stack.push(chunk.start);
+                stack.push(chunk);
             }
-            else if (l === chunk.end && l === lookup10.get(stack.end)?.end) {
+            else if (l === chunk.end && l === stack.end.end) {
                 stack.pop();
             }
             else if (l === chunk.end) {
@@ -28,7 +28,7 @@ function main() {
         if (!isCorrupt && stack.size > 0) {
             let sum = 0;
             while(stack.size > 0) {
-                sum = sum * 5 + lookup10.get(stack.pop()!)?.otherValue!;
+                sum = sum * 5 + stack.pop()?.otherValue!;
             }
             completionScores.push(sum);
         }
