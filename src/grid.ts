@@ -40,4 +40,13 @@ export class Grid<T> {
     get height(): number {
         return this.values.length;
     }
+
+    forEach(cb: (value: T, point: Point) => void): void {
+        for(let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.height; y++) {
+                const p = new Point(x, y);
+                cb(this.getValue(p), p);
+            }
+        }
+    }
 }
