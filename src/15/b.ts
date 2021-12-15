@@ -22,7 +22,7 @@ for (let y = 0; y < tile.height * 5; y++) {
     }
 }
 
-const grid = input15;
+const grid = new Grid(values);
 
 const start = new Point(0,0);
 
@@ -34,31 +34,24 @@ function cost(p: Point) {
 
 function dijkstra() {
 
-    const distances = new Map<string, number>();
-    const queue = new SortedList<{s: string, n: number}>((a, b) => a.n - b.n);
+    let distances = new SortedList<[string, number]>((a, b) => a[1] - b[1]);
     const previous = new Map<string, Point>();
 
     const allPoints = new Map<string, Point>([[start.key, start]]);
     const explored = new Set<string>();
 
+    distances.queue([start.key, 0]);
+    const distanceMap = new Map(distances.values);
 
-
-    distances.set(start.key, 0);
-
-    let revs = 0;
     while (allPoints.size > 0) {
-        revs++;
-        const current = [...distances]
-            .filter(([p, n]) => allPoints.has(p))
-            .sort(([ap, an], [bp, bn]) => an - bn)[0];
+        
+        const current = distances.dequeue()!;
 
         // console.log('visiting', current);
-
         const point = allPoints.get(current[0])!;
         allPoints.delete(current[0]);
 
         if (current[0] === end.key) {
-            console.log(revs);
             let sum = 0;
             let c = current[0];
             while(c && c != start.key) {
@@ -72,10 +65,13 @@ function dijkstra() {
 
         const adjacents = point.adjacents().filter((x) => !explored.has(x.key) && grid.isValid(x));
         adjacents.forEach((x) => allPoints.set(x.key, x));
+
         for (const neighbor of adjacents) {
             const alt = current[1] + grid.getValue(neighbor);// + end.minus(neighbor).sum;
-            if (alt < (distances.get(neighbor.key) ?? Infinity)) {
-                distances.set(neighbor.key, alt);
+            if (alt < (distanceMap.get(neighbor.key) ?? Infinity)) {
+                distanceMap.set(neighbor.key, alt);
+                distances.delete((x) => x[0] === neighbor.key);
+                distances.queue([neighbor.key, alt]);
                 previous.set(neighbor.key, point);
             }
         }
@@ -83,8 +79,6 @@ function dijkstra() {
 
     return undefined;
 }
-
-dijkstra();
 
 const s = Date.now();
 
