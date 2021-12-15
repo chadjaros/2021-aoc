@@ -69,8 +69,10 @@ function dijkstra() {
         for (const neighbor of adjacents) {
             const alt = current[1] + grid.getValue(neighbor);// + end.minus(neighbor).sum;
             if (alt < (distanceMap.get(neighbor.key) ?? Infinity)) {
+                if (allPoints.has(neighbor.key)) {
+                    distances.delete((x) => x[0] === neighbor.key);
+                }
                 distanceMap.set(neighbor.key, alt);
-                distances.delete((x) => x[0] === neighbor.key);
                 distances.queue([neighbor.key, alt]);
                 previous.set(neighbor.key, point);
             }
