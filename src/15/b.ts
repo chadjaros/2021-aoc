@@ -2,6 +2,7 @@ import { SortedList } from "../sortedlist";
 import { Grid } from "../grid";
 import { Point } from "../point";
 import { input15 } from "./input";
+import { OrderedMap } from "../orderedmap";
 
 const tile = input15;
 
@@ -25,27 +26,21 @@ for (let y = 0; y < tile.height * 5; y++) {
 const grid = new Grid(values);
 
 const start = new Point(0,0);
-
 const end = new Point(grid.width - 1, grid.height - 1);
-
-function cost(p: Point) {
-    grid.getValue(p) + end.minus(p).sum;
-}
 
 function dijkstra() {
 
-    let distances = new SortedList<[string, number]>((a, b) => a[1] - b[1]);
+    let distances = new OrderedMap<string, number>((a, b) => a - b);
     const previous = new Map<string, Point>();
 
     const allPoints = new Map<string, Point>([[start.key, start]]);
     const explored = new Set<string>();
 
-    distances.queue([start.key, 0]);
-    const distanceMap = new Map(distances.values);
+    distances.set(start.key, 0);
 
     while (allPoints.size > 0) {
         
-        const current = distances.dequeue()!;
+        const current = distances.popFront()!;
 
         // console.log('visiting', current);
         const point = allPoints.get(current[0])!;
@@ -67,13 +62,12 @@ function dijkstra() {
         adjacents.forEach((x) => allPoints.set(x.key, x));
 
         for (const neighbor of adjacents) {
-            const alt = current[1] + grid.getValue(neighbor);// + end.minus(neighbor).sum;
-            if (alt < (distanceMap.get(neighbor.key) ?? Infinity)) {
+            const alt = current[1] + grid.getValue(neighbor);
+            if (alt < (distances.get(neighbor.key) ?? Infinity)) {
                 if (allPoints.has(neighbor.key)) {
-                    distances.delete((x) => x[0] === neighbor.key);
+                    distances.delete(neighbor.key);
                 }
-                distanceMap.set(neighbor.key, alt);
-                distances.queue([neighbor.key, alt]);
+                distances.set(neighbor.key, alt);
                 previous.set(neighbor.key, point);
             }
         }

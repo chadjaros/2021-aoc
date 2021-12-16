@@ -42,7 +42,7 @@ export class SortedList<T> {
     }
 }
 
-const s = new SortedList<number>((a, b) => a-b);
+// const s = new SortedList<number>((a, b) => a-b);
 
 // s.queue(5);
 // s.queue(3);

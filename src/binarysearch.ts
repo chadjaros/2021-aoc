@@ -3,7 +3,7 @@ export function binarySearch<T>(list: T[], target: T, comparator: (a: T, b: T) =
     let r = list.length - 1;
 
     while (l <= r) {
-        const m = Math.floor((l + r) / 2);
+        const m = Math.floor((l + r) * .5);
         const comp = comparator(list[m], target);
         if (comp < 0) {
             l = m + 1;
