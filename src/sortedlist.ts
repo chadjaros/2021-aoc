@@ -1,3 +1,5 @@
+import { binarySearch } from './binarysearch';
+    
 export class SortedList<T> {
     private list: T[];
 
@@ -8,7 +10,8 @@ export class SortedList<T> {
     }
 
     queue(value: T) {
-        const i = this.list.findIndex((a) => this.comparator(value, a) < 0);
+        // const i = this.list.findIndex((i) => this.comparator(value, i) < 0);
+        const i = binarySearch(this.list, value, this.comparator).index;
         if (i >= 0) {
             this.list.splice(i, 0, value);
         }
@@ -39,12 +42,14 @@ export class SortedList<T> {
     }
 }
 
-// const s = new SortedList<number>((a, b) => a-b);
+const s = new SortedList<number>((a, b) => a-b);
 
 // s.queue(5);
 // s.queue(3);
 // s.queue(2);
 // s.queue(1);
+// s.queue(6);
+// s.queue(4);
 
 // console.log(s.values);
 
