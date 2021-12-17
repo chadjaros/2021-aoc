@@ -4,7 +4,7 @@ function main() {
     const candidates = input5.filter((x) => x.start.x === x.end.x || x.start.y === x.end.y);
 
     const max: Point = {x: 0, y: 0};
-    for (let c of candidates) {
+    for (const c of candidates) {
         if (c.end.x > max.x) {
             max.x = c.end.x;
         }
@@ -25,7 +25,7 @@ function main() {
     for (let x = 0; x <= max.x; x++) {
         grid.push([]);
         for (let y = 0; y <= max.y; y++) {
-            grid[x].push(0)
+            grid[x].push(0);
         }
     }
 

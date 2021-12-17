@@ -3,8 +3,8 @@ import { getDimensions, input13Folds, input13FoldsMini, input13Points, input13Po
 const points = input13Points;
 const folds = input13Folds;
 
-const d = getDimensions(points)
-console.log()
+const d = getDimensions(points);
+console.log();
 
 let grid: boolean[][] = [];
 

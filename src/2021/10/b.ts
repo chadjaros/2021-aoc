@@ -2,7 +2,7 @@ import { Chunk, input10, input10mini, lookup10 } from './input';
 import { Stack } from '../../utils/stack';
 
 function main() {
-    let completionScores: number[] = [];
+    const completionScores: number[] = [];
 
     for (const s of input10) {
         const stack = new Stack<Chunk>();

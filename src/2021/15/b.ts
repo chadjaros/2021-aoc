@@ -1,7 +1,7 @@
-import { Grid } from "../../utils/grid";
-import { Point } from "../../utils/point";
-import { input15 } from "./input";
-import { OrderedMap } from "../../utils/ordered-map";
+import { Grid } from '../../utils/grid';
+import { Point } from '../../utils/point';
+import { input15 } from './input';
+import { OrderedMap } from '../../utils/ordered-map';
 
 const tile = input15;
 
@@ -29,7 +29,7 @@ const end = new Point(grid.width - 1, grid.height - 1);
 
 function dijkstra() {
 
-    let distances = new OrderedMap<string, number>((a, b) => a - b);
+    const distances = new OrderedMap<string, number>((a, b) => a - b);
     const previous = new Map<string, Point>();
 
     const allPoints = new Map<string, Point>([[start.key, start]]);

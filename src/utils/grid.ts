@@ -13,7 +13,7 @@ export class Grid<T> {
             const row: T[] = [];
             v.push(row);
             for (let x = 0; x < width; x++) {
-                row.push(defaultVal)
+                row.push(defaultVal);
             }
         }
 

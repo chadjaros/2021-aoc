@@ -1,4 +1,4 @@
-import { hexToBinary, input16, Packet, parsePacket } from "./input";
+import { hexToBinary, input16, Packet, parsePacket } from './input';
 
 const result = parsePacket(input16);
 

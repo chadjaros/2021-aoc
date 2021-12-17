@@ -32,5 +32,5 @@ export function binarySearch<T>(list: T[], target: T, comparator: (a: T, b: T) =
         index: l,
         value: list[l],
         match: false,
-    }
+    };
 }

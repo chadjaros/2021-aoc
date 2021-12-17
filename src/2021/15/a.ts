@@ -1,6 +1,6 @@
-import { Grid } from "../../utils/grid";
-import { Point } from "../../utils/point";
-import { input15 } from "./input";
+import { Grid } from '../../utils/grid';
+import { Point } from '../../utils/point';
+import { input15 } from './input';
 
 const grid = input15;
 

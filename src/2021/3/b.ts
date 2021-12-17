@@ -4,7 +4,7 @@ function calculateBinary(number: number[]): number {
     let sum = 0;
     for (let x = 0; x < number.length; x++) {
         if (number[number.length - 1 - x]) {
-            sum += Math.pow(2, x)
+            sum += Math.pow(2, x);
         }
     }
     return sum;
@@ -62,8 +62,8 @@ function main() {
         }
     }
 
-    console.log(o2genList.length, o2genList[0], calculateBinary(o2genList[0]))
-    console.log(co2scrubList.length, co2scrubList[0], calculateBinary(co2scrubList[0]))
+    console.log(o2genList.length, o2genList[0], calculateBinary(o2genList[0]));
+    console.log(co2scrubList.length, co2scrubList[0], calculateBinary(co2scrubList[0]));
     console.log(calculateBinary(o2genList[0]) * calculateBinary(co2scrubList[0]));
 }
 

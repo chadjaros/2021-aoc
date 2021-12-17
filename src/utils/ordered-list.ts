@@ -35,7 +35,7 @@ export class OrderedList<T> {
     }
 
     delete(func: (value: T) => boolean): void {
-        const i = this.list.findIndex(func)
+        const i = this.list.findIndex(func);
         if (i >= 0) {
             this.list.splice(i, 1);
         }

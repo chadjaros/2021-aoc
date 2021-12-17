@@ -4,7 +4,7 @@ function calculateBinary(number: number[]): number {
     let sum = 0;
     for (let x = 0; x < number.length; x++) {
         if (number[number.length - 1 - x]) {
-            sum += Math.pow(2, x)
+            sum += Math.pow(2, x);
         }
     }
     return sum;

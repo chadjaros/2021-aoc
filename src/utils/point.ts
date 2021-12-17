@@ -7,10 +7,10 @@ export class Point {
 
     static fromKey(s: string): Point {
         const x: number[] = s.split('-').map((n) => parseFloat(n));
-        return new Point(x[0], x[1])
+        return new Point(x[0], x[1]);
     }
     
-    adjacents(diagonals: boolean = false): Point[] {
+    adjacents(diagonals = false): Point[] {
         return [
             new Point(this.x-1, this.y),
             new Point(this.x+1, this.y),

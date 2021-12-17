@@ -11,11 +11,11 @@ input12.forEach((x) => {
 
     nodes.get(x[0])?.add(x[1]);
     nodes.get(x[1])?.add(x[0]);
- });
+});
 
 // console.log(nodes);
 
-const paths: string[][] = []
+const paths: string[][] = [];
 
 function getPaths(start: string, end: string, current: string[], visited: Set<string>): void {
 
@@ -42,6 +42,6 @@ function getPaths(start: string, end: string, current: string[], visited: Set<st
 
 getPaths('start', 'end', [], new Set());
 
-const s = new Set(paths.map((p) => p.join(',')))
+const s = new Set(paths.map((p) => p.join(',')));
 // console.log(s);
 console.log(s.size);

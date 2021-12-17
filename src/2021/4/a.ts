@@ -1,4 +1,4 @@
-import { Board, inputBoards, inputNumbers } from './inputs';
+import { Board, inputBoards, inputNumbers } from './input';
 
 class BoardStatus {
     values: { number: number, called: boolean }[][];

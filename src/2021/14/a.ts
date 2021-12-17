@@ -18,8 +18,8 @@ for (let round = 0; round < 10; round++) {
 }
 
 const counts = new Map<string, number>();
-for (let l of string) {
-    counts.set(l, (counts.get(l) ?? 0) + 1)
+for (const l of string) {
+    counts.set(l, (counts.get(l) ?? 0) + 1);
 }
 
 const sorted = [...counts].sort((a, b) => b[1]-a[1]);

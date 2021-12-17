@@ -6,8 +6,8 @@ const folds = input13Folds;
 const d = {
     height: folds.find((x) => x[0] === 'y')![1] * 2 + 1,
     width: folds.find((x) => x[0] === 'x')![1] * 2 + 1,
-}
-console.log(d)
+};
+console.log(d);
 
 let grid: boolean[][] = [];
 

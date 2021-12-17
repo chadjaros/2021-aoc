@@ -1,6 +1,6 @@
 import { input14rules, input14start } from './input';
 
-let string = input14start;
+const string = input14start;
 const rules = input14rules;
 
 const start = string[0];
@@ -38,7 +38,7 @@ for (const [tup, count] of tuples) {
     const l = tup[1];
     counts.set(l, (counts.get(l) ?? 0) + count);
 }
-counts.set(start, (counts.get(start) ?? 0) + 1)
+counts.set(start, (counts.get(start) ?? 0) + 1);
 
 const sorted = [...counts].sort((a, b) => b[1]-a[1]);
 console.log(sorted);

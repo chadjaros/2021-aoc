@@ -1,5 +1,5 @@
 import { Digit, Digits, input8 } from './input';
-import { intersection, setEq } from '../../utils/setmath';
+import { intersection, setEq } from '../../utils/set-math';
 
 function overlapsWith(a: Set<unknown>, b: Set<unknown>): boolean {
     return setEq(intersection(a, b), a);
@@ -11,7 +11,7 @@ function main() {
             input: i.input.map((x) => new Set(x.split(''))),
             output: i.output.map((x) => new Set(x.split(''))),
         };
-    })
+    });
 
     let sum = 0;
     for (const v of inputSets) {

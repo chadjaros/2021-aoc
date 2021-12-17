@@ -29,20 +29,20 @@ function main() {
 
         // console.log('round', round);
         map.forEach((p) => {
-           map.get(p).value += 1;
+            map.get(p).value += 1;
         });
 
         map.forEach((p) => {
-           checkFlash(p);
+            checkFlash(p);
         });
 
         // Reset
         map.forEach((p) => {
             const l = map.get(p);
-           if (l.flashed) {
-               l.value = 0;
-               l.flashed = false;
-           }
+            if (l.flashed) {
+                l.value = 0;
+                l.flashed = false;
+            }
         });
 
         // map.print();

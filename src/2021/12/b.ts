@@ -15,7 +15,7 @@ input12.forEach((x) => {
 
 // console.log(nodes);
 
-const paths: string[][] = []
+const paths: string[][] = [];
 
 function getPaths(start: string, end: string, current: string[], visited: Set<string>, canVisitTwice: string, visitCount: number): void {
 
@@ -50,6 +50,6 @@ for (const k of smallKeys) {
     getPaths('start', 'end', [], new Set(), k, 0);
 }
 
-const s = new Set(paths.map((p) => p.join(',')))
+const s = new Set(paths.map((p) => p.join(',')));
 // console.log(s);
 console.log(s.size);

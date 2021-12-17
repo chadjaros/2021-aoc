@@ -6,7 +6,7 @@ function main() {
     for (const v of input8) {
         for (const n of v.output) {
             if (knownDigits.has(n.length)) {
-                count++
+                count++;
             }
         }
     }

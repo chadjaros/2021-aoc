@@ -28,11 +28,11 @@ function main() {
         round++;
         // console.log('round', round);
         map.forEach((p) => {
-           map.get(p).value += 1;
+            map.get(p).value += 1;
         });
 
         map.forEach((p) => {
-           checkFlash(p);
+            checkFlash(p);
         });
 
         exit = map.every((l) => l.flashed);
@@ -40,10 +40,10 @@ function main() {
         // Reset
         map.forEach((p) => {
             const l = map.get(p);
-           if (l.flashed) {
-               l.value = 0;
-               l.flashed = false;
-           }
+            if (l.flashed) {
+                l.value = 0;
+                l.flashed = false;
+            }
         });
     }
 

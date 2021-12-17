@@ -1,4 +1,4 @@
-import { parsePacket, input16, Packet } from "./input";
+import { parsePacket, input16, Packet } from './input';
 
 const result = parsePacket(input16);
 

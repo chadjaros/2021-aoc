@@ -53,8 +53,8 @@ function findBasin(point: Point, map: number[][], visited: Point[] = []): Point[
         point,
         ...adjacents.filter((p) => isValid(p, map))
             .reduce<Point[]>((accum, p) => {
-                return [...accum, ...findBasin(p, map, visited)];
-            }, [])];
+            return [...accum, ...findBasin(p, map, visited)];
+        }, [])];
 }
 
 function printBasin(basin: Point[], map: number[][]): void {
@@ -87,12 +87,12 @@ function printBasin(basin: Point[], map: number[][]): void {
 function main() {
     const map = input9;
 
-    let basins: Point[][] = [];
+    const basins: Point[][] = [];
     for (let y = 0; y < map.length; y++) {
         for (let x = 0; x < map[0].length; x++) {
             const h = map[y][x];
 
-            const isLowPoint = getAdjacents({ x, y }).every((p) => isValid(p, map) ? h < height(p, map) : h < 9 )
+            const isLowPoint = getAdjacents({ x, y }).every((p) => isValid(p, map) ? h < height(p, map) : h < 9 );
             if (isLowPoint) {
                 const basin = findBasin({x, y}, map);
                 basins.push(basin);
