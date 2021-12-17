@@ -1,0 +1,70 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const inputs_1 = require("./inputs");
+class BoardStatus {
+    constructor(board) {
+        this.values = [];
+        for (const line of board) {
+            const v = [];
+            for (const item of line) {
+                v.push({ number: item, called: false });
+            }
+            this.values.push(v);
+        }
+    }
+    callNumber(number) {
+        for (const line of this.values) {
+            for (const value of line) {
+                if (value.number === number) {
+                    value.called = true;
+                    return;
+                }
+            }
+        }
+    }
+    isWinner() {
+        for (const line of this.values) {
+            if (line.every((x) => x.called === true)) {
+                return true;
+            }
+        }
+        for (let i = 0; i < this.values[0].length; i++) {
+            let win = true;
+            for (let j = 0; j < this.values.length; j++) {
+                win = win && this.values[j][i].called;
+            }
+            if (win) {
+                return true;
+            }
+        }
+        return false;
+    }
+    calculate(justCalled) {
+        let sumUncalled = 0;
+        for (const line of this.values) {
+            for (const value of line) {
+                if (!value.called) {
+                    sumUncalled += value.number;
+                }
+            }
+        }
+        return justCalled * sumUncalled;
+    }
+}
+function main() {
+    const boards = inputs_1.inputBoards.map((x) => new BoardStatus(x));
+    for (const n of inputs_1.inputNumbers) {
+        console.log('call', n);
+        for (const b of boards) {
+            b.callNumber(n);
+        }
+        for (const b of boards) {
+            if (b.isWinner()) {
+                console.log(b.calculate(n), n, b.values);
+                return;
+            }
+        }
+    }
+}
+main();
+//# sourceMappingURL=a.js.map
