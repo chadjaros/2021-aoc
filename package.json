@@ -30,7 +30,8 @@
     "rules": {
         "@typescript-eslint/indent": ["error", 4],
         "@typescript-eslint/quotes": ["error", "single"],
-        "@typescript-eslint/semi": "error"
+        "@typescript-eslint/semi": "error",
+        "@typescript-eslint/no-this-alias": "off"
     },
     "ignorePatterns": ["src/**/input.ts"]
   }
