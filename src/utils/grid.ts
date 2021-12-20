@@ -1,4 +1,4 @@
-import { Point } from './point';
+import { Point } from './point-2d';
 
 export class Grid<T> {
     private values: T[][];

@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Possible } from './util-types';
 
 export class BTree<T> {
 
-    private readonly id: number = Math.random();
     public parent?: BTree<T>;
     public left?: BTree<T>;
     public right?: BTree<T>;
