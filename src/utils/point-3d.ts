@@ -37,6 +37,10 @@ export class Vector3 extends Matrix {
         const mag = 1 / this.magnitude;
         return Vector3.fromCoordinates(this.x * mag, this.y * mag, this.z * mag);
     }
+
+    manhattan(v: Vector3): number {
+        return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
+    }
 }
 
 export class Point3 {

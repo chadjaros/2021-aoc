@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point';
+import { Point } from '../../utils/point-2d';
 import { input3 } from './input';
 
 const map = new Map<string, number>();

@@ -1,5 +1,5 @@
 import { posix } from 'path';
-import { Point } from '../../utils/point';
+import { Point } from '../../utils/point-2d';
 import { input17, model } from './input';
 
 const input = input17;

@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point';
+import { Point } from '../../utils/point-2d';
 
 export const input17 = { min: new Point(128, -88), max: new Point(160, -142) };
 

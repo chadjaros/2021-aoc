@@ -41,6 +41,7 @@ export class Point {
     get sum(): number {
         return this.x + this.y;
     }
+
 }
 
 export class Vector2 {

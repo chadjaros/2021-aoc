@@ -1,5 +1,5 @@
 import { Grid } from '../../utils/grid';
-import { Point } from '../../utils/point';
+import { Point } from '../../utils/point-2d';
 import { input15 } from './input';
 import { OrderedMap } from '../../utils/ordered-map';
 
