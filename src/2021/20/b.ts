@@ -26,8 +26,8 @@ for (let round = 0; round < 50; round++) {
         }
     });
 
-    for (let x = min.x - 2; x <= max.x + 2; x++) {
-        for (let y = min.y - 2; y <= max.y + 2; y++) {
+    for (let x = min.x - 1; x <= max.x + 1; x++) {
+        for (let y = min.y - 1; y <= max.y + 1; y++) {
             const point = new Point(x, y);
             const value = current.get(point.key) ?? {p: point, lit: unknownLit};
             const adjacents = orderedAdjacents(value.p);

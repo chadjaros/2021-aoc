@@ -694,15 +694,20 @@ const textInput = `--- scanner 0 ---
 -627,-352,-596
 419,-285,400`;
 
+export interface BeaconDiff {
+    a: Vector3, 
+    b: Vector3, 
+    difference: Vector3
+}
 export class Scanner {
     constructor(
         public readonly id: string,
         public beacons: Vector3[],
     ) {}
 
+    public rotation: Matrix = new Matrix([[1,0,0],[0,1,0], [0,0,1]]);
     public translation: Vector3 = Vector3.fromCoordinates(0,0,0);
-    public differences: {a: Vector3, b: Vector3, difference: Vector3}[] = [];
-    public matches: {a: Vector3, b: Vector3}[] = [];
+    public differences: BeaconDiff[] = [];
 }
 
 export const input19 = textInput.split('\n')

@@ -1,8 +1,10 @@
 import { Vector3 } from '../../utils/point-3d';
 import { seriesSum } from '../../utils/series-math';
-import { input19, rotationMatrices, Scanner } from './input';
+import { BeaconDiff, input19, rotationMatrices, Scanner } from './input';
 
 const input = input19;
+
+const start = Date.now();
 
 input.forEach((scanner) => {
     for (let i = 0; i < scanner.beacons.length; i++) {
@@ -19,8 +21,12 @@ input.forEach((scanner) => {
 const matchesFor12Points = seriesSum((v)=>v, 1, 12);
 console.log('expected matches for 12 of same points', matchesFor12Points);
 
-interface VectorMatch {a: Vector3, b: Vector3}
-interface ScannerMatch {a: Scanner, b: Scanner, aMatches: VectorMatch[], bMatches: VectorMatch[]}
+interface ScannerMatch {
+    a: Scanner, 
+    b: Scanner,
+    aMatches: BeaconDiff[],
+    bMatches: BeaconDiff[],
+}
 
 const pairs: ScannerMatch[] = [];
 for (let i = 0; i < input.length; i++) {
@@ -28,15 +34,15 @@ for (let i = 0; i < input.length; i++) {
         const s1 = input[i];
         const s2 = input[j];
         let hits = 0;
+        const aMatches: BeaconDiff[] = [];
+        const bMatches: BeaconDiff[] = [];
 
-        const aMatches: VectorMatch[] = [];
-        const bMatches: VectorMatch[] = [];
         s1.differences.forEach((d1) => {
             s2.differences.forEach((d2) => {
                 if (d1.difference.magnitude === d2.difference.magnitude) {
                     hits++;
-                    aMatches.push({a: d1.a, b: d1.b});
-                    bMatches.push({a: d2.a, b: d2.b});
+                    aMatches.push(d1);
+                    bMatches.push(d2);
                 }
             });
         });
@@ -46,7 +52,6 @@ for (let i = 0; i < input.length; i++) {
         }
     }
 }
-
 
 function findResolutionOrder(s: Scanner, pairs: ScannerMatch[], seen: Set<Scanner>): Scanner[] {
     if (seen.has(s)) {
@@ -63,7 +68,7 @@ function findResolutionOrder(s: Scanner, pairs: ScannerMatch[], seen: Set<Scanne
 
 const order = findResolutionOrder(input[0], pairs, new Set());
 
-console.log(order.map((x) => x.id));
+// console.log(order.map((x) => x.id));
 
 const complete = new Map<string, Scanner>([[input[0].id, input[0]]]);
 
@@ -80,10 +85,19 @@ for (let i = 1; i < order.length; i++) {
 
     console.log('resolving', target.id, 'against', source.id);
 
+    const sourceMatches = (pair.a === target ? pair.bMatches : pair.aMatches).map((x) => {
+        return {
+            a: Vector3.fromMatrix(source.rotation.dot(x.a)), 
+            b: Vector3.fromMatrix(source.rotation.dot(x.b)), 
+            difference: Vector3.fromMatrix(source.rotation.dot(x.difference)),
+        };
+    });
+    const targetDifferences = pair.a === target ? pair.aMatches : pair.bMatches;
+
     const newScanner = new Scanner(target.id, []);
     const rotation = rotationMatrices.find((rm) => {
 
-        const rotated = target.differences
+        const rotated = targetDifferences
             .map((d) => ({
                 a: Vector3.fromMatrix(rm.dot(d.a)), 
                 b: Vector3.fromMatrix(rm.dot(d.b)), 
@@ -92,7 +106,7 @@ for (let i = 1; i < order.length; i++) {
             }));
         let hits = 0;
         const translations = new Map<string, {t: Vector3, hits: number}>();
-        source.differences.forEach((d) => {
+        sourceMatches.forEach((d) => {
             rotated.forEach((r) => {
                 if (d.difference.equals(r.difference)) {
                     hits++;
@@ -129,6 +143,7 @@ for (let i = 1; i < order.length; i++) {
         throw Error('no translation found');
     }
     
+    newScanner.rotation = rotation;
     newScanner.beacons = target.beacons.map((b) => Vector3.fromMatrix(rotation.dot(b).plus(newScanner.translation)));
     // newScanner.beacons.forEach((b) => {
     //     source.beacons.forEach((sb) => {
@@ -147,6 +162,6 @@ complete.forEach((s) => {
     });
 });
 
-console.log(allBeacons.size);
+console.log(allBeacons.size, 'timing', Date.now() - start);
 
 export const allScanners20 = complete;
