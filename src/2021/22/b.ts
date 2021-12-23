@@ -7,6 +7,7 @@ const half = Vector3.fromCoordinates(.5, .5, .5);
 const lit = new Set<BoundingBox3>();
 
 input.forEach((i) => {
+    // adjust the bounding boxes so that they encapsulate the right amount of volume
     const bb = new BoundingBox3(i.min.minus(half), i.max.plus(half));
 
     [...lit].forEach((candidate) => {
