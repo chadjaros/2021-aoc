@@ -1,12 +1,13 @@
+import { Series } from '../../utils/series';
 import { input21 } from './input';
 
 const input = input21;
 
 function calculateRollDistribution(): number[][] {
     const map = new Map<number, number>();
-    for (let x = 1; x <= 3; x++) {
-        for (let y = 1; y <= 3; y++) {
-            for (let z = 1; z <= 3; z++) {
+    for (const x of Series.range(1, 3)) {
+        for (const y of Series.range(1, 3)) {
+            for (const z of Series.range(1, 3)) {
                 const sum = x + y + z; 
                 map.set(sum, (map.get(sum) ?? 0) + 1);
             }

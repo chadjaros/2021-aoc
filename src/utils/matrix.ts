@@ -132,4 +132,14 @@ export class Matrix {
 
         return true;
     }
+
+    clone(): this {
+        const m: number[][] = [];
+
+        for (let y = 0; y < this.height; y++) {
+            m.push([...this.matrix[y]]);
+        }
+
+        return new (this.constructor as MatrixConstructor<this>)(m);
+    }
 }
