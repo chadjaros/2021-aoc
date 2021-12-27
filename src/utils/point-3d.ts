@@ -205,45 +205,36 @@ export class BoundingBox3 {
             return;
         }
 
-        // corners
-        const lls = new BoundingBox3(intersection.lowLeftShallow, bb.lowLeftShallow);
-        const lrs = new BoundingBox3(intersection.lowRightShallow, bb.lowRightShallow);
-        const lrd = new BoundingBox3(intersection.lowRightDeep, bb.lowRightDeep);
-        const lld = new BoundingBox3(intersection.lowLeftDeep, bb.lowLeftDeep);
-        const hls = new BoundingBox3(intersection.highLeftShallow, bb.highLeftShallow);
-        const hrs = new BoundingBox3(intersection.highRightShallow, bb.highRightShallow);
-        const hrd = new BoundingBox3(intersection.highRightDeep, bb.highRightDeep);
-        const hld = new BoundingBox3(intersection.highLeftDeep, bb.highLeftDeep);
+        const segments: BoundingBox3[] = [];
 
-        const segments = [lls, lrs, lrd, lld, hrs, hls, hrd, hld,
-            // middles
-            new BoundingBox3(intersection.highRightShallow, lls.highRightShallow), // mid front
-            new BoundingBox3(intersection.highLeftDeep, lls.highLeftDeep),       // mid left
-            new BoundingBox3(hrd.lowLeftDeep, intersection.lowLeftDeep),         // mid back
-            new BoundingBox3(intersection.highRightDeep, lrs.highRightDeep),     //mid right
-            new BoundingBox3(intersection.lowRightDeep, lls.lowRightDeep),       // mid bottom
-            new BoundingBox3(hrd.highLeftShallow, intersection.highLeftShallow), // mid top
-            //shallow middle edges
-            new BoundingBox3(intersection.lowRightShallow, lls.lowRightShallow),
-            new BoundingBox3(intersection.highLeftShallow, lls.highLeftShallow),
-            new BoundingBox3(hrs.highLeftDeep, hls.lowRightShallow),
-            new BoundingBox3(hrs.lowRightDeep, lrs.highLeftShallow),
-            // mid middle edges
-            new BoundingBox3(lrd.highRightShallow, lrs.lowLeftDeep),
-            new BoundingBox3(intersection.lowLeftDeep, lls.lowLeftDeep),
-            new BoundingBox3(hld.highRightShallow, hls.lowLeftDeep),
-            new BoundingBox3(hrd.highRightShallow, intersection.highRightShallow),
-            // deep middle edges
-            new BoundingBox3(lrd.highLeftDeep, lld.lowRightShallow),
-            new BoundingBox3(hld.lowRightDeep, lld.highLeftShallow),
-            new BoundingBox3(hrd.highLeftDeep, hld.lowRightShallow),
-            new BoundingBox3(hrd.lowRightDeep, intersection.lowRightDeep),
-            
-        ].filter((x) =>  x.volume > 0 && bb.containsPoint(x.min) && bb.containsPoint(x.max));
+        if (intersection.max.y < bb.max.y) {
+            // top hamburger bun
+            segments.push(new BoundingBox3(Vector3.fromCoordinates(bb.min.x, intersection.max.y, bb.min.z), bb.max));
+        }
+        if (intersection.min.y > bb.min.y) {
+            // bottom hamburger bun
+            segments.push(new BoundingBox3(bb.min, Vector3.fromCoordinates(bb.max.x, intersection.min.y, bb.max.z)));
+        }
+        if (intersection.max.x < bb.max.x) {
+            // right french fry
+            segments.push(new BoundingBox3(Vector3.fromCoordinates(intersection.max.x, intersection.min.y, bb.min.z), Vector3.fromCoordinates(bb.max.x, intersection.max.y, bb.max.z)));
+        }
+        if (intersection.min.x > bb.min.x) {
+            // left french fry
+            segments.push(new BoundingBox3(Vector3.fromCoordinates(bb.min.x, intersection.min.y, bb.min.z), Vector3.fromCoordinates(intersection.min.x, intersection.max.y, bb.max.z)));
+        }
+        if (intersection.max.z < bb.max.z) {
+            // back dot
+            segments.push(new BoundingBox3(intersection.lowLeftDeep, Vector3.fromCoordinates(intersection.max.x, intersection.max.y, bb.max.z)));
+        }
+        if (intersection.min.z > bb.min.z) {
+            // front dot
+            segments.push(new BoundingBox3(Vector3.fromCoordinates(intersection.min.x, intersection.min.y, bb.min.z), intersection.highRightShallow));
+        }
 
         return {
-            segments,
             intersection,
+            segments
         };
     }
 

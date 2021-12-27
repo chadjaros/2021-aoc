@@ -1,4 +1,3 @@
-import { Grid } from '../../utils/grid';
 import { Point } from '../../utils/point-2d';
 import { input15 } from './input';
 
@@ -7,10 +6,6 @@ const grid = input15;
 const start = new Point(0,0);
 
 const end = new Point(grid.width - 1, grid.height - 1);
-
-function cost(p: Point) {
-    grid.getValue(p) + end.minus(p).sum;
-}
 
 function dijkstra() {
 

@@ -22,9 +22,13 @@ input.forEach((i) => {
     }
 });
 
-let sum = 0;
-for (const b of lit) {
-    sum += b.volume;
-}
+console.log([...lit].reduce((a, x) => a + x.volume, 0));
 
-console.log(sum);
+const fiftyfifty = BoundingBox3.fromCoordinates(-50.5,-50.5,-50.5, 50.5,50.5,50.5);
+console.log([...lit].map((l) => {
+    const int = fiftyfifty.intersection(l);
+    if (int) {
+        return int;
+    }
+    return;
+}).filter((x) => x !== undefined).reduce((a, x) => a + (x?.volume ?? 0), 0));

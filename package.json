@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "md5": "^2.3.0"
+    "md5": "^2.3.0",
+    "deep-clone": "3.0.3"
   },
   "devDependencies": {
     "@types/md5": "^2.3.1",

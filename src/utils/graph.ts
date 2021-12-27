@@ -9,5 +9,5 @@ export interface Node {
 }
 
 export interface Graph {
-    nodes: Map<string, Node>;
+    getNode(s: string): Node;
 }
