@@ -33,6 +33,22 @@ export class Series {
 
     static range(from: number, to: number): Iterable<number> {
         let i = from;
+
+        if (from > to) {
+            return {
+                [Symbol.iterator]: () => ({
+                    next: () => {
+                        const done = i < to;
+                        return {
+                            value: i--,
+                            done
+                        };
+                    }
+                })
+            };
+        
+        }
+        
         return {
             [Symbol.iterator]: () => ({
                 next: () => {
