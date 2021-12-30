@@ -1,5 +1,8 @@
 import { Series } from '../../utils/series';
+import { Timer } from '../../utils/timer';
 import { input6 } from './input';
+
+const t = new Timer().start();
 
 const input = input6;
 
@@ -20,4 +23,4 @@ input.forEach((box) => {
     }
 });
 
-console.log([...ons.values()].reduce((a, v) => a + v, 0));
+console.log('brute', [...ons.values()].reduce((a, v) => a + v, 0), 't', t.stop().time);
