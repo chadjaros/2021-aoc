@@ -2,6 +2,14 @@ import { Graph, Node } from './graph';
 import { OrderedMap } from './ordered-map';
 import { Possible } from './util-types';
 
+/**
+ * 
+ * @param start 
+ * @param end 
+ * @param h A heurestic indicating the relative distance from the target. Take care not to overestimate this or you could end up with an overoptimization
+ * @param graph 
+ * @returns 
+ */
 export function aStar(start: Node, end: Node, h: (node: Node) => number, graph: Graph): Possible<{path: Node[], pathCost: number[], cost: number}> {
 
     const gScore = new Map<string, number>();
