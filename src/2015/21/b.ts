@@ -66,7 +66,7 @@ const loadouts = (): Loadout[] => {
         }
     }
 
-    result.sort((a, b) => a.cost - b.cost);
+    result.sort((a, b) => b.cost - a.cost);
     return result;
 };
 
@@ -79,7 +79,7 @@ const findWinner = (base: Player, boss: Player): [Player, Loadout] => {
             armor: base.armor + l.weapon.defense + l.armor.reduce((a, v) => a + v.defense, 0) + l.rings.reduce((a, v) => a + v.defense, 0),
         };
 
-        if (sim(player, boss)) {
+        if (!sim(player, boss)) {
             return [player, l];
         }
     }
