@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/$npm_config_file"
   },
   "dependencies": {
     "md5": "^2.3.0",
@@ -39,10 +39,15 @@
       ],
       "@typescript-eslint/quotes": [
         "error",
-        "single"
+        "single",
+        { 
+          "avoidEscape": true,
+          "allowTemplateLiterals": true 
+        }
       ],
       "@typescript-eslint/semi": "error",
-      "@typescript-eslint/no-this-alias": "off"
+      "@typescript-eslint/no-this-alias": "off",
+      "no-constant-condition": "off"
     },
     "ignorePatterns": [
       "src/**/input.ts"

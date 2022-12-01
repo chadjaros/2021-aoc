@@ -1,6 +1,7 @@
+import { aoc } from '../../utils/aoc';
 import { input1 } from './input';
 
-function main() {
+aoc(() => {
     let prev = input1[0] + input1[1] + input1[2];
     let current = 0;
     let count = 0;
@@ -12,7 +13,5 @@ function main() {
         prev = current;
     }
 
-    console.log(count);
-}
-
-main();
+    return {value: count};
+});
