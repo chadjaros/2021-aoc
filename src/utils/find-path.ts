@@ -10,7 +10,9 @@ import { Possible } from './util-types';
  * @param graph 
  * @returns 
  */
-export function aStar(start: Node, end: Node, h: (node: Node) => number, graph: Graph): Possible<{path: Node[], pathCost: number[], cost: number}> {
+export function aStar(start: Node, end: Node | ((n: Node) => boolean), h: (node: Node) => number, graph: Graph): Possible<{path: Node[], pathCost: number[], cost: number}> {
+
+    const isEnd = typeof end === 'function' ? end : (n: Node) => end.id === n.id;
 
     const gScore = new Map<string, number>();
     const fScore = new Map<string, number>();
@@ -27,9 +29,9 @@ export function aStar(start: Node, end: Node, h: (node: Node) => number, graph: 
         const current = openSet.popFront()![1];
 
         // End condition met, return the path
-        if (current?.id === end.id) {
+        if (isEnd(current)) {
             const path = [current];
-            const pathCost = [gScore.get(end.id) ?? -1];
+            const pathCost = [gScore.get(current.id) ?? -1];
             let next = current;
             while(cameFrom.has(next.id)) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -37,7 +39,7 @@ export function aStar(start: Node, end: Node, h: (node: Node) => number, graph: 
                 path.splice(0, 0, next);
                 pathCost.splice(0, 0, gScore.get(next.id) ?? -1);
             }
-            return { path, pathCost, cost: gScore.get(end.id) ?? -1 };
+            return { path, pathCost, cost: gScore.get(current.id) ?? -1 };
         }
 
         openSet.delete(current.id);
@@ -64,8 +66,13 @@ export function aStar(start: Node, end: Node, h: (node: Node) => number, graph: 
     return undefined;
 }
 
-
-export function dijkstra(start: Node, graph: Graph): Possible<{distances: Map<string, number>, previous: Map<string, Node>}> {
+/**
+ * 
+ * @param start 
+ * @param graph 
+ * @returns 
+ */
+export function dijkstra(start: Node, graph: Graph, isEnd: (n: Node) => boolean = () => false): Possible<{distances: Map<string, number>, previous: Map<string, Node>}> {
 
     const distances = new Map<string, number>();
     const previous = new Map<string, Node>();
@@ -77,6 +84,14 @@ export function dijkstra(start: Node, graph: Graph): Possible<{distances: Map<st
     while(openSet.front()) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const current = openSet.popFront()![1];
+
+        if (isEnd(current)) {
+            return {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                distances: new Map([[current.id, distances.get(current.id)!]]),
+                previous
+            };
+        }
 
         openSet.delete(current.id);
 
