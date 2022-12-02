@@ -42,7 +42,7 @@ export function aStar(start: Node, end: Node | ((n: Node) => boolean), h: (node:
             return { path, pathCost, cost: gScore.get(current.id) ?? -1 };
         }
 
-        openSet.delete(current.id);
+        // openSet.delete(current.id);
         seen.add(current.id);
 
         current.edges.forEach((neighborEdge) => {
@@ -93,7 +93,7 @@ export function dijkstra(start: Node, graph: Graph, isEnd: (n: Node) => boolean 
             };
         }
 
-        openSet.delete(current.id);
+        // openSet.delete(current.id);
 
         current.edges.forEach((neighborEdge) => {
 
