@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "lib": ["ES2019"],
+    "lib": ["es2021"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es6",
     "sourceMap": true,
     "baseUrl": "./",
     "incremental": true,
@@ -15,7 +15,7 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "outDir": "build",
-    "noEmit": true,
+    "noEmit": false,
     "moduleResolution": "node",
     "esModuleInterop": true
   }

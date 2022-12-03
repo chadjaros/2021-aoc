@@ -82,3 +82,7 @@ export class  OrderedMap<K, T> {
 // s.delete(3);
 
 // console.log(s.values);
+
+// s.set(1, 4);
+
+// console.log(s.values);

@@ -24,7 +24,7 @@ export function aStar(start: Node, end: Node | ((n: Node) => boolean), h: (node:
     gScore.set(start.id, 0);
     fScore.set(start.id, h(start));
 
-    while(openSet.front()) {
+    while(openSet.front() !== undefined) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const current = openSet.popFront()![1];
 
@@ -81,7 +81,7 @@ export function dijkstra(start: Node, graph: Graph, isEnd: (n: Node) => boolean 
     openSet.set(start.id, start);
     distances.set(start.id, 0);
 
-    while(openSet.front()) {
+    while(openSet.front() !== undefined) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const current = openSet.popFront()![1];
 

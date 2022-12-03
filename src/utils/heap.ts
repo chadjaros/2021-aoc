@@ -5,7 +5,9 @@ export class Heap<T> {
     private list: T[] = [];
 
     constructor(
-        readonly comparator: (a: T, b: T) => number) {
+        readonly comparator: (a: T, b: T) => number,
+        readonly isEqual: (a: T, b: T) => boolean = (a: T, b: T) => comparator(a, b) === 0,
+    ) {
     }
 
     insert(value: T): void {
@@ -13,8 +15,12 @@ export class Heap<T> {
         this.bubbleUp(this.list.length - 1);
     }
 
+    hasFront(): boolean {
+        return this.size !== 0;
+    }
+
     front(): T | undefined {        
-        if (this.size === 0) {
+        if (!this.hasFront()) {
             return undefined;
         }
 
@@ -48,7 +54,7 @@ export class Heap<T> {
         return value;
     }
 
-    private bubbleUp(i: number): void {
+    private bubbleUp(i: number): number {
         let currentIdx = i;
 
         while (currentIdx > 0) {
@@ -56,15 +62,17 @@ export class Heap<T> {
 
             // if parent is smaller than current, all is good
             if (this.comparator(this.list[currentIdx], this.list[parentIdx]) >= 0) {
-                return;
+                break;
             }
 
             this.swap(currentIdx, parentIdx);
             currentIdx = parentIdx;
         }
+
+        return currentIdx;
     }
 
-    private bubbleDown(i: number): void {
+    private bubbleDown(i: number): number {
 
         let currentIdx = i;
         const size = this.size;
@@ -90,7 +98,7 @@ export class Heap<T> {
 
             if (swapIdx === undefined) {
                 // If no swap is indicated, all is in order
-                return;
+                return currentIdx;
             }
 
             this.swap(currentIdx, swapIdx);
@@ -107,8 +115,49 @@ export class Heap<T> {
     get size(): number {
         return this.list.length;
     }
-}
 
+    values(sorted = false): T[] {
+        const l = [...this.list];
+        if (sorted) {
+            l.sort(this.comparator);
+        }
+        return l;
+    }
+
+    replace(value: T, withValue: T): boolean {
+        const idx = this.list.findIndex((x) => this.isEqual(x, value));
+        
+        if (idx >= 0) {
+            this.list[idx] = withValue;
+
+            const buIdx = this.bubbleUp(idx);
+            if (buIdx === idx) {
+                this.bubbleDown(idx);
+            }
+        }
+
+        return idx >= 0;
+    }
+
+    delete(value: T): boolean {
+        const idx = this.list.findIndex((x) => this.isEqual(x, value));
+        
+        if (idx === this.size -1) {
+            this.list.pop();
+        }
+        else if (idx >= 0) {
+            this.swap(idx, this.size-1);
+            this.list.pop();
+
+            const buIdx = this.bubbleUp(idx);
+            if (buIdx === idx) {
+                this.bubbleDown(idx);
+            }
+        }
+
+        return idx >= 0;
+    }
+}
 
 // const s = new Heap<number>((a, b) => a-b);
 
@@ -118,10 +167,17 @@ export class Heap<T> {
 // s.insert(1);
 // s.insert(6);
 // s.insert(4);
+// s.insert(7);
+// s.insert(0);
+// s.insert(9);
+// s.insert(8);
 
 // console.log(s.insertThenPopFront(4));
 // console.log(s.insertThenPopFront(-1));
 
-// while(s.front()) {
+// console.log(s.replace(5, 0));
+// console.log(s.delete(3));
+
+// while(s.front() !== undefined) {
 //     console.log(s.popFront());
 // }

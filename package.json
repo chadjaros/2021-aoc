@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/$npm_config_file"
+    "start": "ts-node src/$npm_config_file",
+    "build": "tsc"
   },
   "dependencies": {
     "md5": "^2.3.0",
@@ -50,7 +51,8 @@
       "no-constant-condition": "off"
     },
     "ignorePatterns": [
-      "src/**/input.ts"
+      "src/**/input.ts",
+      "build/**"
     ]
   }
 }
