@@ -9,8 +9,8 @@ aoc(() => {
         .split('\n')
         .map((x) => x.split(',')
             .map((y) => {
-                const [start, end] = x.split('-');
-                return {start: parseInt(start), end: parseInt(end)};
+                const [start, end] = y.split('-').map((z) => parseInt(z));
+                return {start: start, end: end};
             }));
 
     for (const line of input) {
