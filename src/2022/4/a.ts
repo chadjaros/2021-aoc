@@ -7,11 +7,14 @@ aoc(() => {
 
     const input = readFileSync(__dirname + '/input.txt').toString()
         .split('\n')
-        .map((x) => x.split(',').map((y) => y.split('-').map((z) => parseInt(z))));
-
+        .map((x) => x.split(',').map((y) => {
+            const [start, end] = x.split('-');
+            return {start: parseInt(start), end: parseInt(end)};
+        }));
+        
     for (const line of input) {
-        if (line[0][0] <= line[1][0] && line[0][1] >= line[1][1] 
-            || line[0][0] >= line[1][0] && line[0][1] <= line[1][1]) {
+        if (line[0].start <= line[1].start && line[0].end >= line[1].end 
+            || line[0].start >= line[1].start && line[0].end <= line[1].end) {
             value++;
         }
     }
