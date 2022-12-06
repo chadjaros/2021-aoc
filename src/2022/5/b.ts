@@ -21,7 +21,11 @@ aoc(() => {
     
     const instructions = input.slice(10).map((x) => {
         const splits = x.split(' ');
-        return [parseInt(splits[1]), parseInt(splits[3]), parseInt(splits[5])];
+        return {
+            ct: parseInt(splits[1]), 
+            from: parseInt(splits[3]), 
+            to: parseInt(splits[5])
+        };
     });
 
     for (let i = 0; i < 9; i++) {
@@ -30,8 +34,8 @@ aoc(() => {
     
     for (const ins of instructions) {
 
-        const move = stacks[ins[1] - 1].splice(-ins[0]);
-        stacks[ins[2] - 1].push(...move);
+        const move = stacks[ins.from - 1].splice(-ins.ct);
+        stacks[ins.to - 1].push(...move);
     }
 
     for (let i = 0; i < 9; i++) {
