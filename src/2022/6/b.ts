@@ -16,12 +16,12 @@ aoc(() => {
         
         buffer.push(input[i]);
         if (new Set(buffer).size === 14) {
-            console.log(buffer.join(''));
             break;
         }
     }
 
     return {
-        value
+        value,
+        signal: buffer.join(''),
     };
 });
