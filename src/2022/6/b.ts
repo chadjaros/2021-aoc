@@ -24,4 +24,4 @@ aoc(() => {
         value,
         signal: buffer.join(''),
     };
-});
+}); 
