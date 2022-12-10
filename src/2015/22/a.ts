@@ -1,14 +1,9 @@
 import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
-import { dijkstra } from '../../utils/find-path';
+import { Player } from './model';
 
-interface Player {
-    hit_points: number;
-    mana: number;
-    damage: number;
-}
 
-// dijkstra()
+
 // const sim = (p: Player, boss: Player): boolean => {
 //     const ps = [{...p}, {...boss}];
 

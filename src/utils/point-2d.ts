@@ -1,4 +1,6 @@
 export class Point {
+
+    private _key: string | undefined = undefined;
     constructor(
         public x: number,
         public y: number
@@ -8,6 +10,13 @@ export class Point {
     static fromKey(s: string): Point {
         const x: number[] = s.split('-').map((n) => parseFloat(n));
         return new Point(x[0], x[1]);
+    }
+
+    get key(): string {
+        if (this._key === undefined) {
+            this._key = `${this.x}-${this.y}`;
+        }
+        return this._key;
     }
     
     adjacents(diagonals = false): Point[] {
@@ -24,10 +33,6 @@ export class Point {
             result.push(new Point(this.x+1, this.y+1));
         }
         return result;
-    }
-
-    get key(): string {
-        return `${this.x}-${this.y}`;
     }
 
     minus(p: Point): Point {
