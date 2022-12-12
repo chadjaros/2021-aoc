@@ -10,14 +10,14 @@ import { Possible } from './util-types';
  * @param graph 
  * @returns 
  */
-export function aStar(start: Node, end: Node | ((n: Node) => boolean), h: (node: Node) => number, graph: Graph): Possible<{path: Node[], pathCost: number[], cost: number}> {
+export function aStar<T extends Node>(start: T, end: T | ((n: T) => boolean), h: (node: T) => number, graph: Graph<T>): Possible<{path: T[], pathCost: number[], cost: number}> {
 
-    const isEnd = typeof end === 'function' ? end : (n: Node) => end.id === n.id;
+    const isEnd = typeof end === 'function' ? end : (n: T) => end.id === n.id;
 
     const gScore = new Map<string, number>();
     const fScore = new Map<string, number>();
-    const cameFrom = new Map<string, Node>();
-    const openSet = new OrderedMap<string, Node>((a, b) => (fScore.get(a.id) ?? 0) - (fScore.get(b.id) ?? 0));
+    const cameFrom = new Map<string, T>();
+    const openSet = new OrderedMap<string, T>((a, b) => (fScore.get(a.id) ?? 0) - (fScore.get(b.id) ?? 0));
     const seen = new Set<string>();
 
     openSet.set(start.id, start);
@@ -72,11 +72,11 @@ export function aStar(start: Node, end: Node | ((n: Node) => boolean), h: (node:
  * @param graph 
  * @returns 
  */
-export function dijkstra(start: Node, graph: Graph, isEnd: (n: Node) => boolean = () => false): Possible<{distances: Map<string, number>, previous: Map<string, Node>}> {
+export function dijkstra<T extends Node>(start: T, graph: Graph<T>, isEnd: (n: T) => boolean = () => false): Possible<{distances: Map<string, number>, previous: Map<string, T>, target?: T, costToTarget?: number}> {
 
     const distances = new Map<string, number>();
-    const previous = new Map<string, Node>();
-    const openSet = new OrderedMap<string, Node>((a, b) => (distances.get(a.id) ?? 0) - (distances.get(b.id) ?? 0));
+    const previous = new Map<string, T>();
+    const openSet = new OrderedMap<string, T>((a, b) => (distances.get(a.id) ?? 0) - (distances.get(b.id) ?? 0));
 
     openSet.set(start.id, start);
     distances.set(start.id, 0);
@@ -89,7 +89,9 @@ export function dijkstra(start: Node, graph: Graph, isEnd: (n: Node) => boolean 
             return {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 distances: new Map([[current.id, distances.get(current.id)!]]),
-                previous
+                previous,
+                target: current,
+                costToTarget: distances.get(current.id),
             };
         }
 

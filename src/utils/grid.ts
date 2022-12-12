@@ -1,14 +1,38 @@
+import { Edge, Graph, Node } from './graph';
 import { Point } from './point-2d';
 
 export type GridScanCallback<T> = (value: T, point: Point) => boolean | void;
-export class Grid<T> {
+export type GridEdgeFunction<T> = (p: Point, g: Grid<T>) => Edge[];
+export class GridNode<T> implements Node {
+    constructor(
+        public point: Point,
+        public grid: Grid<T>,
+        private edgefn: GridEdgeFunction<T>
+    ) {}
+
+    get id() {
+        return this.point.key;
+    }
+
+    get edges(): Edge[] {
+        return this.edgefn(this.point, this.grid);
+    }
+}
+
+
+export class Grid<T> implements Graph<GridNode<T>>{
+    
+    private nodeCache: Map<string, GridNode<T>> = new Map();
     private values: T[][];
 
-    constructor(values: T[][]) {
+    constructor(
+        values: T[][],
+        private edgefn: GridEdgeFunction<T> = (p, g) => g.adjacentTo(p, false).map((p) => ({nodeId: p.key, weight: 1}))
+    ) {
         this.values = values.map((r) => [...r]);
     }
 
-    static fromSize<T>(width: number, height: number, defaultVal: T): Grid<T> {
+    static fromSize<T>(width: number, height: number, defaultVal: T, edgeFn?: GridEdgeFunction<T>): Grid<T> {
         const v: T[][] = [];
         for (let y = 0; y < height; y++) {
             const row: T[] = [];
@@ -18,7 +42,26 @@ export class Grid<T> {
             }
         }
 
-        return new Grid(v);
+        return new Grid(v, edgeFn);
+    }
+
+    getNode(id: string): GridNode<T> {
+        if (this.nodeCache.has(id)) {
+            return this.nodeCache.get(id)!;
+        }
+        return this.nodeAt(Point.fromKey(id));
+    }
+
+    nodeAt(p: Point): GridNode<T> {
+        if (this.nodeCache.has(p.key)) {
+            return this.nodeCache.get(p.key)!;
+        }
+        if (this.isValid(p)) {
+            const n = new GridNode(p, this, this.edgefn);
+            this.nodeCache.set(n.id, n);
+            return n;
+        }
+        throw new Error(`No grid node at '${p.key}'`);
     }
 
     isValid(point: Point): boolean {
@@ -44,6 +87,11 @@ export class Grid<T> {
 
     get height(): number {
         return this.values.length;
+    }
+
+    adjacentTo(p: Point, diagonals: boolean): Point[] {
+        return p.adjacents(diagonals)
+            .filter((p) => this.isValid(p));
     }
 
     forEach(cb: GridScanCallback<T>): void {
@@ -130,8 +178,7 @@ export class Grid<T> {
     }
 
     scanAdjacents(point: Point, diagonals: boolean, cb: GridScanCallback<T>): void {
-        for (const p of point.adjacents(diagonals)
-            .filter((p) => this.isValid(p))) {
+        for (const p of this.adjacentTo(point, diagonals)) {
             if (cb(this.getValue(p), p)) {
                 return;
             }

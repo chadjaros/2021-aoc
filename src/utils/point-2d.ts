@@ -47,6 +47,9 @@ export class Point {
         return this.x + this.y;
     }
 
+    manhattanDistance(p: Point) {
+        return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
+    }
 }
 
 export class Vector2 {

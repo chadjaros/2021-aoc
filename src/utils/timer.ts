@@ -1,19 +1,21 @@
+import { performance } from 'perf_hooks';
+
 export class Timer {
     
     private _start = 0;
     private _end = 0;
 
     start(): this {
-        this._start = Date.now();
+        this._start = performance.now();
         return this;
     }
 
     stop(): this {
-        this._end = Date.now();
+        this._end = performance.now();
         return this;
     }
 
-    get time() {
+    get time(): number {
         return this._end - this._start;
     }
 

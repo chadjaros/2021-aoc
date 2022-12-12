@@ -25,7 +25,7 @@ export class AocInputFileHelper {
 
     regexLines(regex: string | RegExp): string[][] {
         return this.lines.map((line) => {
-            return line.match(regex)?.map((x) => x) ?? [];
+            return line.match(regex)?.map((x) => x).slice(1) ?? [];
         });
     }
 

@@ -8,11 +8,11 @@ export interface Node {
     edges: Edge[];
 }
 
-export interface Graph {
-    getNode(s: string): Node;
+export interface Graph<T extends Node> {
+    getNode(s: string): T;
 }
 
-export class SimpleGraph<T extends Node> implements Graph {
+export class SimpleGraph<T extends Node> implements Graph<T> {
     
     private nodes: Map<string, T>;
 

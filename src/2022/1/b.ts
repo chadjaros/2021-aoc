@@ -1,9 +1,8 @@
 import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n')
+aoc((infile) => {
+    const input = infile.lines
         .map((x) => x === '' ? undefined : parseInt(x));
 
     const highest = [0, 0, 0];
