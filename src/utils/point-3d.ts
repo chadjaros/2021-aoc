@@ -1,4 +1,5 @@
 import { Matrix } from './matrix';
+import { Point } from './point-2d';
 import { Possible } from './util-types';
 
 export class Vector3 extends Matrix {
@@ -54,6 +55,10 @@ export class Point3 {
         }
     }
 
+    static fromKey(s: string): Point3 {
+        return new Point3(JSON.parse(s) as number[]);
+    }
+
     static fromCoordinates(x: number, y: number,z: number): Point3 {
         return new Point3([x,y,z]);
     }
@@ -85,6 +90,37 @@ export class Point3 {
 
     toString(): string {
         return JSON.stringify(this.array);
+    }
+
+    get key(): string {
+        return this.toString();
+    }
+
+    adjacents(diagonals = false): Point3[] {
+        
+        if (!diagonals) {
+            return [
+                new Point3([this.x-1, this.y, this.z]),
+                new Point3([this.x+1, this.y, this.z]),
+                new Point3([this.x, this.y-1, this.z]),
+                new Point3([this.x, this.y+1, this.z]),
+                new Point3([this.x, this.y, this.z-1]),
+                new Point3([this.x, this.y, this.z+1]),
+            ];
+        }
+
+        const result: Point3[] = [];
+        
+        for (const x of [-1, 0, 1]) {
+            for (const y of [-1, 0, 1]) {
+                for (const z of [-1, 0, 1]) {
+                    if (!(x === 0 && y=== 0 && z === 0)) {
+                        result.push(new Point3([this.x + x, this.y + y, this.z + z]));
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
 

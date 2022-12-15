@@ -3,6 +3,7 @@ import { Point } from './point-2d';
 
 export type GridScanCallback<T> = (value: T, point: Point) => boolean | void;
 export type GridEdgeFunction<T> = (p: Point, g: Grid<T>) => Edge[];
+
 export class GridNode<T> implements Node {
     constructor(
         public point: Point,
@@ -16,6 +17,10 @@ export class GridNode<T> implements Node {
 
     get edges(): Edge[] {
         return this.edgefn(this.point, this.grid);
+    }
+
+    get value(): T {
+        return this.grid.getValue(this.point);
     }
 }
 
