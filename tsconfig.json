@@ -17,6 +17,6 @@
     "outDir": "build",
     "noEmit": false,
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
   }
 }

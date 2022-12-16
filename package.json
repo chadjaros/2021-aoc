@@ -2,7 +2,7 @@
   "name": "2021-aoc",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node src/$npm_config_file",
     "build": "tsc"
@@ -10,12 +10,14 @@
   "dependencies": {
     "md5": "2.3.0",
     "deep-clone": "3.0.3",
-    "uuid": "9.0.0"
+    "uuid": "9.0.0",
+    "node-fetch": "^2"
   },
   "devDependencies": {
     "@types/md5": "^2.3.1",
     "@types/node": "^14",
     "@types/uuid": "9.0.0",
+    "@types/node-fetch": "2.6.2",
     "@typescript-eslint/eslint-plugin": "5.45.1",
     "@typescript-eslint/parser": "5.45.1",
     "eslint": "8.29.0",
