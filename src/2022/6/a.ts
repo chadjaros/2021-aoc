@@ -1,10 +1,9 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
+aoc((infile) => {
     let value = 0;
 
-    const input = readFileSync(__dirname + '/input.txt').toString().split('');
+    const input = infile.string.split('');
 
     const buffer: string[] = [];
     for (let i = 0; i < input.length; i++) {

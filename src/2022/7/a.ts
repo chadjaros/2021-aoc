@@ -1,10 +1,8 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 import { compileSize, Directory, runInstructions } from './model';
 
-aoc(() => {
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n').filter((x) => x != '');
+aoc((infile) => {
+    const input = infile.lines.filter((x) => x != '');
    
     const root = runInstructions(input);
 

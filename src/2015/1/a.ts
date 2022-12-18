@@ -1,7 +1,10 @@
-import { input1 } from './input';
+import { aoc } from '../../utils/aoc';
 
-const result = input1.split('').reduce((sum, val) => {
-    return (val === ')' ? -1 : 1) + sum;
-}, 0);
+aoc((infile) => {
 
-console.log(result);
+    const value = infile.string.split('').reduce((sum, val) => {
+        return (val === ')' ? -1 : 1) + sum;
+    }, 0);
+    
+    return {value};
+});

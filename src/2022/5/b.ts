@@ -1,10 +1,8 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
+aoc((infile) => {
     let value = '';
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n');
+    const input = infile.lines;
 
 
     const stacks: string[][] = [];

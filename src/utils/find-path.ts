@@ -72,11 +72,15 @@ export function aStar<T extends Node>(start: T, end: T | ((n: T) => boolean), h:
  * @param graph 
  * @returns 
  */
-export function dijkstra<T extends Node>(start: T, graph: Graph<T>, isEnd: (n: T) => boolean = () => false): Possible<{distances: Map<string, number>, previous: Map<string, T>, target?: T, costToTarget?: number}> {
+export function dijkstra<T extends Node>(start: T, graph: Graph<T>, isEnd: (n: T) => boolean = () => false, min = true): Possible<{distances: Map<string, number>, previous: Map<string, T>, target?: T, costToTarget?: number}> {
 
     const distances = new Map<string, number>();
     const previous = new Map<string, T>();
-    const openSet = new OrderedMap<string, T>((a, b) => (distances.get(a.id) ?? 0) - (distances.get(b.id) ?? 0));
+    let sort = (a: T, b: T) => (distances.get(a.id) ?? 0) - (distances.get(b.id) ?? 0);
+    if (!min) {
+        sort = (a: T, b: T) => (distances.get(b.id) ?? 0) - (distances.get(a.id) ?? 0);
+    } 
+    const openSet = new OrderedMap<string, T>(sort);
 
     openSet.set(start.id, start);
     distances.set(start.id, 0);
@@ -103,7 +107,7 @@ export function dijkstra<T extends Node>(start: T, graph: Graph<T>, isEnd: (n: T
             if (alt < (distances.get(neighborEdge.nodeId) ?? Infinity)) {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 const neighbor = graph.getNode(neighborEdge.nodeId)!;
-                previous.set(neighbor.id, neighbor);
+                previous.set(neighbor.id, current);
                 distances.set(neighbor.id, alt);
                 if (!openSet.has(neighbor.id)) {
                     openSet.set(neighbor.id, neighbor);

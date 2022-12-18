@@ -1,9 +1,7 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n').map((x) => x.split(' '));
+aoc((infile) => {
+    const input = infile.lines.map((x) => x.split(' '));
 
     // A = Rock, B = Paper, C = Scissors
     // X = Rock, Y = Paper, Z = Scissors

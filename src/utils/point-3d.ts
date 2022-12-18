@@ -11,7 +11,7 @@ export class Vector3 extends Matrix {
         super(m);
     }
 
-    static fromCoordinates(x: number, y: number,z: number): Vector3 {
+    static fromCoordinates(x: number, y: number, z: number): Vector3 {
         return new Vector3([[x],[y],[z]]);
     }
 
@@ -53,6 +53,7 @@ export class Point3 {
         if (m.length !== 3 ) {
             throw new Error('Array must be length 3');
         }
+        this.array = [...m];
     }
 
     static fromKey(s: string): Point3 {

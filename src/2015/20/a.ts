@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
 
@@ -14,8 +13,8 @@ class Elf {
     }
 }
 
-aoc(() => {
-    const target = parseInt(readFileSync(__dirname + '/input.txt').toString());
+aoc((infile) => {
+    const target = parseInt(infile.string);
 
     const houses: Elf[] = [];
     

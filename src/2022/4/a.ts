@@ -1,12 +1,10 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
+aoc((infile) => {
 
     let value = 0;
 
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n')
+    const input = infile.lines
         .map((x) => x.split(',')
             .map((y) => {
                 const [start, end] = y.split('-').map((z) => parseInt(z));

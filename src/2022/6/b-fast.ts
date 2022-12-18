@@ -1,10 +1,9 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
+aoc((infile) => {
     let value = -1;
     const bufferSize = 14;
-    const input = readFileSync(__dirname + '/input.txt').toString().split('');
+    const input = infile.string.split('');
 
     const counts = new Map<string, number>();
     const dupes = new Set<string>();

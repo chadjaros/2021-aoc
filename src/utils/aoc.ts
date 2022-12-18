@@ -1,12 +1,16 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import fetch from 'node-fetch';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { performance } from 'perf_hooks';
 import { env } from 'process';
 import { Grid } from './grid';
 
 export class AocInputFileHelper {
     constructor(readonly inputFile: string) {}
+
+    sample(filename = 'sample-input.txt'): AocInputFileHelper {
+        return new AocInputFileHelper(join(dirname(this.inputFile), filename));
+    }
 
     get buffer(): Buffer {
         return readFileSync(this.inputFile);
@@ -50,7 +54,7 @@ export interface AocResult {
 export const aoc = async (f: (infile: AocInputFileHelper) => AocResult | Promise<AocResult>): Promise<void> => {
 
     try {
-        const inputpath = dirname(process.argv[1]) + '/input.txt';
+        const inputpath = join(dirname(process.argv[1]), 'input.txt');
 
         if (!existsSync(inputpath)) {
             const day = inputpath.match(/src\/(\d+)\/(\d+)\/input.txt/);

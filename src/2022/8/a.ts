@@ -1,11 +1,9 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
-aoc(() => {
+aoc((infile) => {
     let value = 0;
 
-    const input = readFileSync(__dirname + '/input.txt').toString()
-        .split('\n').map((x) => x.split('').map((y) => parseInt(y)));
+    const input = infile.lines.map((x) => x.split('').map((y) => parseInt(y)));
    
     const width = input[0].length;
     for (let x = 0; x < input[0].length; x++) {

@@ -36,4 +36,8 @@ export class SimpleGraph<T extends Node> implements Graph<T> {
     setNode(node: T) {
         this.nodes.set(node.id, node);
     }
+
+    get allNodes(): T[] {
+        return Array.from(this.nodes.values());
+    }
 }

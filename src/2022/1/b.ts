@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import { aoc } from '../../utils/aoc';
 
 aoc((infile) => {

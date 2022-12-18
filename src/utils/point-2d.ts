@@ -39,6 +39,10 @@ export class Point {
         return new Point(this.x - p.x, this.y - p.y);
     }
 
+    plus(p: Point): Point {
+        return new Point(this.x + p.x, this.y + p.y);
+    }
+
     vectorTo(p: Point): Vector2 {
         return new Vector2(this.x - p.x, this.y - p.y);
     }

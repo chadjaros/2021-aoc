@@ -87,8 +87,8 @@ const findWinner = (base: Player, boss: Player): [Player, Loadout] => {
     throw new Error('no winner');
 };
 
-aoc(() => {
-    const boss = readFileSync(__dirname + '/input.txt').toString().split('\n')
+aoc((infile) => {
+    const boss = infile.lines
         .reduce<Record<string, number>>((acc, x) => {
         const s = x.split(': ');
 

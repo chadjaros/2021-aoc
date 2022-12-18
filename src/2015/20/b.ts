@@ -21,9 +21,9 @@ const calcSeries = (house: number): number => {
     return total;
 };
 
-aoc(() => {
+aoc((infile) => {
 
-    const target = parseInt(readFileSync(__dirname + '/input.txt').toString());
+    const target = parseInt(infile.string);
 
     let house = 0;
     let total = 0;
