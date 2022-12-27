@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { dirname, join } from 'path';
 import { performance } from 'perf_hooks';
 import { env } from 'process';
-import { Grid } from './grid';
+import { Grid, GridEdgeFunction } from './grid';
 
 export class AocInputFileHelper {
     constructor(readonly inputFile: string) {}
@@ -42,8 +42,8 @@ export class AocInputFileHelper {
         return this.lines.map((line) => line.split(s).map(mapFn)) as T[][];
     }
 
-    grid<T>(s: string | RegExp, mapFn: ((x: string) => T)): Grid<T> {
-        return new Grid(this.splitLinesAndMap(s, mapFn));
+    grid<T>(s: string | RegExp, mapFn: ((x: string) => T), edgeFn?: GridEdgeFunction<T>): Grid<T> {
+        return new Grid(this.splitLinesAndMap(s, mapFn), edgeFn);
     }
 }
 

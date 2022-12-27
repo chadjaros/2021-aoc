@@ -54,6 +54,30 @@ export class Point {
     manhattanDistance(p: Point) {
         return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
     }
+
+    static minMax(points: Point[]): {min: Point, max: Point} {
+        let minX = points[0].x;
+        let minY = points[0].y;
+        let maxX = points[0].x;
+        let maxY = points[0].y;
+
+        for (const p of points) {
+            if (p.x < minX) {
+                minX = p.x;
+            }
+            if (p.y < minY) {
+                minY = p.y;
+            }
+            if (p.x > maxX) {
+                maxX = p.x;
+            }
+            if (p.y > maxY) {
+                maxY = p.y;
+            }
+        }
+
+        return {min: new Point(minX, minY), max: new Point(maxX, maxY)};
+    }
 }
 
 export class Vector2 {

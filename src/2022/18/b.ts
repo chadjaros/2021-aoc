@@ -1,5 +1,5 @@
 import { aoc } from '../../utils/aoc';
-import { BoundingBox3, Point3 } from '../../utils/point-3d';
+import { Point3 } from '../../utils/point-3d';
 
 aoc((infile) => {
 
@@ -77,7 +77,6 @@ aoc((infile) => {
 
         return false;
     }
-
 
     const value = input.reduce((acc, v) => {
         return acc + v.adjacents(false).filter(isOutside).length;

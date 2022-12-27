@@ -1,5 +1,6 @@
 import { Edge, Graph, Node } from './graph';
 import { Point } from './point-2d';
+import { Possible } from './util-types';
 
 export type GridScanCallback<T> = (value: T, point: Point) => boolean | void;
 export type GridEdgeFunction<T> = (p: Point, g: Grid<T>) => Edge[];
@@ -37,13 +38,13 @@ export class Grid<T> implements Graph<GridNode<T>>{
         this.values = values.map((r) => [...r]);
     }
 
-    static fromSize<T>(width: number, height: number, defaultVal: T, edgeFn?: GridEdgeFunction<T>): Grid<T> {
+    static fromSize<T>(width: number, height: number, defaultVal: T | (() => T), edgeFn?: GridEdgeFunction<T>): Grid<T> {
         const v: T[][] = [];
         for (let y = 0; y < height; y++) {
             const row: T[] = [];
             v.push(row);
             for (let x = 0; x < width; x++) {
-                row.push(defaultVal);
+                row.push(typeof defaultVal === 'function' ? (defaultVal as (() => T))() : defaultVal as T);
             }
         }
 
@@ -110,83 +111,95 @@ export class Grid<T> implements Graph<GridNode<T>>{
         }
     }
 
-    scanDecXFrom(point: Point, cb: GridScanCallback<T>): void {
+    scanDecXFrom(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let x = point.x - 1; x >= 0; x--) {
             const p = new Point(x, point.y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanIncXFrom(point: Point, cb: GridScanCallback<T>): void {
+    scanIncXFrom(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let x = point.x + 1; x < this.width; x++) {
             const p = new Point(x, point.y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanDecYFrom(point: Point, cb: GridScanCallback<T>): void {
+    scanDecYFrom(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let y = point.y - 1; y >= 0; y--) {
             const p = new Point(point.x, y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanIncYFrom(point: Point, cb: GridScanCallback<T>): void {
+    scanIncYFrom(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let y = point.y + 1; y < this.height; y++) {
             const p = new Point(point.x, y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanDecXTo(point: Point, cb: GridScanCallback<T>): void {
+    scanDecXTo(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let x = this.width - 1; x > point.x; x--) {
             const p = new Point(x, point.y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanIncXTo(point: Point, cb: GridScanCallback<T>): void {
+    scanIncXTo(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let x = 0; x < point.x; x++) {
             const p = new Point(x, point.y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanDecYTo(point: Point, cb: GridScanCallback<T>): void {
+    scanDecYTo(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let y = this.height - 1; y > point.y; y--) {
             const p = new Point(point.x, y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanIncYTo(point: Point, cb: GridScanCallback<T>): void {
+    scanIncYTo(point: Point, cb: GridScanCallback<T>): Possible<Point> {
         for (let y = 0; y < point.y; y++) {
             const p = new Point(point.x, y);
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
     }
 
-    scanAdjacents(point: Point, diagonals: boolean, cb: GridScanCallback<T>): void {
+    scanAdjacents(point: Point, diagonals: boolean, cb: GridScanCallback<T>): Possible<Point> {
         for (const p of this.adjacentTo(point, diagonals)) {
             if (cb(this.getValue(p), p)) {
-                return;
+                return p;
             }
         }
+    }
+
+    print(fn: ((x: T) => string) = (x) => x as string): void {
+        for (const line of this.values) {
+            console.log(line.map(fn).join(''));
+        }
+    }
+
+    clone(deepCopyFn: ((value: T) => T)): Grid<T> {
+        return new Grid(
+            this.values.map(l => l.map(v => deepCopyFn(v)))
+        );
     }
 }
