@@ -102,7 +102,12 @@ VN -> H
 FB -> N`;
 
 function parseRules(s: string): Map<string, string> {
-    return new Map(s.split('\n').map((r) => r.split(' -> ')).map((r) => [r[0], r[1]]));
+    return new Map(
+        s
+            .split('\n')
+            .map((r) => r.split(' -> '))
+            .map((r) => [r[0], r[1]])
+    );
 }
 
 export const input14rules = parseRules(inputRules);

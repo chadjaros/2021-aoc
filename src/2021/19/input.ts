@@ -1,6 +1,6 @@
-import { Matrix } from '../../utils/matrix';
-import { Point3, Vector3 } from '../../utils/point-3d';
-import { Possible } from '../../utils/util-types';
+import { Matrix } from '../../ts-utils/matrix';
+import { Point3, Vector3 } from '../../ts-utils/point-3d';
+import { Possible } from '../../ts-utils/util-types';
 
 const textInput = `--- scanner 0 ---
 602,365,-604
@@ -695,49 +695,70 @@ const textInput = `--- scanner 0 ---
 419,-285,400`;
 
 export interface BeaconDiff {
-    a: Vector3, 
-    b: Vector3, 
-    difference: Vector3
+    a: Vector3;
+    b: Vector3;
+    difference: Vector3;
 }
 export class Scanner {
     constructor(
         public readonly id: string,
-        public beacons: Vector3[],
-    ) {}
+        public beacons: Vector3[]
+    ) { }
 
-    public rotation: Matrix = new Matrix([[1,0,0],[0,1,0], [0,0,1]]);
-    public translation: Vector3 = Vector3.fromCoordinates(0,0,0);
+    public rotation: Matrix = new Matrix([
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 0, 1],
+    ]);
+    public translation: Vector3 = Vector3.fromCoordinates(0, 0, 0);
     public differences: BeaconDiff[] = [];
 }
 
-export const input19 = textInput.split('\n')
-.reduce<Scanner[]>((accum, line) => {
+export const input19 = textInput
+    .split('\n')
+    .reduce<Scanner[]>((accum, line) => {
+        if (line.startsWith('---')) {
+            accum.push(new Scanner(line.slice(4, -4), []));
+        } else if (line === '') {
+            // nothing
+        } else {
+            const v = line.split(',').map((x) => parseInt(x));
+            accum[accum.length - 1].beacons.push(
+                Vector3.fromCoordinates(v[0], v[1], v[2])
+            );
+        }
 
-    if (line.startsWith('---')) {
-        accum.push(new Scanner(line.slice(4, -4), []));
-    }
-    else if (line === '') {
-        // nothing
-    }
-    else {
-        const v = line.split(',').map((x) => parseInt(x));
-        accum[accum.length-1].beacons.push(Vector3.fromCoordinates(v[0], v[1], v[2]));
-    }
-
-    return accum;
-}, []);
-
+        return accum;
+    }, []);
 
 const rotX: Matrix[] = [];
 const rotY: Matrix[] = [];
 const rotZ: Matrix[] = [];
 
-for (let r = 0; r < 2; r += .5) {
+for (let r = 0; r < 2; r += 0.5) {
     const cos0 = Math.round(Math.cos(r * Math.PI));
     const sin0 = Math.round(Math.sin(r * Math.PI));
-    rotX.push(new Matrix([[1,0,0], [0, cos0, -1 * sin0], [0, sin0, cos0]]));
-    rotY.push(new Matrix([[cos0, 0, sin0], [0,1,0], [-1 * sin0, 0, cos0]]));
-    rotZ.push(new Matrix([[cos0, -1 * sin0, 0], [sin0, cos0, 0], [0,0,1]]));
+    rotX.push(
+        new Matrix([
+            [1, 0, 0],
+            [0, cos0, -1 * sin0],
+            [0, sin0, cos0],
+        ])
+    );
+    rotY.push(
+        new Matrix([
+            [cos0, 0, sin0],
+            [0, 1, 0],
+            [-1 * sin0, 0, cos0],
+        ])
+    );
+    rotZ.push(
+        new Matrix([
+            [cos0, -1 * sin0, 0],
+            [sin0, cos0, 0],
+            [0, 0, 1],
+        ])
+    );
 }
 
 const rotations = new Map<string, Matrix>();

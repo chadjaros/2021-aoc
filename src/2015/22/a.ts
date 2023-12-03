@@ -1,12 +1,10 @@
-import { aoc } from '../../utils/aoc';
-import { aStar } from '../../utils/find-path';
-import { SimpleGraph } from '../../utils/graph';
+import { aoc } from '../../ts-utils/aoc';
+import { aStar } from '../../ts-utils/find-path';
+import { SimpleGraph } from '../../ts-utils/graph';
 import { Player, State } from './model';
 
-
 aoc((infile) => {
-    const boss = infile.lines
-        .reduce<Record<string, number>>((acc, x) => {
+    const boss = infile.lines.reduce<Record<string, number>>((acc, x) => {
         const s = x.split(': ');
 
         acc[s[0].replace(' ', '_').toLowerCase()] = parseInt(s[1]);
@@ -39,13 +37,14 @@ aoc((infile) => {
         (state: State) => state.boss.hit_points,
         graph
     );
-    
-    for(const p of result?.path ?? []) {
-        console.log(`${p.turn} -  ph:${p.p.hit_points} pm:${p.p.mana} s:${p.lastCast?.name} c:${p.lastCast?.cost} b:${p.boss.hit_points}`);
+
+    for (const p of result?.path ?? []) {
+        console.log(
+            `${p.turn} -  ph:${p.p.hit_points} pm:${p.p.mana} s:${p.lastCast?.name} c:${p.lastCast?.cost} b:${p.boss.hit_points}`
+        );
     }
 
     return {
-        value: result?.cost ?? -1
+        value: result?.cost ?? -1,
     };
 });
-

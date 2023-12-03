@@ -1,14 +1,13 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 import { input15 } from './input';
 
 const grid = input15;
 
-const start = new Point(0,0);
+const start = new Point(0, 0);
 
 const end = new Point(grid.width - 1, grid.height - 1);
 
 function dijkstra() {
-
     const distances = new Map<string, number>();
     const previous = new Map<string, Point>();
 
@@ -18,7 +17,6 @@ function dijkstra() {
     distances.set(start.key, 0);
 
     while (allPoints.size > 0) {
-        
         const current = [...distances]
             .filter(([p, n]) => allPoints.has(p))
             .sort(([ap, an], [bp, bn]) => an - bn)[0];

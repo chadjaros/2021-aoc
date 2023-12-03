@@ -1,19 +1,21 @@
-
-
 function getPoints(s: String): number[][] {
     return s.split('\n').map((x) => x.split(',').map((n) => parseInt(n)));
 }
 
 function getFolds(s: string): [string, number][] {
-    return s.split('\n')
+    return s
+        .split('\n')
         .map((x) => x.slice(11).split('='))
         .map<[string, number]>((x) => [x[0], parseInt(x[1])]);
 }
 
-export function getDimensions(points: number[][]): {height: number; width: number} {
+export function getDimensions(points: number[][]): {
+    height: number;
+    width: number;
+} {
     let height = 0;
     let width = 0;
-    for(const p of points) {
+    for (const p of points) {
         if (p[0] > width) {
             width = p[0];
         }
@@ -21,11 +23,10 @@ export function getDimensions(points: number[][]): {height: number; width: numbe
             height = p[1];
         }
     }
-    return {height: height, width};
+    return { height: height, width };
 }
 
-const points =
-`1284,359
+const points = `1284,359
 47,25
 699,764
 55,204
@@ -761,8 +762,7 @@ const points =
 825,444
 830,172`;
 
-const folds =
-`fold along x=655
+const folds = `fold along x=655
 fold along y=447
 fold along x=327
 fold along y=223
@@ -796,7 +796,7 @@ const pointsMini = `6,10
 1,10
 2,14
 8,10
-9,0`
+9,0`;
 
 const foldsMini = `fold along x=5
 fold along y=7`;
@@ -807,6 +807,6 @@ export const input13FoldsMini = getFolds(foldsMini);
 
 export function print(grid: boolean[][]): void {
     grid.forEach((row) => {
-        console.log(row.map((v) => v ? 'X' : ' ').join(' '));
-    })
+        console.log(row.map((v) => (v ? 'X' : ' ')).join(' '));
+    });
 }

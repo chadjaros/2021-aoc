@@ -20,8 +20,7 @@ function main() {
         for (const number of input3) {
             if (number[i] === 0) {
                 zeroes++;
-            }
-            else {
+            } else {
                 ones++;
             }
         }
@@ -29,14 +28,20 @@ function main() {
         if (zeroes > ones) {
             gamma.push(0);
             epsilon.push(1);
-        }
-        else {
+        } else {
             gamma.push(1);
             epsilon.push(0);
         }
     }
 
-    console.log('gamma', gamma, calculateBinary(gamma), 'epsilon', epsilon, calculateBinary(epsilon));
+    console.log(
+        'gamma',
+        gamma,
+        calculateBinary(gamma),
+        'epsilon',
+        epsilon,
+        calculateBinary(epsilon)
+    );
     console.log(calculateBinary(gamma) * calculateBinary(epsilon));
 }
 

@@ -1,5 +1,5 @@
-import { Vector2 } from '../../utils/point-2d';
-import { Point3, Vector3 } from '../../utils/point-3d';
+import { Vector2 } from '../../ts-utils/point-2d';
+import { Point3, Vector3 } from '../../ts-utils/point-3d';
 import { input22 } from './input';
 
 const input = input22;

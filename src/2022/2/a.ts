@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
     const input = infile.lines.map((x) => x.split(' '));
@@ -7,43 +7,35 @@ aoc((infile) => {
     // X = Rock, Y = Paper, Z = Scissors
     let value = 0;
     for (const line of input) {
-
         const opp = line[0];
         let me = line[1];
 
         if (me === 'X') {
             me = 'A';
-        }
-        else if (me === 'Y') {
+        } else if (me === 'Y') {
             me = 'B';
-        }
-        else me = 'C';
+        } else me = 'C';
 
         if (me === 'A') {
             value += 1;
-        }
-        else if (me === 'B') {
+        } else if (me === 'B') {
             value += 2;
-        }
-        else {
+        } else {
             value += 3;
         }
 
         if (opp === me) {
             value += 3;
-        }
-        else if (opp === 'A' && me === 'B') {
+        } else if (opp === 'A' && me === 'B') {
             value += 6;
-        }
-        else if (opp === 'B' && me === 'C') {
+        } else if (opp === 'B' && me === 'C') {
             value += 6;
-        }
-        else if (opp === 'C' && me === 'A') {
+        } else if (opp === 'C' && me === 'A') {
             value += 6;
         }
     }
 
     return {
-        value
+        value,
     };
 });

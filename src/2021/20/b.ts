@@ -1,5 +1,5 @@
-import { binToDec } from '../../utils/base-conversion';
-import { Point } from '../../utils/point-2d';
+import { binToDec } from '../../ts-utils/base-conversion';
+import { Point } from '../../ts-utils/point-2d';
 import { input20enhance, input20map, orderedAdjacents } from './input';
 
 const enhance = input20enhance;
@@ -29,14 +29,24 @@ for (let round = 0; round < 50; round++) {
     for (let x = min.x - 1; x <= max.x + 1; x++) {
         for (let y = min.y - 1; y <= max.y + 1; y++) {
             const point = new Point(x, y);
-            const value = current.get(point.key) ?? {p: point, lit: unknownLit};
+            const value = current.get(point.key) ?? {
+                p: point,
+                lit: unknownLit,
+            };
             const adjacents = orderedAdjacents(value.p);
-            const lit = enhance[binToDec(adjacents.map((p) => current.get(p.key)?.lit ?? unknownLit))] === '#';
+            const lit =
+                enhance[
+                binToDec(
+                    adjacents.map(
+                        (p) => current.get(p.key)?.lit ?? unknownLit
+                    )
+                )
+                ] === '#';
 
-            next.set(value.p.key, {p: value.p, lit}); 
+            next.set(value.p.key, { p: value.p, lit });
         }
     }
-    
+
     unknownLit = enhance[unknownLit ? 511 : 0] === '#';
     current = next;
     next = new Map();

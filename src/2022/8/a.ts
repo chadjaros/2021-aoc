@@ -1,14 +1,19 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
     let value = 0;
 
     const input = infile.lines.map((x) => x.split('').map((y) => parseInt(y)));
-   
+
     const width = input[0].length;
     for (let x = 0; x < input[0].length; x++) {
         for (let y = 0; y < input.length; y++) {
-            if (x === 0 || y === 0 || x === width - 1 || y === input.length - 1) {
+            if (
+                x === 0 ||
+                y === 0 ||
+                x === width - 1 ||
+                y === input.length - 1
+            ) {
                 value++;
                 continue;
             }
@@ -25,7 +30,7 @@ aoc((infile) => {
                     break;
                 }
             }
-            for (let inspectX = x+1; inspectX < width; inspectX++) {
+            for (let inspectX = x + 1; inspectX < width; inspectX++) {
                 if (input[y][inspectX] >= tree) {
                     fromright = false;
                     break;
@@ -37,7 +42,7 @@ aoc((infile) => {
                     break;
                 }
             }
-            for (let inspectY = y+1; inspectY < input.length; inspectY++) {
+            for (let inspectY = y + 1; inspectY < input.length; inspectY++) {
                 if (input[inspectY][x] >= tree) {
                     frombottom = false;
                     break;
@@ -49,8 +54,6 @@ aoc((infile) => {
             }
         }
     }
-    
-    
-    
-    return {value};
+
+    return { value };
 });

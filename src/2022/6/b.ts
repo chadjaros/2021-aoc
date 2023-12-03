@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
     let value = 0;
@@ -12,7 +12,7 @@ aoc((infile) => {
         if (buffer.length === 14) {
             buffer.shift();
         }
-        
+
         buffer.push(input[i]);
         if (new Set(buffer).size === 14) {
             break;
@@ -23,4 +23,4 @@ aoc((infile) => {
         value,
         signal: buffer.join(''),
     };
-}); 
+});

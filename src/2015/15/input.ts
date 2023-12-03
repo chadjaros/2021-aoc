@@ -12,15 +12,17 @@ export interface Ingredient {
     calories: number;
 }
 
-export const input15 = raw.split('\n')
-    .map((line) => {
-        const splits = line.split(':').flatMap((s) => s.split(',').map((t) => t.trim())).flatMap((s) => s.split(' '));
-        return {
-            name: splits[0],
-            capacity: parseInt(splits[2]),
-            durability: parseInt(splits[4]),
-            flavor: parseInt(splits[6]),
-            texture: parseInt(splits[8]),
-            calories: parseInt(splits[10]),
-        }
-    });
+export const input15 = raw.split('\n').map((line) => {
+    const splits = line
+        .split(':')
+        .flatMap((s) => s.split(',').map((t) => t.trim()))
+        .flatMap((s) => s.split(' '));
+    return {
+        name: splits[0],
+        capacity: parseInt(splits[2]),
+        durability: parseInt(splits[4]),
+        flavor: parseInt(splits[6]),
+        texture: parseInt(splits[8]),
+        calories: parseInt(splits[10]),
+    };
+});

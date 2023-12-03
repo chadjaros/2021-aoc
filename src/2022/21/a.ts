@@ -1,23 +1,27 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-
-    const input = new Map(infile
-        //.sample()
-        .splitLines(/:? /)
-        .map((x) => {
-            const value = parseInt(x[1]);
-            const var1 = x[1];
-            const op = x[2];
-            const var2 = x[3];
-            return [x[0], {
-                isValue: !isNaN(value),
-                value,
-                var1,
-                var2,
-                op
-            }];
-        }));
+    const input = new Map(
+        infile
+            //.sample()
+            .splitLines(/:? /)
+            .map((x) => {
+                const value = parseInt(x[1]);
+                const var1 = x[1];
+                const op = x[2];
+                const var2 = x[3];
+                return [
+                    x[0],
+                    {
+                        isValue: !isNaN(value),
+                        value,
+                        var1,
+                        var2,
+                        op,
+                    },
+                ];
+            })
+    );
 
     console.log(input);
 
@@ -32,21 +36,18 @@ aoc((infile) => {
 
         if (entry.op === '+') {
             return val1 + val2;
-        }
-        else if (entry.op === '-') {
+        } else if (entry.op === '-') {
             return val1 - val2;
-        } 
-        else if (entry.op === '*') {
+        } else if (entry.op === '*') {
             return val1 * val2;
-        } 
-        else if (entry.op === '/') {
+        } else if (entry.op === '/') {
             return val1 / val2;
-        } 
+        }
 
         return NaN;
     }
 
     const value = resolve('root');
 
-    return {value};
+    return { value };
 });

@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 
 const raw = `>.>..v..v.>vvvvv..>>>.>vv>vv>.......vv.vvv..v..vv.>v...>>>>>>.v>.>..>v.>.>v..v.vv.>.>...v.v>....v..v.v>.....v....>.>..v>v>.........>.v.....
 .>>.v..>..>vv>vv..vv>....vv>.>.>.>v>>......>>v..vv>.>>>..>>.>v.v.>v>..........>>....v.v....>>>>>.vv.v.v>v.v>...>>.>vv.v..>v>.v>..v>..>>...>
@@ -139,13 +139,19 @@ v.>.v>.>>>.v...>>.....v>...>v>>v..>..v....>>v.vv..>.v...>.>.>v..v.>.>..>v>>..v.>
 v.vvvvv.v.......>..v>.v>v...v.>>>..>..>>>>..v..v..v...>....vv>v.v>......>.....>>>...v...v>vv>v>>.v.>.v...v.v>.v.>v..>..v.......vvvv.v.>v.>.`;
 
 export const input25 = {
-    data: new Map(raw.split('\n').flatMap((row, y) => row.split('').flatMap((val, x) => {
-        if (val === '.') {
-            return [];
-        }
-        return [{ point: new Point(x, y), value: val }];
-    }))
-    .map((x) => [x.point.key, x])),
+    data: new Map(
+        raw
+            .split('\n')
+            .flatMap((row, y) =>
+                row.split('').flatMap((val, x) => {
+                    if (val === '.') {
+                        return [];
+                    }
+                    return [{ point: new Point(x, y), value: val }];
+                })
+            )
+            .map((x) => [x.point.key, x])
+    ),
     width: raw.split('\n')[0].length,
     height: raw.split('\n').length,
 };

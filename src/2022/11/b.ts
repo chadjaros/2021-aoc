@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 interface Monkey {
     holding: number[];
@@ -10,7 +10,6 @@ interface Monkey {
 }
 
 aoc((infile) => {
-
     const input = infile.tokenLines;
 
     const monkeys: Monkey[] = [];
@@ -21,7 +20,7 @@ aoc((infile) => {
         }
 
         const last = monkeys.length - 1;
-        
+
         if (l[0] === 'Monkey') {
             monkeys.push({
                 holding: [],
@@ -31,37 +30,27 @@ aoc((infile) => {
                 ifFalseTarget: 0,
                 timesInspected: 0,
             });
-        } 
-        else if (l[1] === 'Starting') {
-            monkeys[last].holding = l.slice(3)
-                .map((x) => parseInt(x));
-        }
-        else if (l[1] === 'Operation:') {
-
+        } else if (l[1] === 'Starting') {
+            monkeys[last].holding = l.slice(3).map((x) => parseInt(x));
+        } else if (l[1] === 'Operation:') {
             if (l[5] === '+') {
                 if (l[6] === 'old') {
                     monkeys[last].op = (value) => value + value;
-                }
-                else {
+                } else {
                     monkeys[last].op = (value) => value + parseInt(l[6]);
                 }
-            }
-            else {
+            } else {
                 if (l[6] === 'old') {
                     monkeys[last].op = (value) => value * value;
-                }
-                else {
+                } else {
                     monkeys[last].op = (value) => value * parseInt(l[6]);
                 }
             }
-        }
-        else if (l[1] === 'Test:') {
+        } else if (l[1] === 'Test:') {
             monkeys[last].divisible = parseInt(l[4]);
-        }
-        else if (l[2] === 'true:') {
+        } else if (l[2] === 'true:') {
             monkeys[last].ifTrueTarget = parseInt(l[6]);
-        }
-        else if (l[2] === 'false:') {
+        } else if (l[2] === 'false:') {
             monkeys[last].ifFalseTarget = parseInt(l[6]);
         }
     }
@@ -71,7 +60,7 @@ aoc((infile) => {
     for (let round = 0; round < 10000; round++) {
         for (let mi = 0; mi < monkeys.length; mi++) {
             const m = monkeys[mi];
-            while(m.holding.length > 0) {
+            while (m.holding.length > 0) {
                 m.timesInspected++;
                 let value = m.holding.shift()!;
                 value = m.op(value);
@@ -81,8 +70,7 @@ aoc((infile) => {
                 if (value % m.divisible === 0) {
                     // console.log(mi, v, value, 'true', m.ifTrueTarget);
                     monkeys[m.ifTrueTarget].holding.push(value);
-                }
-                else {
+                } else {
                     // console.log(mi, v, value, 'false', m.ifFalseTarget);
                     monkeys[m.ifFalseTarget].holding.push(value);
                 }
@@ -94,6 +82,7 @@ aoc((infile) => {
 
     // console.log(monkeys);
     return {
-        value: sorted[0] * sorted[1], sorted
+        value: sorted[0] * sorted[1],
+        sorted,
     };
 });

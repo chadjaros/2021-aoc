@@ -4,13 +4,12 @@ function cost(value: number, target: number): number {
     const distance = Math.abs(target - value);
     let sum = 0;
     for (let i = 1; i <= distance; i++) {
-        sum+=i;
+        sum += i;
     }
     return sum;
 }
 
 function main() {
-
     let max = -1;
     let min = 2000000;
     let sum = 0;

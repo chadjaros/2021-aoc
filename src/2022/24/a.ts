@@ -1,53 +1,51 @@
-import { aoc } from '../../utils/aoc';
-import { aStar } from '../../utils/find-path';
-import { Edge, Node, SimpleGraph } from '../../utils/graph';
-import { Grid } from '../../utils/grid';
-import { Point } from '../../utils/point-2d';
-
+import { aoc } from '../../ts-utils/aoc';
+import { aStar } from '../../ts-utils/find-path';
+import { Edge, Node, SimpleGraph } from '../../ts-utils/graph';
+import { Grid } from '../../ts-utils/grid';
+import { Point } from '../../ts-utils/point-2d';
 
 function makeNextGrid(grid: Grid<string[]>): Grid<string[]> {
-    const nextGrid = Grid.fromSize(grid.width, grid.height, () => ([] as string[]));
+    const nextGrid = Grid.fromSize(
+        grid.width,
+        grid.height,
+        () => [] as string[]
+    );
 
     grid.forEach((value, point) => {
         if (value.length === 0) {
             return;
-        }
-        else if (value[0] === '#') {
+        } else if (value[0] === '#') {
             nextGrid.setValue(point, ['#']);
-        }
-        else {
+        } else {
             value.forEach((char) => {
                 let nextPt = new Point(0, 0);
                 if (char === '<') {
                     const nextX = point.x - 1;
-                    
+
                     nextPt = new Point(
-                        nextX === 0 ? grid.width-2 : nextX,
+                        nextX === 0 ? grid.width - 2 : nextX,
                         point.y
                     );
-                }
-                else if (char === '>') {
+                } else if (char === '>') {
                     const nextX = point.x + 1;
-                    
+
                     nextPt = new Point(
-                        nextX === grid.width-1 ? 1 : nextX,
+                        nextX === grid.width - 1 ? 1 : nextX,
                         point.y
                     );
-                }
-                else if (char === 'v') {
+                } else if (char === 'v') {
                     const nextY = point.y + 1;
-                    
+
                     nextPt = new Point(
                         point.x,
-                        nextY === grid.height-1 ? 1 : nextY,
+                        nextY === grid.height - 1 ? 1 : nextY
                     );
-                }
-                else if (char === '^') {
+                } else if (char === '^') {
                     const nextY = point.y - 1;
-                    
+
                     nextPt = new Point(
                         point.x,
-                        nextY === 0 ? grid.height-2 : nextY,
+                        nextY === 0 ? grid.height - 2 : nextY
                     );
                 }
 
@@ -55,12 +53,11 @@ function makeNextGrid(grid: Grid<string[]>): Grid<string[]> {
             });
         }
     });
-        
+
     return nextGrid;
 }
 
 class State implements Node {
-
     static grids = new Map<number, Grid<string[]>>();
 
     constructor(
@@ -68,17 +65,14 @@ class State implements Node {
         public point: Point,
         public grid: Grid<string[]>,
         public time: number
-    ) {}
-    
-    get id(): string { return `t${this.time}-`+this.point.key;}
-    
+    ) { }
+
+    get id(): string {
+        return `t${this.time}-` + this.point.key;
+    }
+
     clone(): State {
-        return new State(
-            this.graph,
-            this.point,
-            this.grid,
-            this.time
-        );
+        return new State(this.graph, this.point, this.grid, this.time);
     }
 
     get edges(): Edge[] {
@@ -91,8 +85,7 @@ class State implements Node {
 
         return [this.point, ...nextGrid.adjacentTo(this.point, false)]
             .filter((p) => nextGrid.getValue(p).length === 0)
-            .map(p => {
-
+            .map((p) => {
                 const nextState = this.clone();
                 nextState.point = p;
                 nextState.grid = nextGrid;
@@ -102,43 +95,40 @@ class State implements Node {
 
                 return {
                     nodeId: nextState.id,
-                    weight: 1
+                    weight: 1,
                 };
             });
     }
-
 }
 
 aoc((infile) => {
-
     const input = infile
         // .sample()
-        .grid(
-            '', 
-            x => x === '.' ? [] : [x] );
+        .grid('', (x) => (x === '.' ? [] : [x]));
 
-    const start = input.scanIncXFrom(new Point(0, 0), value => value.length === 0)!;
-    const end = input.scanIncXFrom(new Point(0, input.height-1), value => value.length === 0)!;
+    const start = input.scanIncXFrom(
+        new Point(0, 0),
+        (value) => value.length === 0
+    )!;
+    const end = input.scanIncXFrom(
+        new Point(0, input.height - 1),
+        (value) => value.length === 0
+    )!;
 
     console.log(start, end);
-    
+
     // input.print((v) => v.length === 0 ? ' ' : v.length === 1 ? v[0] : ''+v.length);
 
     const graph = new SimpleGraph<State>();
-    const initialState = new State(
-        graph,
-        start,
-        input,
-        1
-    );
+    const initialState = new State(graph, start, input, 1);
     graph.setNode(initialState);
 
     const result = aStar(
-        initialState, 
-        (s) => s.point.key === end.key, 
+        initialState,
+        (s) => s.point.key === end.key,
         (s) => s.point.manhattanDistance(end),
         graph
     );
 
-    return {value: result?.cost ?? -1};
+    return { value: result?.cost ?? -1 };
 });

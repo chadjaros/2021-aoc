@@ -251,10 +251,10 @@ add y 15
 mul y x
 add z y`;
 
-export type ALUInstruction = [string, string, string|number|undefined];
+export type ALUInstruction = [string, string, string | number | undefined];
 
 export const input24 = raw.split('\n').map<ALUInstruction>((x) => {
     const splits = x.split(' ');
     const three = parseInt(splits[2]);
     return [splits[0], splits[1], isNaN(three) ? splits[2] : three];
-})
+});

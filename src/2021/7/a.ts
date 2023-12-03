@@ -5,7 +5,6 @@ function cost(value: number, target: number) {
 }
 
 function main() {
-
     let max = -1;
     let min = 2000000;
     let sum = 0;

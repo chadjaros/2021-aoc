@@ -17,15 +17,23 @@ input12.forEach((x) => {
 
 const paths: string[][] = [];
 
-function getPaths(start: string, end: string, current: string[], visited: Set<string>, canVisitTwice: string, visitCount: number): void {
-
+function getPaths(
+    start: string,
+    end: string,
+    current: string[],
+    visited: Set<string>,
+    canVisitTwice: string,
+    visitCount: number
+): void {
     // console.log('getpaths', start, current, 'visitTwice', canVisitTwice);
 
     if (start === end) {
         paths.push([...current, start]);
         return;
-    }
-    else if ((start === canVisitTwice && visitCount > 1) || visited.has(start)) {
+    } else if (
+        (start === canVisitTwice && visitCount > 1) ||
+        visited.has(start)
+    ) {
         return;
     }
 
@@ -44,7 +52,9 @@ function getPaths(start: string, end: string, current: string[], visited: Set<st
     }
 }
 
-const smallKeys = [...nodes.keys()].filter((k) => !isBig(k) && k !== 'start' && k !== 'end');
+const smallKeys = [...nodes.keys()].filter(
+    (k) => !isBig(k) && k !== 'start' && k !== 'end'
+);
 
 for (const k of smallKeys) {
     getPaths('start', 'end', [], new Set(), k, 0);

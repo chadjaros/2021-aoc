@@ -1,9 +1,14 @@
-import { Series } from '../../utils/series';
+import { Series } from '../../ts-utils/series';
 import { Ingredient, input15 } from './input';
 
 const input = input15;
 
-function calc(ingredients: Ingredient[], available: number, used: number[], all: Ingredient[]): number {
+function calc(
+    ingredients: Ingredient[],
+    available: number,
+    used: number[],
+    all: Ingredient[]
+): number {
     if (ingredients.length === 0) {
         const sums = {
             flavor: 0,
@@ -25,16 +30,26 @@ function calc(ingredients: Ingredient[], available: number, used: number[], all:
             return 0;
         }
 
-        if (sums.flavor < 0 || sums.texture < 0 || sums.capacity < 0 || sums.durability < 0) {
+        if (
+            sums.flavor < 0 ||
+            sums.texture < 0 ||
+            sums.capacity < 0 ||
+            sums.durability < 0
+        ) {
             return 0;
         }
 
         return sums.flavor * sums.texture * sums.capacity * sums.durability;
     }
 
-    return Math.max(...[...Series.range(available, 0)]
-        .map((toUse) => {
-            return calc(ingredients.slice(1, ingredients.length), available - toUse, [...used, toUse], all);
+    return Math.max(
+        ...[...Series.range(available, 0)].map((toUse) => {
+            return calc(
+                ingredients.slice(1, ingredients.length),
+                available - toUse,
+                [...used, toUse],
+                all
+            );
         })
     );
 }

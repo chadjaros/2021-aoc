@@ -1,22 +1,22 @@
 {
-  "compilerOptions": {
-    "lib": ["es2021"],
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es6",
-    "sourceMap": true,
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "outDir": "build",
-    "noEmit": false,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-  }
+    "compilerOptions": {
+        "lib": ["es2021"],
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "es6",
+        "sourceMap": true,
+        "baseUrl": "./",
+        "incremental": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "outDir": "build",
+        "noEmit": false,
+        "moduleResolution": "node",
+        "esModuleInterop": true
+    }
 }

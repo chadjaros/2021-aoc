@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
     let value = -1;

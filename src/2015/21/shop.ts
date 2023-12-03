@@ -3,7 +3,7 @@ export interface Item {
     cost: number;
     damage: number;
     defense: number;
-} 
+}
 
 export const weapons: Item[] = [
     { name: 'Dagger', cost: 8, damage: 4, defense: 0 },
@@ -29,4 +29,3 @@ export const rings: Item[] = [
     { name: 'Defense +2', cost: 40, damage: 0, defense: 2 },
     { name: 'Defense +3', cost: 80, damage: 0, defense: 3 },
 ];
-

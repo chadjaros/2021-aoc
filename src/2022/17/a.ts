@@ -1,5 +1,5 @@
-import { aoc } from '../../utils/aoc';
-import { Point } from '../../utils/point-2d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point } from '../../ts-utils/point-2d';
 
 class Shape {
     public root: Point;
@@ -10,13 +10,16 @@ class Shape {
     }
 
     movePoints(n: number): Point[] {
-        return this.relativePoints.map((p) => this.root.plus(new Point(n, 0).plus(p)));
+        return this.relativePoints.map((p) =>
+            this.root.plus(new Point(n, 0).plus(p))
+        );
     }
 
     get downPoints(): Point[] {
-        return this.relativePoints.map((p) => this.root.plus(new Point(0, -1).plus(p)));
+        return this.relativePoints.map((p) =>
+            this.root.plus(new Point(0, -1).plus(p))
+        );
     }
-
 }
 
 aoc((infile) => {
@@ -36,7 +39,7 @@ aoc((infile) => {
     function createShape(): Shape {
         const result = new Shape();
         result.root = new Point(2, 0);
-        switch(shapeIdx) {
+        switch (shapeIdx) {
             case 0:
                 result.relativePoints = [
                     new Point(0, 0),
@@ -80,7 +83,7 @@ aoc((infile) => {
                 ];
                 break;
         }
-        
+
         shapeIdx++;
         if (shapeIdx === 5) {
             shapeIdx = 0;
@@ -94,17 +97,18 @@ aoc((infile) => {
     const rocks = new Map<string, Point>();
 
     function allValid(points: Point[]) {
-        return points.every((p) => p.x > 0 && p.x < 8 && p.y > 0 && !rocks.has(p.key));
+        return points.every(
+            (p) => p.x > 0 && p.x < 8 && p.y > 0 && !rocks.has(p.key)
+        );
     }
 
-    
     while (shapeNum < 2022) {
         const shape = createShape();
         shape.root = new Point(3, floor + 4);
 
         let canDown = true;
 
-        while(canDown) {
+        while (canDown) {
             const move = getMove();
 
             if (allValid(shape.movePoints(move))) {
@@ -113,8 +117,7 @@ aoc((infile) => {
 
             if (allValid(shape.downPoints)) {
                 shape.root = new Point(shape.root.x, shape.root.y - 1);
-            }
-            else {
+            } else {
                 const newRocks = shape.points;
                 newRocks.forEach((p) => {
                     rocks.set(p.key, p);
@@ -129,5 +132,5 @@ aoc((infile) => {
         shapeNum++;
     }
 
-    return {value: floor};
+    return { value: floor };
 });

@@ -1,5 +1,5 @@
 import { input10, input10mini, lookup10 } from './input';
-import { Stack } from '../../utils/stack';
+import { Stack } from '../../ts-utils/stack';
 
 function main() {
     let sum = 0;
@@ -14,13 +14,18 @@ function main() {
 
             if (l === chunk.start) {
                 stack.push(chunk.start);
-            }
-            else if (l === chunk.end && l === lookup10.get(stack.end)?.end) {
+            } else if (l === chunk.end && l === lookup10.get(stack.end)?.end) {
                 stack.pop();
-            }
-            else if (l === chunk.end) {
+            } else if (l === chunk.end) {
                 // corrupt
-                console.log('corrupt', l, 'expected', lookup10.get(stack.end)?.end, 'position', position);
+                console.log(
+                    'corrupt',
+                    l,
+                    'expected',
+                    lookup10.get(stack.end)?.end,
+                    'position',
+                    position
+                );
                 stack.pop();
                 sum += chunk.value;
             }
@@ -30,7 +35,6 @@ function main() {
     }
 
     console.log(sum);
-
 }
 
 main();

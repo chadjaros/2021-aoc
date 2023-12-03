@@ -1,8 +1,7 @@
-import { aoc } from '../../utils/aoc';
-import { Point3 } from '../../utils/point-3d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point3 } from '../../ts-utils/point-3d';
 
 aoc((infile) => {
-
     const input = infile
         // .sample()
         .splitLinesAndMap(',', (x) => parseInt(x))
@@ -36,8 +35,6 @@ aoc((infile) => {
     const contained = new Set<string>();
     const outside = new Set<string>();
     function isOutside(p: Point3): boolean {
-        
-        
         if (rockBits.has(p.key)) {
             return false;
         }
@@ -54,20 +51,32 @@ aoc((infile) => {
             frontierSet.delete(point.key);
 
             visited.add(point.key);
-            
-            if (outside.has(point.key) ) {
+
+            if (outside.has(point.key)) {
                 visited.forEach((x) => outside.add(x));
                 return true;
             }
 
-            if (point.x > max.x || point.y > max.y || point.z > max.z
-                || point.y < min.x || point.y < min.y || point.z < min.z) {
-    
+            if (
+                point.x > max.x ||
+                point.y > max.y ||
+                point.z > max.z ||
+                point.y < min.x ||
+                point.y < min.y ||
+                point.z < min.z
+            ) {
                 visited.forEach((x) => outside.add(x));
                 return true;
             }
 
-            const adjacents = point.adjacents(false).filter((x) => !visited.has(x.key) && !rockBits.has(x.key) && !frontierSet.has(x.key));
+            const adjacents = point
+                .adjacents(false)
+                .filter(
+                    (x) =>
+                        !visited.has(x.key) &&
+                        !rockBits.has(x.key) &&
+                        !frontierSet.has(x.key)
+                );
 
             adjacents.forEach((x) => frontierSet.add(x.key));
             frontier.unshift(...adjacents);
@@ -83,6 +92,6 @@ aoc((infile) => {
     }, 0);
 
     return {
-        value
+        value,
     };
 });

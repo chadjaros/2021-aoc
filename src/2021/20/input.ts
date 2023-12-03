@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 
 export const input20enhance = `##.##.#.####.#.###.#...##.#..####.##.##..###.####.###.#...###..##.####.##.#..#........####..###....#.#..###.##.######..#####.#.##...#.#.#.####.#.##.#.#.#.#.#....#.###.##...##.####.#.#...#..#.##...##.##....##...##...######.####.#.....####..#.#..#..###..####..###...#.##..#.....###..#.##..#....#.#.#..#.####..#..##...#.##.#......#.###..##...#...##.##...#.##...##.....####.#...........#.#.#..####...###...#.....#.#.#.....###.....###.#.#..##..#.##...####.##..#..#...#.##..#######.#.###..#..##...#.###.#.###.##.##.#..`;
 
@@ -103,25 +103,27 @@ const map = `..#..##..#..#.####..##..#..######.####......#...#..#.##..#..###...#
 ..#.#..#.##.#.##.####.#.##.#..##.##.#...#.....##.#..##.#..##..#####.#......#.##....#...##..####.###.
 #...###..#####...#...##.##......#.#......#..#.###...#....####.##.####......##..#..###...##.######.##`;
 
-export const input20map = new Map<string,{p: Point, lit: boolean}>(
-    map.split('\n').flatMap<[string, {p: Point, lit: boolean}]>((line, y) => {
-        return line.split('').map<[string, {p: Point, lit: boolean}]>((char, x) => {
-            const p = new Point(x, y);
-            return [p.key, {p, lit: char === '#'}];
-        })
+export const input20map = new Map<string, { p: Point; lit: boolean }>(
+    map.split('\n').flatMap<[string, { p: Point; lit: boolean }]>((line, y) => {
+        return line
+            .split('')
+            .map<[string, { p: Point; lit: boolean }]>((char, x) => {
+                const p = new Point(x, y);
+                return [p.key, { p, lit: char === '#' }];
+            });
     })
 );
 
 export function orderedAdjacents(p: Point): Point[] {
     return [
-        new Point(p.x-1, p.y-1),
-        new Point(p.x, p.y-1),
-        new Point(p.x+1, p.y-1),
-        new Point(p.x-1, p.y),
+        new Point(p.x - 1, p.y - 1),
+        new Point(p.x, p.y - 1),
+        new Point(p.x + 1, p.y - 1),
+        new Point(p.x - 1, p.y),
         new Point(p.x, p.y),
-        new Point(p.x+1, p.y),
-        new Point(p.x-1, p.y+1),
-        new Point(p.x, p.y+1),
-        new Point(p.x+1, p.y+1),
-    ]
+        new Point(p.x + 1, p.y),
+        new Point(p.x - 1, p.y + 1),
+        new Point(p.x, p.y + 1),
+        new Point(p.x + 1, p.y + 1),
+    ];
 }

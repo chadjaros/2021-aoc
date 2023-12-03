@@ -1,11 +1,11 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-
     const raw = infile.lines;
 
     let maxSrcLength = 0;
-    const replacements = raw.slice(0, -2)
+    const replacements = raw
+        .slice(0, -2)
         .map((line) => line.split(' => '))
         .reduce((accum, value) => {
             if (!accum.has(value[0])) {
@@ -24,8 +24,12 @@ aoc((infile) => {
 
     for (let i = 0; i < value.length;) {
         let match = '';
-        for (let len = 1; match === '' && len <= maxSrcLength && i + len <= value.length; len++) {
-            const pMatch = value.slice(i, i+len).join('');
+        for (
+            let len = 1;
+            match === '' && len <= maxSrcLength && i + len <= value.length;
+            len++
+        ) {
+            const pMatch = value.slice(i, i + len).join('');
             if (replacements.has(pMatch)) {
                 match = pMatch;
             }
@@ -41,12 +45,10 @@ aoc((infile) => {
             }
 
             i += match.length;
-        }
-        else {
+        } else {
             i += 1;
         }
-        
     }
 
-    return {value: resultSet.size};
+    return { value: resultSet.size };
 });

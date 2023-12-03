@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { aoc } from '../../utils/aoc';
-import { dijkstra } from '../../utils/find-path';
-import { Edge, Node, SimpleGraph } from '../../utils/graph';
+import { aoc } from '../../ts-utils/aoc';
+import { dijkstra } from '../../ts-utils/find-path';
+import { Edge, Node, SimpleGraph } from '../../ts-utils/graph';
 
 interface Location {
     id: string;
@@ -22,8 +22,8 @@ class State implements Node {
         public flow: number,
         public total: number,
         public op: string,
-        public visited: Set<string>,
-    ) {}
+        public visited: Set<string>
+    ) { }
 
     clone(): State {
         return new State(
@@ -34,7 +34,7 @@ class State implements Node {
             this.flow,
             this.total,
             this.op,
-            new Set(this.visited),
+            new Set(this.visited)
         );
     }
 
@@ -45,7 +45,14 @@ class State implements Node {
         if (!this.visited.has(this.location.id) && this.location.flow > 0) {
             const clone = this.clone();
             clone.visited.add(clone.location.id);
-            clone.op = 'm' + this.time + ' open ' + clone.location.id + ' +' + clone.location.flow + ' flow; cost 1';
+            clone.op =
+                'm' +
+                this.time +
+                ' open ' +
+                clone.location.id +
+                ' +' +
+                clone.location.flow +
+                ' flow; cost 1';
             clone.time++;
             clone.total += clone.flow;
             clone.flow += clone.location.flow;
@@ -53,32 +60,39 @@ class State implements Node {
             return [
                 {
                     nodeId: clone.id,
-                    weight: this.flow
-                }
+                    weight: this.flow,
+                },
             ];
-        }
-        else {
+        } else {
             const nexts = dijkstra(this.location, this.locations);
             if (!nexts) {
                 throw new Error('fail');
             }
-            
+
             const moves = Array.from(nexts.distances.entries())
-                .filter(([id, distance]) => 
-                    !this.visited.has(id) 
-                    && this.locations.getNode(id).flow !== 0
-                    && (30 - this.time) > distance + 1)
+                .filter(
+                    ([id, distance]) =>
+                        !this.visited.has(id) &&
+                        this.locations.getNode(id).flow !== 0 &&
+                        30 - this.time > distance + 1
+                )
                 .map(([id, distance]) => {
                     const clone = this.clone();
                     clone.location = clone.locations.getNode(id);
                     clone.total += distance * clone.flow;
-                    clone.op = 'm' + this.time + ' move to ' + clone.location.id + ' cost ' + distance;
+                    clone.op =
+                        'm' +
+                        this.time +
+                        ' move to ' +
+                        clone.location.id +
+                        ' cost ' +
+                        distance;
                     clone.time += distance;
                     this.graph.setNode(clone);
 
                     return {
                         nodeId: clone.id,
-                        weight: distance * this.flow
+                        weight: distance * this.flow,
                     };
                 });
 
@@ -93,21 +107,26 @@ class State implements Node {
             clone.time += remaining;
             this.graph.setNode(clone);
 
-            return [{
-                nodeId: clone.id,
-                weight: remaining * this.flow
-            }];
+            return [
+                {
+                    nodeId: clone.id,
+                    weight: remaining * this.flow,
+                },
+            ];
         }
     }
 }
 
 aoc((infile) => {
-
     const input = infile.tokenLines.map((x) => {
         return {
             id: x[1],
             flow: parseInt(x[4].slice(0, -1).split('=')[1]),
-            edges: x.slice(9).join('').split(',').map((nodeId) => ({nodeId, weight: 1}))
+            edges: x
+                .slice(9)
+                .join('')
+                .split(',')
+                .map((nodeId) => ({ nodeId, weight: 1 })),
         };
     });
 
@@ -128,18 +147,20 @@ aoc((infile) => {
 
     graph.setNode(startState);
     const result = dijkstra(startState, graph);
-    
-    const distances = Array.from(result?.distances.entries() || []).sort((a, b) => b[1] - a[1]);
+
+    const distances = Array.from(result?.distances.entries() || []).sort(
+        (a, b) => b[1] - a[1]
+    );
     console.log(distances.slice(0, 10));
 
     const recalc = [graph.getNode(distances[0][0])];
 
-    while(result?.previous.has(recalc[0].id)) {
+    while (result?.previous.has(recalc[0].id)) {
         recalc.unshift(result!.previous.get(recalc[0].id)!);
     }
 
     for (const r of recalc) {
         console.log(r.op, 'total', r.total, 'flow', r.flow);
     }
-    return {value: distances[0][1]};
+    return { value: distances[0][1] };
 });

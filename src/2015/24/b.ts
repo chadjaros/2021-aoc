@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
     const input = infile.lines.map((x) => parseInt(x));
@@ -6,7 +6,12 @@ aoc((infile) => {
     const size = input.reduce((acc, v) => acc + v, 0) / 4;
     let ct = input.length / 4;
 
-    const combinations = (a: number[], set: Set<number>, total: number, target: number): Set<number>[] => {
+    const combinations = (
+        a: number[],
+        set: Set<number>,
+        total: number,
+        target: number
+    ): Set<number>[] => {
         if (set.size > ct) {
             return [];
         }
@@ -29,18 +34,25 @@ aoc((infile) => {
             if (v) {
                 const clone = new Set(set).add(head);
                 acc.push(...combinations(tail, clone, total + head, target));
-            }
-            else {
+            } else {
                 acc.push(...combinations(tail, set, total, target));
             }
             return acc;
         }, []);
     };
 
-    const result = combinations(input.slice().sort((a, b) => b - a), new Set(), 0, size);
+    const result = combinations(
+        input.slice().sort((a, b) => b - a),
+        new Set(),
+        0,
+        size
+    );
 
     const withQe = result
-        .map((set) => ({set, qe: Array.from(set).reduce((acc, v) => acc * v, 1)}))
+        .map((set) => ({
+            set,
+            qe: Array.from(set).reduce((acc, v) => acc * v, 1),
+        }))
         .sort((a, b) => {
             if (a.set.size !== b.set.size) {
                 return a.set.size - b.set.size;
@@ -49,6 +61,6 @@ aoc((infile) => {
         });
 
     return {
-        value: withQe[0].qe
+        value: withQe[0].qe,
     };
 });

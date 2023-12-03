@@ -1,1 +1,1 @@
-export const input21 = [5,9];
+export const input21 = [5, 9];

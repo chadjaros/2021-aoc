@@ -1,5 +1,5 @@
-import { Series } from '../../utils/series';
-import { Timer } from '../../utils/timer';
+import { Series } from '../../ts-utils/series';
+import { Timer } from '../../ts-utils/timer';
 import { input6 } from './input';
 
 const t = new Timer().start();
@@ -13,14 +13,18 @@ const off = (s: string) => ons.set(s, Math.max(0, (ons.get(s) ?? 0) - 1));
 const toggle = (s: string) => ons.set(s, (ons.get(s) ?? 0) + 2);
 
 input.forEach((box) => {
-
-    const f = box.action === 'on' ? on : (box.action === 'off' ? off : toggle);
+    const f = box.action === 'on' ? on : box.action === 'off' ? off : toggle;
 
     for (const x of Series.range(box.start.x, box.end.x)) {
         for (const y of Series.range(box.start.y, box.end.y)) {
-            f(''+x+'-'+y);
+            f('' + x + '-' + y);
         }
     }
 });
 
-console.log('brute', [...ons.values()].reduce((a, v) => a + v, 0), 't', t.stop().time);
+console.log(
+    'brute',
+    [...ons.values()].reduce((a, v) => a + v, 0),
+    't',
+    t.stop().time
+);

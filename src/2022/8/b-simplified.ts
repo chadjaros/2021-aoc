@@ -1,13 +1,12 @@
-import { aoc } from '../../utils/aoc';
-import { Point } from '../../utils/point-2d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point } from '../../ts-utils/point-2d';
 
 aoc((infile) => {
     let value = 0;
 
     const input = infile.grid('', (x) => parseInt(x));
-   
-    input.forEach((tree: number, point: Point) => {
 
+    input.forEach((tree: number, point: Point) => {
         if (input.isEdge(point)) {
             return;
         }
@@ -47,5 +46,5 @@ aoc((infile) => {
         }
     });
 
-    return {value};
+    return { value };
 });

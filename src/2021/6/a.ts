@@ -10,8 +10,7 @@ function main() {
             if (nextval === -1) {
                 next.push(6);
                 next.push(8);
-            }
-            else {
+            } else {
                 next.push(nextval);
             }
         }

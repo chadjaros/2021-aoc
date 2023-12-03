@@ -15,13 +15,12 @@ export interface Deer {
     restDuration: number;
 }
 
-export const input14 = raw.split('\n')
-    .map((line) => {
-        const splits = line.split(' ');
-        return {
-            name: splits[0],
-            speed: parseInt(splits[3]),
-            speedDuration: parseInt(splits[6]),
-            restDuration: parseInt(splits[13]),
-        }
-    });
+export const input14 = raw.split('\n').map((line) => {
+    const splits = line.split(' ');
+    return {
+        name: splits[0],
+        speed: parseInt(splits[3]),
+        speedDuration: parseInt(splits[6]),
+        restDuration: parseInt(splits[13]),
+    };
+});

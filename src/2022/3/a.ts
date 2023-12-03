@@ -1,9 +1,7 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-
-    const input = infile.lines
-        .map((x) => x.split(''));
+    const input = infile.lines.map((x) => x.split(''));
 
     const scrubLine = (line: string[]): string => {
         const firstHalf = new Set<string>(line.slice(0, line.length / 2));
@@ -20,7 +18,7 @@ aoc((infile) => {
 
     const commons: string[] = [];
 
-    for(const line of input) {    
+    for (const line of input) {
         commons.push(scrubLine(line));
     }
 
@@ -28,8 +26,7 @@ aoc((infile) => {
     for (const c of commons) {
         if (c.charCodeAt(0) >= 97) {
             value += c.charCodeAt(0) - 96;
-        }
-        else {
+        } else {
             value += c.charCodeAt(0) - 38;
         }
     }

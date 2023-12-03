@@ -1,4 +1,4 @@
-import { Edge } from '../../utils/graph';
+import { Edge } from '../../ts-utils/graph';
 
 const raw = `Alice would lose 2 happiness units by sitting next to Bob.
 Alice would lose 62 happiness units by sitting next to Carol.
@@ -57,13 +57,12 @@ Mallory would lose 66 happiness units by sitting next to Eric.
 Mallory would lose 75 happiness units by sitting next to Frank.
 Mallory would lose 99 happiness units by sitting next to George.`;
 
-export const input13 = raw.split('\n')
-    .map((line) => {
-        const splits = line.slice(0, line.length-1).split(' ');
-        const mult = splits[2] === 'gain' ? 1 : -1;
-        return {
-            nodeId: splits[10],
-            weight: mult * parseInt(splits[3]),
-            root: splits[0]
-        };
-    });
+export const input13 = raw.split('\n').map((line) => {
+    const splits = line.slice(0, line.length - 1).split(' ');
+    const mult = splits[2] === 'gain' ? 1 : -1;
+    return {
+        nodeId: splits[10],
+        weight: mult * parseInt(splits[3]),
+        root: splits[0],
+    };
+});

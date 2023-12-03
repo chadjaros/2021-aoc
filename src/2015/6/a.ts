@@ -1,6 +1,6 @@
-import { BoundingBox3 } from '../../utils/point-3d';
-import { Series } from '../../utils/series';
-import { Timer } from '../../utils/timer';
+import { BoundingBox3 } from '../../ts-utils/point-3d';
+import { Series } from '../../ts-utils/series';
+import { Timer } from '../../ts-utils/timer';
 import { input6 } from './input';
 
 const t = new Timer().start();
@@ -11,15 +11,14 @@ const ons = new Set<string>();
 
 const on = (s: string) => ons.add(s);
 const off = (s: string) => ons.delete(s);
-const toggle = (s: string) => ons.has(s) ? off(s) : on(s);
+const toggle = (s: string) => (ons.has(s) ? off(s) : on(s));
 
 input.forEach((box) => {
-
-    const f = box.action === 'on' ? on : (box.action === 'off' ? off : toggle);
+    const f = box.action === 'on' ? on : box.action === 'off' ? off : toggle;
 
     for (const x of Series.range(box.start.x, box.end.x)) {
         for (const y of Series.range(box.start.y, box.end.y)) {
-            f(''+x+'-'+y);
+            f('' + x + '-' + y);
         }
     }
 });
@@ -31,7 +30,14 @@ t.reset().start();
 const areas = new Map<string, BoundingBox3>();
 
 input.forEach((b) => {
-    const box = BoundingBox3.fromCoordinates(b.start.x - .5, b.start.y - .5, -.5, b.end.x + .5, b.end.y + .5, .5);
+    const box = BoundingBox3.fromCoordinates(
+        b.start.x - 0.5,
+        b.start.y - 0.5,
+        -0.5,
+        b.end.x + 0.5,
+        b.end.y + 0.5,
+        0.5
+    );
 
     const on = new Map<string, BoundingBox3>([[box.descriptionString(), box]]);
 
@@ -44,9 +50,12 @@ input.forEach((b) => {
             if (b.action === 'toggle') {
                 [...on.values()].forEach((o) => {
                     if (isect?.intersection.intersects(o)) {
-                        const sub = isect.intersection.intersectionAndRemainder(o);
+                        const sub =
+                            isect.intersection.intersectionAndRemainder(o);
                         on.delete(o.descriptionString());
-                        sub?.segments.forEach((ss) => on.set(ss.descriptionString(), ss));
+                        sub?.segments.forEach((ss) =>
+                            on.set(ss.descriptionString(), ss)
+                        );
                     }
                 });
             }
@@ -58,4 +67,9 @@ input.forEach((b) => {
     }
 });
 
-console.log('bbox', [...areas.values()].reduce((a, x) => a + x.volume, 0), 't', t.stop().time);
+console.log(
+    'bbox',
+    [...areas.values()].reduce((a, x) => a + x.volume, 0),
+    't',
+    t.stop().time
+);

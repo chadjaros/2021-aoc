@@ -8,17 +8,15 @@ function main() {
     for (const v of input2) {
         if (v.dir === Direction.Down) {
             aim += v.distance;
-        }
-        else if (v.dir === Direction.Up) {
+        } else if (v.dir === Direction.Up) {
             aim -= v.distance;
-        }
-        else if (v.dir === Direction.Forward) {
+        } else if (v.dir === Direction.Forward) {
             x += v.distance;
             depth += aim * v.distance;
         }
     }
 
-    console.log(x, depth, x*depth);
+    console.log(x, depth, x * depth);
 }
 
 main();

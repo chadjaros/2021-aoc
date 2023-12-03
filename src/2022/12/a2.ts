@@ -1,10 +1,9 @@
-import { aoc } from '../../utils/aoc';
-import { aStar } from '../../utils/find-path';
-import { Grid } from '../../utils/grid';
-import { Point } from '../../utils/point-2d';
+import { aoc } from '../../ts-utils/aoc';
+import { aStar } from '../../ts-utils/find-path';
+import { Grid } from '../../ts-utils/grid';
+import { Point } from '../../ts-utils/point-2d';
 
 aoc((infile) => {
-
     const input = infile.splitLines('');
 
     let start: Point = new Point(0, 0);
@@ -15,8 +14,7 @@ aoc((infile) => {
             if (v === 'S') {
                 start = new Point(x, y);
                 return 'a'.charCodeAt(0);
-            }
-            else if (v === 'E') {
+            } else if (v === 'E') {
                 dest = new Point(x, y);
                 return 'z'.charCodeAt(0);
             }
@@ -26,7 +24,8 @@ aoc((infile) => {
 
     const grid = new Grid(g, (p, grid) => {
         const v = grid.getValue(p);
-        return grid.adjacentTo(p, false)
+        return grid
+            .adjacentTo(p, false)
             .filter((a) => grid.getValue(a) <= v + 1)
             .map((a) => {
                 return {
@@ -36,9 +35,14 @@ aoc((infile) => {
             });
     });
     const startNode = grid.nodeAt(start);
-    const endNode = grid.nodeAt(dest); 
+    const endNode = grid.nodeAt(dest);
 
-    const result = aStar(startNode, endNode, (n) => endNode.point.manhattanDistance(n.point), grid);
+    const result = aStar(
+        startNode,
+        endNode,
+        (n) => endNode.point.manhattanDistance(n.point),
+        grid
+    );
 
-    return {value: result?.cost ?? -2};
+    return { value: result?.cost ?? -2 };
 });

@@ -15,10 +15,10 @@ const result = input.filter((x) => {
             vowelCt++;
         }
         if (i > 0) {
-            if (bads.has([splits[i-1], splits[i]].join(''))) {
+            if (bads.has([splits[i - 1], splits[i]].join(''))) {
                 return false;
             }
-            if (splits[i-1] === splits[i]) {
+            if (splits[i - 1] === splits[i]) {
                 double = true;
             }
         }

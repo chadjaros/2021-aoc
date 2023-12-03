@@ -1,9 +1,12 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 
 export const input17 = { min: new Point(128, -88), max: new Point(160, -142) };
 
-
-export function model(input: {min: Point, max: Point}, initialDX: number, initialDY: number) {
+export function model(
+    input: { min: Point; max: Point },
+    initialDX: number,
+    initialDY: number
+) {
     let pos = new Point(0, 0);
     let dX = initialDX;
     let dY = initialDY;
@@ -23,15 +26,20 @@ export function model(input: {min: Point, max: Point}, initialDX: number, initia
         dY -= 1;
         // console.log(dX, dY, pos);
 
-        if (pos.x >= input.min.x && pos.x <= input.max.x && pos.y <= input.min.y && pos.y >= input.max.y) {
+        if (
+            pos.x >= input.min.x &&
+            pos.x <= input.max.x &&
+            pos.y <= input.min.y &&
+            pos.y >= input.max.y
+        ) {
             return {
                 maxY,
-                hit: true
+                hit: true,
             };
         }
     }
 
     return {
-        hit: false
+        hit: false,
     };
 }

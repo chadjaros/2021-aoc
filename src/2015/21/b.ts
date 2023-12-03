@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 import { armor, Item, rings, weapons } from './shop';
 
 interface Player {
@@ -17,7 +17,7 @@ const calcDamage = (at: Player, def: Player): number => {
 };
 
 const sim = (p: Player, boss: Player): boolean => {
-    const ps = [{...p}, {...boss}];
+    const ps = [{ ...p }, { ...boss }];
 
     let playerTurn = false;
     while (ps.every((x) => x.hit_points > 0)) {
@@ -41,7 +41,6 @@ interface Loadout {
 }
 
 const loadouts = (): Loadout[] => {
-
     const armorOptions = [[], ...armor.map((x) => [x])];
     const ringOptions = [[], ...rings.map((x) => [x])];
 
@@ -60,7 +59,10 @@ const loadouts = (): Loadout[] => {
                     weapon: w,
                     armor: a,
                     rings: r,
-                    cost: w.cost + a.reduce((acc, v) => acc + v.cost, 0) + r.reduce((acc, v) => acc + v.cost, 0)
+                    cost:
+                        w.cost +
+                        a.reduce((acc, v) => acc + v.cost, 0) +
+                        r.reduce((acc, v) => acc + v.cost, 0),
                 });
             }
         }
@@ -71,12 +73,19 @@ const loadouts = (): Loadout[] => {
 };
 
 const findWinner = (base: Player, boss: Player): [Player, Loadout] => {
-    
     for (const l of loadouts()) {
         const player: Player = {
             hit_points: base.hit_points,
-            damage: base.armor + l.weapon.damage + l.armor.reduce((a, v) => a + v.damage, 0) + l.rings.reduce((a, v) => a + v.damage, 0), 
-            armor: base.armor + l.weapon.defense + l.armor.reduce((a, v) => a + v.defense, 0) + l.rings.reduce((a, v) => a + v.defense, 0),
+            damage:
+                base.armor +
+                l.weapon.damage +
+                l.armor.reduce((a, v) => a + v.damage, 0) +
+                l.rings.reduce((a, v) => a + v.damage, 0),
+            armor:
+                base.armor +
+                l.weapon.defense +
+                l.armor.reduce((a, v) => a + v.defense, 0) +
+                l.rings.reduce((a, v) => a + v.defense, 0),
         };
 
         if (!sim(player, boss)) {
@@ -88,8 +97,7 @@ const findWinner = (base: Player, boss: Player): [Player, Loadout] => {
 };
 
 aoc((infile) => {
-    const boss = infile.lines
-        .reduce<Record<string, number>>((acc, x) => {
+    const boss = infile.lines.reduce<Record<string, number>>((acc, x) => {
         const s = x.split(': ');
 
         acc[s[0].replace(' ', '_').toLowerCase()] = parseInt(s[1]);
@@ -104,6 +112,5 @@ aoc((infile) => {
 
     const [player, loadout] = findWinner(basePlayer, boss);
 
-    return {value: loadout.cost, boss, player, loadout};
+    return { value: loadout.cost, boss, player, loadout };
 });
-

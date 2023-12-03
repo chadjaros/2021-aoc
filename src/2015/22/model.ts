@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import { v4 } from 'uuid';
-import { Edge, Node, SimpleGraph } from '../../utils/graph';
+import { Edge, Node, SimpleGraph } from '../../ts-utils/graph';
 
 export interface Player {
     hit_points: number;
@@ -52,7 +52,6 @@ export const SpellList = [
 ];
 
 export class State implements Node {
-
     readonly id = v4();
 
     constructor(
@@ -63,9 +62,8 @@ export class State implements Node {
         public manaSpent: number,
         public lastCast: Spell | undefined,
         public turn: number,
-        public winner: boolean,
-    ){
-    }
+        public winner: boolean
+    ) { }
 
     cast(spell: Spell): void {
         this.p.mana -= spell.cost;
@@ -74,15 +72,13 @@ export class State implements Node {
 
         if (spell.name === SpellNames.MagicMissile) {
             this.boss.hit_points -= 4;
-        }
-        else if (spell.name === SpellNames.Drain) {
+        } else if (spell.name === SpellNames.Drain) {
             this.boss.hit_points -= 2;
             this.p.hit_points += 2;
-        }
-        else if (spell.name === SpellNames.Shield) {
+        } else if (spell.name === SpellNames.Shield) {
             this.p.armor = 7;
         }
-        
+
         if (spell.duration !== 0) {
             this.activeSpells.set(spell.name, spell.duration);
         }
@@ -94,15 +90,13 @@ export class State implements Node {
         this.activeSpells.forEach((duration, name) => {
             if (name === SpellNames.Poison) {
                 this.boss.hit_points -= 3;
-            }
-            else if (name === SpellNames.Recharge) {
+            } else if (name === SpellNames.Recharge) {
                 this.p.mana += 101;
-            }
-            else if (name === SpellNames.Shield && duration === 1) {
+            } else if (name === SpellNames.Shield && duration === 1) {
                 this.p.armor = 0;
             }
             if (duration === 1) {
-                toDelete.push(name);                
+                toDelete.push(name);
             }
             this.activeSpells.set(name, duration - 1);
         });
@@ -112,28 +106,28 @@ export class State implements Node {
     clone(): State {
         return new State(
             this.g,
-            {...this.p},
-            {...this.boss},
+            { ...this.p },
+            { ...this.boss },
             new Map(this.activeSpells.entries()),
             this.manaSpent,
             this.lastCast,
             this.turn,
-            this.winner,
+            this.winner
         );
     }
 
     get edges(): Edge[] {
-
-        return SpellList
-            .filter((x) => !this.activeSpells.has(x.name) && this.p.mana >= x.cost)
+        return SpellList.filter(
+            (x) => !this.activeSpells.has(x.name) && this.p.mana >= x.cost
+        )
             .map<Edge | undefined>((spell) => {
                 const ns = this.clone();
-                
+
                 ns.g.setNode(ns);
 
                 const edge = {
                     nodeId: ns.id,
-                    weight: spell.cost
+                    weight: spell.cost,
                 };
 
                 ns.cast(spell);
@@ -151,7 +145,7 @@ export class State implements Node {
                     return edge;
                 }
 
-                ns.p.hit_points -= Math.max(1, (ns.boss.damage - ns.p.armor));
+                ns.p.hit_points -= Math.max(1, ns.boss.damage - ns.p.armor);
                 if (ns.p.hit_points <= 0) {
                     // You lose, stop following this edge
                     return undefined;
@@ -168,5 +162,4 @@ export class State implements Node {
             })
             .filter((e) => e !== undefined) as Edge[];
     }
-
 }

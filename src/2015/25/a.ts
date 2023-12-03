@@ -1,9 +1,9 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-    
-    const input = infile.regexLines(/(\d+)[^\d]+(\d+)/)
-        .map((x) => ({row: parseInt(x[0]), col: parseInt(x[1])}))[0];
+    const input = infile
+        .regexLines(/(\d+)[^\d]+(\d+)/)
+        .map((x) => ({ row: parseInt(x[0]), col: parseInt(x[1]) }))[0];
 
     console.log(input);
 
@@ -15,8 +15,8 @@ aoc((infile) => {
     let row = 1;
     let col = 1;
     let current = 20151125;
-    
-    while(!(col === input.col && row === input.row)) {
+
+    while (!(col === input.col && row === input.row)) {
         col++;
         row--;
         if (col > maxRow) {
@@ -28,6 +28,8 @@ aoc((infile) => {
     }
 
     return {
-        value: current, row, col
+        value: current,
+        row,
+        col,
     };
 });

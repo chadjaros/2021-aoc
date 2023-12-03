@@ -499,12 +499,15 @@ Sue 498: perfumes: 7, vizslas: 6, cats: 9
 Sue 499: vizslas: 8, perfumes: 1, akitas: 3
 Sue 500: perfumes: 4, cars: 9, trees: 4`;
 
-export const input16 = raw.split('\n')
-    .map((line) => {
-        const splits = line.split(', ').flatMap((s) => s.split(': '));
+export const input16 = raw.split('\n').map((line) => {
+    const splits = line.split(', ').flatMap((s) => s.split(': '));
 
-        return {
-            name: splits[0],
-            props: new Map(splits.flatMap((x, i) => i %2 === 0 ? [] : [[splits[i], parseInt(splits[i+1])]])),
-        };
-    });
+    return {
+        name: splits[0],
+        props: new Map(
+            splits.flatMap((x, i) =>
+                i % 2 === 0 ? [] : [[splits[i], parseInt(splits[i + 1])]]
+            )
+        ),
+    };
+});

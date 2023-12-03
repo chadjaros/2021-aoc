@@ -1,20 +1,20 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
+    const input = infile.splitLines(/,? /).map((l) => {
+        const p1 = parseInt(l[1]);
+        const p2 = parseInt(l[2]);
+        return {
+            ins: l[0],
+            p1: isNaN(p1) ? l[1] : p1,
+            p2: l[2] === undefined ? undefined : isNaN(p2) ? l[2] : p2,
+        };
+    });
 
-    const input = infile.splitLines(/,? /)
-        .map((l) => {
-            const p1 = parseInt(l[1]);
-            const p2 = parseInt(l[2]);
-            return {
-                ins: l[0],
-                p1: isNaN(p1) ? l[1] : p1,
-                p2: l[2] === undefined ? undefined : (isNaN(p2) ? l[2] : p2)
-            };
-        });
-
-    const registers = new Map([['a', 0], ['b', 0]]);
-
+    const registers = new Map([
+        ['a', 0],
+        ['b', 0],
+    ]);
 
     let idx = 0;
     while (idx >= 0 && idx < input.length) {
@@ -33,32 +33,30 @@ aoc((infile) => {
                 idx++;
                 break;
             }
-            case 'tpl':{
+            case 'tpl': {
                 const r = ins.p1 as string;
-                registers.set(r, registers.get(r)!  * 3);
+                registers.set(r, registers.get(r)! * 3);
                 idx++;
                 break;
             }
-            case 'jmp':{
+            case 'jmp': {
                 idx += ins.p1 as number;
                 break;
             }
-            case 'jie':{
+            case 'jie': {
                 const r = ins.p1 as string;
                 if (registers.get(r)! % 2 === 0) {
                     idx += ins.p2 as number;
-                }                
-                else {
+                } else {
                     idx++;
                 }
                 break;
             }
-            case 'jio':{
+            case 'jio': {
                 const r = ins.p1 as string;
                 if (registers.get(r)! === 1) {
                     idx += ins.p2 as number;
-                }                
-                else {
+                } else {
                     idx++;
                 }
                 break;
@@ -66,5 +64,5 @@ aoc((infile) => {
         }
     }
 
-    return {value: registers.get('b')!};
+    return { value: registers.get('b')! };
 });

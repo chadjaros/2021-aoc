@@ -1,4 +1,11 @@
-import { getDimensions, input13Folds, input13FoldsMini, input13Points, input13PointsMini, print } from './input';
+import {
+    getDimensions,
+    input13Folds,
+    input13FoldsMini,
+    input13Points,
+    input13PointsMini,
+    print,
+} from './input';
 
 const points = input13Points;
 const folds = input13Folds;
@@ -25,14 +32,13 @@ for (const f of folds) {
     let nextGrid: boolean[][] = [];
     if (f[0] === 'y') {
         const fold = f[0];
-        nextGrid = grid.slice(0, f[1]-1);
-    }
-    else {
+        nextGrid = grid.slice(0, f[1] - 1);
+    } else {
         const fold = f[1];
 
         grid.forEach((row) => {
             for (let x = 1; x <= fold; x++) {
-                if (row[x+fold]) {
+                if (row[x + fold]) {
                     row[fold - x] = true;
                 }
             }

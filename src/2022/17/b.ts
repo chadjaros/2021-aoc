@@ -1,5 +1,5 @@
-import { aoc } from '../../utils/aoc';
-import { Point } from '../../utils/point-2d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point } from '../../ts-utils/point-2d';
 
 class Shape {
     public root: Point;
@@ -10,13 +10,16 @@ class Shape {
     }
 
     movePoints(n: number): Point[] {
-        return this.relativePoints.map((p) => this.root.plus(new Point(n, 0).plus(p)));
+        return this.relativePoints.map((p) =>
+            this.root.plus(new Point(n, 0).plus(p))
+        );
     }
 
     get downPoints(): Point[] {
-        return this.relativePoints.map((p) => this.root.plus(new Point(0, -1).plus(p)));
+        return this.relativePoints.map((p) =>
+            this.root.plus(new Point(0, -1).plus(p))
+        );
     }
-
 }
 
 aoc((infile) => {
@@ -38,7 +41,7 @@ aoc((infile) => {
     function createShape(): Shape {
         const result = new Shape();
         result.root = new Point(2, 0);
-        switch(shapeIdx) {
+        switch (shapeIdx) {
             case 0:
                 result.relativePoints = [
                     new Point(0, 0),
@@ -82,7 +85,7 @@ aoc((infile) => {
                 ];
                 break;
         }
-        
+
         shapeIdx++;
         if (shapeIdx === 5) {
             shapeIdx = 0;
@@ -98,32 +101,36 @@ aoc((infile) => {
     const buffer: string[] = [];
 
     function allValid(points: Point[]) {
-        return points.every((p) => p.x > 0 && p.x < 8 && p.y > 0 && !rocks.has(p.key));
+        return points.every(
+            (p) => p.x > 0 && p.x < 8 && p.y > 0 && !rocks.has(p.key)
+        );
     }
-    
+
     const floorLog: number[][] = [];
 
     function runSimUntil(n: number) {
         while (shapeNum < n) {
-        
-            floorLog.push([shapeNum, floor, floor - (floorLog[floorLog.length - 1]?.[1] ?? 0)]);
-    
+            floorLog.push([
+                shapeNum,
+                floor,
+                floor - (floorLog[floorLog.length - 1]?.[1] ?? 0),
+            ]);
+
             const shape = createShape();
             shape.root = new Point(3, floor + 4);
-    
+
             let canDown = true;
-    
-            while(canDown) {
+
+            while (canDown) {
                 const move = getMove();
-    
+
                 if (allValid(shape.movePoints(move))) {
                     shape.root = new Point(shape.root.x + move, shape.root.y);
                 }
-    
+
                 if (allValid(shape.downPoints)) {
                     shape.root = new Point(shape.root.x, shape.root.y - 1);
-                }
-                else {
+                } else {
                     const newRocks = shape.points;
                     newRocks.forEach((p) => {
                         rocks.set(p.key, p);
@@ -139,7 +146,7 @@ aoc((infile) => {
                     canDown = false;
                 }
             }
-    
+
             shapeNum++;
         }
     }
@@ -157,12 +164,14 @@ aoc((infile) => {
         }
 
         function checkPeriod(p: number): boolean {
-            return calcTarget(windowSize) === calcTarget(windowSize, p) &&
-            calcTarget(p) === calcTarget(p, p);
+            return (
+                calcTarget(windowSize) === calcTarget(windowSize, p) &&
+                calcTarget(p) === calcTarget(p, p)
+            );
         }
 
-        for (let period = 15; period < input.length; period+=5) {
-            if ([1,2,3,4,5].every((n) => checkPeriod(period * n))) {
+        for (let period = 15; period < input.length; period += 5) {
+            if ([1, 2, 3, 4, 5].every((n) => checkPeriod(period * n))) {
                 return [period, calcTarget(period)];
             }
         }
@@ -178,12 +187,12 @@ aoc((infile) => {
     const addLoops = Math.floor((targetShapes - shapeNum) / period);
     shapeNum += addLoops * period;
     const floorAdds = addLoops * height;
-    
+
     console.log('ffwd', 'shapes', shapeNum, 'floor', floor + floorAdds);
 
     runSimUntil(targetShapes);
 
     floor += floorAdds;
 
-    return {value: floor, shapeNum};
+    return { value: floor, shapeNum };
 });

@@ -13,7 +13,6 @@ export interface Directory {
 }
 
 export function runInstructions(input: string[]): Directory {
-
     const nullDir = {} as unknown as Directory;
 
     const root: Directory = {
@@ -27,17 +26,15 @@ export function runInstructions(input: string[]): Directory {
     let cd: Directory = root;
     for (const line of input) {
         const tokens = line.split(' ');
-        
+
         if (tokens[0] === '$') {
             if (tokens[1] === 'cd') {
                 const dirname = tokens[2];
                 if (dirname === '/') {
                     cd = root;
-                }
-                else if (dirname === '..' && cd !== root) {
+                } else if (dirname === '..' && cd !== root) {
                     cd = cd.parent;
-                }
-                else {
+                } else {
                     if (!cd.directories.has(dirname)) {
                         cd.directories.set(dirname, {
                             name: dirname,
@@ -50,8 +47,7 @@ export function runInstructions(input: string[]): Directory {
                     cd = cd.directories.get(dirname)!;
                 }
             }
-        }
-        else {
+        } else {
             if (tokens[0] === 'dir') {
                 const dirname = tokens[1];
                 if (!cd.directories.has(dirname)) {
@@ -63,14 +59,13 @@ export function runInstructions(input: string[]): Directory {
                         totalSize: 0,
                     });
                 }
-            }
-            else {
+            } else {
                 const size = parseInt(tokens[0]);
                 const name = tokens[1];
                 const file = {
                     size,
                     name,
-                    parent: cd
+                    parent: cd,
                 };
                 cd.files.set(name, file);
             }
@@ -84,7 +79,10 @@ export function compileSize(dir: Directory): number {
     let size = 0;
 
     size += Array.from(dir.files.values()).reduce((acc, v) => acc + v.size, 0);
-    size += Array.from(dir.directories.values()).reduce((acc, v) => acc + compileSize(v), 0);
+    size += Array.from(dir.directories.values()).reduce(
+        (acc, v) => acc + compileSize(v),
+        0
+    );
 
     dir.totalSize = size;
     return size;

@@ -1,24 +1,20 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-    const input = infile.lines
-        .map((x) => x === '' ? undefined : parseInt(x));
+    const input = infile.lines.map((x) => (x === '' ? undefined : parseInt(x)));
 
     let highest = 0;
     let total = 0;
-    for(let i = 0; i < input.length; i++) {
-    
-
+    for (let i = 0; i < input.length; i++) {
         if (input[i] === undefined) {
             if (total > highest) {
                 highest = total;
             }
             total = 0;
-        }
-        else {
+        } else {
             total += input[i]!;
         }
     }
 
-    return {value: highest};
+    return { value: highest };
 });

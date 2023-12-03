@@ -340,33 +340,35 @@ NOT ac -> ad
 1 AND ht -> hu
 NOT hn -> ho`;
 
-export type Instruction7 = {op: string, assign: string, left: string, right: string|undefined};
+export type Instruction7 = {
+    op: string;
+    assign: string;
+    left: string;
+    right: string | undefined;
+};
 
-export const input7: Instruction7[] = raw.split('\n')
-    .map((line) => {
-        const splits = line.split(' ');
-        if (splits.length === 3) {
-            return {
-                op: 'ASSIGN',
-                assign: splits[2],
-                left: splits[0],
-                right: undefined,
-            }
-        }
-        else if (splits.length === 4) {
-            return {
-                op: splits[0],
-                assign: splits[3],
-                left: splits[1],
-                right: undefined,
-            }
-        }
-        else {
-            return {
-                op: splits[1],
-                assign: splits[4],
-                left: splits[0],
-                right: splits[2],
-            }
-        }
-    });
+export const input7: Instruction7[] = raw.split('\n').map((line) => {
+    const splits = line.split(' ');
+    if (splits.length === 3) {
+        return {
+            op: 'ASSIGN',
+            assign: splits[2],
+            left: splits[0],
+            right: undefined,
+        };
+    } else if (splits.length === 4) {
+        return {
+            op: splits[0],
+            assign: splits[3],
+            left: splits[1],
+            right: undefined,
+        };
+    } else {
+        return {
+            op: splits[1],
+            assign: splits[4],
+            left: splits[0],
+            right: splits[2],
+        };
+    }
+});

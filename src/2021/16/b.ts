@@ -6,15 +6,21 @@ const result = parsePacket(input16);
 
 function calculate(packet: Packet): number {
     const subValues = packet.subPackets?.map((x) => calculate(x)) ?? [];
-    switch(packet.type) {
+    switch (packet.type) {
         case 0:
             return subValues.reduce((sum, v) => sum + v, 0);
         case 1:
             return subValues.reduce((prod, v) => prod * v, 1);
         case 2:
-            return subValues.reduce<number>((min, v) => v < min ? v : min, Infinity);
+            return subValues.reduce<number>(
+                (min, v) => (v < min ? v : min),
+                Infinity
+            );
         case 3:
-            return subValues.reduce<number>((min, v) => v > min ? v : min, -Infinity);
+            return subValues.reduce<number>(
+                (min, v) => (v > min ? v : min),
+                -Infinity
+            );
         case 4:
             return packet?.value ?? 0;
         case 5:

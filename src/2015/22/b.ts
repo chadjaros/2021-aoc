@@ -1,37 +1,35 @@
 /* eslint-disable @typescript-eslint/indent */
-import { aoc } from '../../utils/aoc';
-import { aStar, dijkstra } from '../../utils/find-path';
-import { Edge, SimpleGraph } from '../../utils/graph';
+import { aoc } from '../../ts-utils/aoc';
+import { aStar, dijkstra } from '../../ts-utils/find-path';
+import { Edge, SimpleGraph } from '../../ts-utils/graph';
 import { Player, SpellList, State } from './model';
 
-
 export class HardState extends State {
-
     clone(): HardState {
         return new HardState(
             this.g,
-            {...this.p},
-            {...this.boss},
+            { ...this.p },
+            { ...this.boss },
             new Map(this.activeSpells.entries()),
             this.manaSpent,
             this.lastCast,
             this.turn,
-            this.winner,
+            this.winner
         );
     }
 
     get edges(): Edge[] {
-
-        return SpellList
-            .filter((x) => !this.activeSpells.has(x.name) && this.p.mana >= x.cost)
+        return SpellList.filter(
+            (x) => !this.activeSpells.has(x.name) && this.p.mana >= x.cost
+        )
             .map<Edge | undefined>((spell) => {
                 const ns = this.clone();
-                
+
                 ns.g.setNode(ns);
 
                 const edge = {
                     nodeId: ns.id,
-                    weight: spell.cost
+                    weight: spell.cost,
                 };
 
                 ns.cast(spell);
@@ -49,7 +47,7 @@ export class HardState extends State {
                     return edge;
                 }
 
-                ns.p.hit_points -= Math.max(1, (ns.boss.damage - ns.p.armor));
+                ns.p.hit_points -= Math.max(1, ns.boss.damage - ns.p.armor);
                 if (ns.p.hit_points <= 0) {
                     // You lose, stop following this edge
                     return undefined;
@@ -71,12 +69,10 @@ export class HardState extends State {
             })
             .filter((e) => e !== undefined) as Edge[];
     }
-
 }
 
 aoc((infile) => {
-    const boss = infile.lines
-        .reduce<Record<string, number>>((acc, x) => {
+    const boss = infile.lines.reduce<Record<string, number>>((acc, x) => {
         const s = x.split(': ');
 
         acc[s[0].replace(' ', '_').toLowerCase()] = parseInt(s[1]);
@@ -113,11 +109,15 @@ aoc((infile) => {
         graph
     );
 
-    for(const p of result?.path ?? []) {
-        console.log(`${p.turn} - tc:${p.manaSpent} ph:${p.p.hit_points} pm:${p.p.mana} s:${p.lastCast?.name} c:${p.lastCast?.cost} b:${p.boss.hit_points} s:${Array.from(p.activeSpells.entries()).join(';')}`);
+    for (const p of result?.path ?? []) {
+        console.log(
+            `${p.turn} - tc:${p.manaSpent} ph:${p.p.hit_points} pm:${p.p.mana
+            } s:${p.lastCast?.name} c:${p.lastCast?.cost} b:${p.boss.hit_points
+            } s:${Array.from(p.activeSpells.entries()).join(';')}`
+        );
     }
 
     return {
-        value: result?.cost ?? -1
+        value: result?.cost ?? -1,
     };
 });

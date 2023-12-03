@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 import { input3 } from './input';
 
 const map = new Map<string, number>();
@@ -15,11 +15,11 @@ const moveSet = new Map([
     ['>', (p: Point) => new Point(p.x + 1, p.y)],
 ]);
 
-for (let i = 0; i < input3.length; i+=2) {
+for (let i = 0; i < input3.length; i += 2) {
     sPosition = moveSet.get(input3[i])!(sPosition);
     map.set(sPosition.key, (map.get(sPosition.key) ?? 0) + 1);
 
-    rPosition = moveSet.get(input3[i+1])!(rPosition);
+    rPosition = moveSet.get(input3[i + 1])!(rPosition);
     map.set(rPosition.key, (map.get(rPosition.key) ?? 0) + 1);
 }
 

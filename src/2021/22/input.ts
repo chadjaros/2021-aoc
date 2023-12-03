@@ -1,5 +1,5 @@
-import { Point3, Vector3 } from '../../utils/point-3d';
-import { Series } from '../../utils/series';
+import { Point3, Vector3 } from '../../ts-utils/point-3d';
+import { Series } from '../../ts-utils/series';
 
 const raw = `on x=-40..6,y=-36..9,z=-36..12
 on x=-22..31,y=-48..6,z=-35..9
@@ -423,27 +423,44 @@ off x=-80436..-61651,y=3782..34676,z=22972..34418
 off x=-62269..-36063,y=-15314..13681,z=65100..77713`;
 
 export class Instruction {
-
-    static regex = /(on|off) x=(-?\d+)..(-?\d+),y=(-?\d+)..(-?\d+),z=(-?\d+)..(-?\d+)/;
+    static regex =
+        /(on|off) x=(-?\d+)..(-?\d+),y=(-?\d+)..(-?\d+),z=(-?\d+)..(-?\d+)/;
 
     public on: boolean;
     public min: Vector3;
     public max: Vector3;
     constructor(public line: string) {
-        
         const result = Instruction.regex.exec(line) ?? [];
         this.on = result[1] === 'on';
-        this.min = Vector3.fromCoordinates(parseInt(result[2]), parseInt(result[4]), parseInt(result[6]));
-        this.max = Vector3.fromCoordinates(parseInt(result[3]), parseInt(result[5]), parseInt(result[7]));
+        this.min = Vector3.fromCoordinates(
+            parseInt(result[2]),
+            parseInt(result[4]),
+            parseInt(result[6])
+        );
+        this.max = Vector3.fromCoordinates(
+            parseInt(result[3]),
+            parseInt(result[5]),
+            parseInt(result[7])
+        );
     }
 
-    execute(set: Set<string>, bounds: {min: Vector3, max: Vector3}) {
+    execute(set: Set<string>, bounds: { min: Vector3; max: Vector3 }) {
+        const f = this.on
+            ? (s: string) => set.add(s)
+            : (s: string) => set.delete(s);
 
-        const f = this.on ? (s: string) => set.add(s) : (s: string) => set.delete(s);
-
-        for (const x of Series.range(Math.max(bounds.min.x, this.min.x), Math.min(bounds.max.x, this.max.x))) {
-            for (const y of Series.range(Math.max(bounds.min.y, this.min.y), Math.min(bounds.max.y, this.max.y))) {
-                for (const z of Series.range(Math.max(bounds.min.z, this.min.z), Math.min(bounds.max.z, this.max.z))) {
+        for (const x of Series.range(
+            Math.max(bounds.min.x, this.min.x),
+            Math.min(bounds.max.x, this.max.x)
+        )) {
+            for (const y of Series.range(
+                Math.max(bounds.min.y, this.min.y),
+                Math.min(bounds.max.y, this.max.y)
+            )) {
+                for (const z of Series.range(
+                    Math.max(bounds.min.z, this.min.z),
+                    Math.min(bounds.max.z, this.max.z)
+                )) {
                     f(`${x}-${y}-${z}`);
                 }
             }

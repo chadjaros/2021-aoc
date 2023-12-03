@@ -2,15 +2,12 @@ import { adjacents, Cavern, input11, input11mini } from './input';
 import { Point } from '../5/input';
 
 function main() {
-
     const map = new Cavern(input11);
 
     function checkFlash(p: Point) {
-
         const l = map.get(p);
 
         if (!l.flashed && l.value > 9) {
-
             l.flashed = true;
             // console.log('checkFlash', p, l, flashes);
 
@@ -24,7 +21,7 @@ function main() {
 
     let round = 0;
     let exit = false;
-    while(!exit) {
+    while (!exit) {
         round++;
         // console.log('round', round);
         map.forEach((p) => {

@@ -1,4 +1,4 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 const digits = [
     ['1', '1'],
@@ -22,7 +22,6 @@ const digits = [
 ];
 
 aoc((infile) => {
-
     const first = (value: string): string => {
         for (let i = 0; i < value.length; i++) {
             const sub = value.substring(i);

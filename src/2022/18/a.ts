@@ -1,8 +1,7 @@
-import { aoc } from '../../utils/aoc';
-import { Point3 } from '../../utils/point-3d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point3 } from '../../ts-utils/point-3d';
 
 aoc((infile) => {
-
     const input = infile
         // .sample()
         .splitLinesAndMap(',', (x) => parseInt(x))
@@ -11,9 +10,11 @@ aoc((infile) => {
     const allSet = new Set(input.map((x) => x.key));
 
     const value = input.reduce((acc, v) => {
-        return acc + v.adjacents(false).filter((x) => !allSet.has(x.key)).length;
+        return (
+            acc + v.adjacents(false).filter((x) => !allSet.has(x.key)).length
+        );
     }, 0);
     return {
-        value
+        value,
     };
 });

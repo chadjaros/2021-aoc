@@ -1,11 +1,11 @@
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-
     const raw = infile.lines;
 
     let maxSrcLength = 0;
-    const replacements = raw.slice(0, -2)
+    const replacements = raw
+        .slice(0, -2)
         .map((line) => line.split(' => '))
         .reduce((accum, value) => {
             if (!accum.has(value[1])) {
@@ -18,9 +18,8 @@ aoc((infile) => {
             return accum;
         }, new Map<string, Set<string>>());
 
-
     const sortedReplacments = Array.from(replacements.entries())
-        .map((x) => ({src: x[0], rep: Array.from(x[1])[0]}))
+        .map((x) => ({ src: x[0], rep: Array.from(x[1])[0] }))
         .sort((a, b) => {
             if (b.rep === 'e' && a.rep !== 'e') {
                 return -1;
@@ -46,5 +45,5 @@ aoc((infile) => {
         }
     }
 
-    return {value: counter, progress};
+    return { value: counter, progress };
 });

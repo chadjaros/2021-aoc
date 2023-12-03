@@ -3,7 +3,7 @@ import { input5, Point } from './input';
 function main() {
     const candidates = input5;
 
-    const max: Point = {x: 0, y: 0};
+    const max: Point = { x: 0, y: 0 };
     for (const c of candidates) {
         if (c.end.x > max.x) {
             max.x = c.end.x;
@@ -36,23 +36,20 @@ function main() {
             for (let y = smallY; y <= bigY; y++) {
                 grid[c.start.x][y]++;
             }
-        }
-        else if (c.start.y === c.end.y) {
+        } else if (c.start.y === c.end.y) {
             const smallX = c.start.x < c.end.x ? c.start.x : c.end.x;
             const bigX = c.start.x > c.end.x ? c.start.x : c.end.x;
             for (let x = smallX; x <= bigX; x++) {
                 grid[x][c.start.y]++;
             }
-        }
-        else if ((c.start.x - c.end.x) / (c.start.y - c.end.y) > 0) {
+        } else if ((c.start.x - c.end.x) / (c.start.y - c.end.y) > 0) {
             const smallY = c.start.y < c.end.y ? c.start.y : c.end.y;
             const smallX = c.start.x < c.end.x ? c.start.x : c.end.x;
             const bigX = c.start.x > c.end.x ? c.start.x : c.end.x;
             for (let x = smallX, y = smallY; x <= bigX; x++, y++) {
                 grid[x][y]++;
             }
-        }
-        else {
+        } else {
             const bigY = c.start.y > c.end.y ? c.start.y : c.end.y;
             const smallX = c.start.x < c.end.x ? c.start.x : c.end.x;
             const bigX = c.start.x > c.end.x ? c.start.x : c.end.x;

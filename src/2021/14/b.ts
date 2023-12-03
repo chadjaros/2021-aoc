@@ -15,7 +15,6 @@ for (let i = 0; i < string.length - 1; i++) {
 // console.log(start, tuples)
 
 for (let round = 0; round < 40; round++) {
-
     for (const [tuple, count] of tuples) {
         const insertion = rules.get(tuple);
         if (insertion) {
@@ -23,8 +22,7 @@ for (let round = 0; round < 40; round++) {
             const tupleTwo = insertion + tuple[1];
             tuplesNext.set(tupleOne, (tuplesNext.get(tupleOne) ?? 0) + count);
             tuplesNext.set(tupleTwo, (tuplesNext.get(tupleTwo) ?? 0) + count);
-        }
-        else {
+        } else {
             tuplesNext.set(tuple, (tuplesNext.get(tuple) ?? 0) + count);
         }
     }
@@ -40,6 +38,6 @@ for (const [tup, count] of tuples) {
 }
 counts.set(start, (counts.get(start) ?? 0) + 1);
 
-const sorted = [...counts].sort((a, b) => b[1]-a[1]);
+const sorted = [...counts].sort((a, b) => b[1] - a[1]);
 console.log(sorted);
-console.log(sorted[0][1] - sorted[sorted.length-1][1]);
+console.log(sorted[0][1] - sorted[sorted.length - 1][1]);

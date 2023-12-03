@@ -1,5 +1,5 @@
 import { Chunk, input10, input10mini, lookup10 } from './input';
-import { Stack } from '../../utils/stack';
+import { Stack } from '../../ts-utils/stack';
 
 function main() {
     const completionScores: number[] = [];
@@ -13,11 +13,9 @@ function main() {
 
             if (l === chunk.start) {
                 stack.push(chunk);
-            }
-            else if (l === chunk.end && l === stack.end.end) {
+            } else if (l === chunk.end && l === stack.end.end) {
                 stack.pop();
-            }
-            else if (l === chunk.end) {
+            } else if (l === chunk.end) {
                 // corrupt
                 // console.log('corrupt', l, 'expected', lookup10.get(stack.end)?.end, 'position', position);
                 stack.pop();
@@ -27,7 +25,7 @@ function main() {
 
         if (!isCorrupt && stack.size > 0) {
             let sum = 0;
-            while(stack.size > 0) {
+            while (stack.size > 0) {
                 sum = sum * 5 + stack.pop()?.otherValue!;
             }
             completionScores.push(sum);
@@ -35,7 +33,10 @@ function main() {
     }
 
     completionScores.sort((a, b) => a - b);
-    console.log(completionScores.length, Math.floor(completionScores.length / 2));
+    console.log(
+        completionScores.length,
+        Math.floor(completionScores.length / 2)
+    );
     console.log(completionScores[Math.floor(completionScores.length / 2)]);
 }
 

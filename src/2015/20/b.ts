@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs';
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 
 const calcElf = (house: number, elfNumber: number): number => {
-    if (house > 50*elfNumber) {
+    if (house > 50 * elfNumber) {
         return 0;
     }
     if (house % elfNumber !== 0) {
@@ -22,16 +22,15 @@ const calcSeries = (house: number): number => {
 };
 
 aoc((infile) => {
-
     const target = parseInt(infile.string);
 
     let house = 0;
     let total = 0;
-    
+
     while (total <= target) {
         house += 144;
         total = calcSeries(house);
     }
 
-    return {value: house, total, target};
+    return { value: house, total, target };
 });

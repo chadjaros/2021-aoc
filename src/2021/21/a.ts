@@ -4,7 +4,7 @@ class DD100 {
     public rolls = 0;
 
     roll(): number {
-        const value = this.rolls % 100 + 1;
+        const value = (this.rolls % 100) + 1;
         this.rolls++;
         return value;
     }
@@ -13,7 +13,7 @@ class DD100 {
 class Player {
     public points = 0;
     constructor(
-        public id: string, 
+        public id: string,
         public position = 1
     ) {}
     isWinner() {
@@ -28,12 +28,11 @@ let playerTurn = 0;
 
 let winner = false;
 while (!winner) {
-
     const player = players[playerTurn];
     const move = die.roll() + die.roll() + die.roll();
     let newPosition = player.position + move;
-    while(newPosition > 10) {
-        newPosition-=10;
+    while (newPosition > 10) {
+        newPosition -= 10;
     }
 
     player.position = newPosition;

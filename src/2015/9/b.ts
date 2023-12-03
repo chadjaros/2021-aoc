@@ -1,5 +1,4 @@
-
-import { Edge } from '../../utils/graph';
+import { Edge } from '../../ts-utils/graph';
 import { input9 } from './input';
 
 const input = input9;
@@ -7,11 +6,9 @@ const input = input9;
 let maxDistance = 0;
 
 const search = (edge: Edge, distance = 0, seen = new Set<string>()): void => {
-    
     const node = input.get(edge.nodeId)!;
 
-    const remainingNodes = node.edges
-        .filter((e) => !seen.has(e.nodeId));
+    const remainingNodes = node.edges.filter((e) => !seen.has(e.nodeId));
 
     const newDistance = distance + edge.weight;
 
@@ -22,15 +19,15 @@ const search = (edge: Edge, distance = 0, seen = new Set<string>()): void => {
             maxDistance = newDistance;
         }
         return;
-    }
-    else {
+    } else {
         remainingNodes.forEach((e) => {
             search(e, newDistance, new Set([...seen, node.id]));
         });
     }
 };
 
-[...input9.values()].map((x) => ({nodeId: x.id, weight: 0})).forEach((x) => search(x));
+[...input9.values()]
+    .map((x) => ({ nodeId: x.id, weight: 0 }))
+    .forEach((x) => search(x));
 
 console.log(maxDistance);
-

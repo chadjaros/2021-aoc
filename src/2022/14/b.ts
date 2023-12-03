@@ -1,13 +1,13 @@
-import { aoc } from '../../utils/aoc';
-import { Point } from '../../utils/point-2d';
+import { aoc } from '../../ts-utils/aoc';
+import { Point } from '../../ts-utils/point-2d';
 
 aoc((infile) => {
-
-    const input = infile.splitLines(' -> ')
-        .map((line) => line.map((x) => {
+    const input = infile.splitLines(' -> ').map((line) =>
+        line.map((x) => {
             const s = x.split(',');
             return new Point(parseInt(s[0]), parseInt(s[1]));
-        }));
+        })
+    );
 
     let minPoint = new Point(500, 0);
     let maxPoint = new Point(500, 0);
@@ -16,13 +16,13 @@ aoc((infile) => {
     for (const line of input) {
         for (let i = 0; i < line.length - 1; i++) {
             let start = line[i];
-            let end = line[i+1];
-            if (line[i].x > line[i+1].x || line[i].y > line[i+1].y) {
-                start = line[i+1];
+            let end = line[i + 1];
+            if (line[i].x > line[i + 1].x || line[i].y > line[i + 1].y) {
+                start = line[i + 1];
                 end = line[i];
             }
 
-            if (line[i].x !== line[i+1].x) {
+            if (line[i].x !== line[i + 1].x) {
                 if (minPoint.x > start.x) {
                     minPoint = new Point(start.x, minPoint.y);
                 }
@@ -32,8 +32,7 @@ aoc((infile) => {
                 for (let x = start.x; x <= end.x; x++) {
                     rock.add(new Point(x, start.y).key);
                 }
-            }
-            else {
+            } else {
                 if (minPoint.y > start.y) {
                     minPoint = new Point(minPoint.x, start.y);
                 }
@@ -43,7 +42,6 @@ aoc((infile) => {
                 for (let y = start.y; y <= end.y; y++) {
                     rock.add(new Point(start.x, y).key);
                 }
-            
             }
         }
     }
@@ -58,7 +56,7 @@ aoc((infile) => {
         let canMove = true;
         while (canMove) {
             if (sandPoint.y + 1 < floor) {
-                const down = new Point(sandPoint.x, sandPoint.y+1);
+                const down = new Point(sandPoint.x, sandPoint.y + 1);
                 if (!rock.has(down.key) && !sand.has(down.key)) {
                     sandPoint = down;
                     continue;

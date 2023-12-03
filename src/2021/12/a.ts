@@ -17,15 +17,18 @@ input12.forEach((x) => {
 
 const paths: string[][] = [];
 
-function getPaths(start: string, end: string, current: string[], visited: Set<string>): void {
-
+function getPaths(
+    start: string,
+    end: string,
+    current: string[],
+    visited: Set<string>
+): void {
     // console.log('getpaths', start, current);
 
     if (start === end) {
         paths.push([...current, start]);
         return;
-    }
-    else if (visited.has(start)) {
+    } else if (visited.has(start)) {
         return;
     }
 

@@ -1,9 +1,10 @@
-import { aoc } from '../../utils/aoc';
-import { Point } from '../../utils/point-2d';
-import { Range } from '../../utils/range';
+import { aoc } from '../../ts-utils/aoc';
+import { Point } from '../../ts-utils/point-2d';
+import { Range } from '../../ts-utils/range';
 
 aoc((infile) => {
-    const input = infile.regexLines(/x=(-?\d+), y=(-?\d+).+x=(-?\d+), y=(-?\d+)/)
+    const input = infile
+        .regexLines(/x=(-?\d+), y=(-?\d+).+x=(-?\d+), y=(-?\d+)/)
         .map((x) => {
             const sensor = new Point(parseInt(x[0]), parseInt(x[1]));
             const beacon = new Point(parseInt(x[2]), parseInt(x[3]));
@@ -11,7 +12,7 @@ aoc((infile) => {
             return {
                 sensor,
                 beacon,
-                distance: sensor.manhattanDistance(beacon)
+                distance: sensor.manhattanDistance(beacon),
             };
         });
 
@@ -20,7 +21,7 @@ aoc((infile) => {
     for (const l of input) {
         const distance = l.sensor.manhattanDistance(new Point(l.sensor.x, row));
         if (distance < l.distance) {
-            const overlap =  l.distance - distance;
+            const overlap = l.distance - distance;
             ranges.push(new Range(l.sensor.x - overlap, l.sensor.x + overlap));
         }
     }
@@ -47,10 +48,14 @@ aoc((infile) => {
         }
         if (m2 < 0) {
             end = true;
-        }   
+        }
     }
-    
-    const beacons = new Map<string, Point>(input.filter((i) => i.beacon.y === row).map((i) => [i.beacon.key, i.beacon]));
+
+    const beacons = new Map<string, Point>(
+        input
+            .filter((i) => i.beacon.y === row)
+            .map((i) => [i.beacon.key, i.beacon])
+    );
 
     let value = merges.reduce((acc, v) => acc + v.length, 0);
 

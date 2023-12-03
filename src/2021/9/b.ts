@@ -10,14 +10,19 @@ function getAdjacents(point: Point): Point[] {
     const y = point.y;
 
     return [
-        {x, y: y-1},
-        {x, y: y+1},
-        {x: x-1, y},
-        {x: x+1, y},
+        { x, y: y - 1 },
+        { x, y: y + 1 },
+        { x: x - 1, y },
+        { x: x + 1, y },
     ];
 }
 function isValid(point: Point, map: number[][]): boolean {
-    return point.x >= 0 && point.y >= 0 && point.x < map[0].length && point.y < map.length;
+    return (
+        point.x >= 0 &&
+        point.y >= 0 &&
+        point.x < map[0].length &&
+        point.y < map.length
+    );
 }
 
 function height(point: Point, map: number[][]): number {
@@ -28,8 +33,11 @@ function hasVisited(point: Point, visited: Point[]): boolean {
     return visited.some((p) => p.x === point.x && p.y === point.y);
 }
 
-function findBasin(point: Point, map: number[][], visited: Point[] = []): Point[] {
-
+function findBasin(
+    point: Point,
+    map: number[][],
+    visited: Point[] = []
+): Point[] {
     if (hasVisited(point, visited)) {
         return [];
     }
@@ -43,7 +51,13 @@ function findBasin(point: Point, map: number[][], visited: Point[] = []): Point[
 
     const adjacents: Point[] = getAdjacents(point);
 
-    if (!adjacents.some((p) => hasVisited(p, visited) || (isValid(p, map) && h < height(p, map)))) {
+    if (
+        !adjacents.some(
+            (p) =>
+                hasVisited(p, visited) ||
+                (isValid(p, map) && h < height(p, map))
+        )
+    ) {
         return [];
     }
 
@@ -51,21 +65,26 @@ function findBasin(point: Point, map: number[][], visited: Point[] = []): Point[
 
     return [
         point,
-        ...adjacents.filter((p) => isValid(p, map))
+        ...adjacents
+            .filter((p) => isValid(p, map))
             .reduce<Point[]>((accum, p) => {
-            return [...accum, ...findBasin(p, map, visited)];
-        }, [])];
+                return [...accum, ...findBasin(p, map, visited)];
+            }, []),
+    ];
 }
 
 function printBasin(basin: Point[], map: number[][]): void {
-    const section = basin.reduce((v, p) => {
-        return {
-            minX: p.x < v.minX ? p.x : v.minX,
-            minY: p.y < v.minY ? p.y : v.minY,
-            maxX: p.x > v.maxX ? p.x : v.maxX,
-            maxY: p.y > v.maxY ? p.y : v.maxY,
-        };
-    }, {minX: map[0].length, minY: map.length, maxX: 0, maxY: 0});
+    const section = basin.reduce(
+        (v, p) => {
+            return {
+                minX: p.x < v.minX ? p.x : v.minX,
+                minY: p.y < v.minY ? p.y : v.minY,
+                maxX: p.x > v.maxX ? p.x : v.maxX,
+                maxY: p.y > v.maxY ? p.y : v.maxY,
+            };
+        },
+        { minX: map[0].length, minY: map.length, maxX: 0, maxY: 0 }
+    );
 
     console.log(section);
     const vis: string[][] = [];
@@ -77,7 +96,10 @@ function printBasin(basin: Point[], map: number[][]): void {
         }
     }
     for (const point of basin) {
-        vis[point.y - section.minY][point.x - section.minX] = `${height(point, map)}`;
+        vis[point.y - section.minY][point.x - section.minX] = `${height(
+            point,
+            map
+        )}`;
     }
     for (const x of vis) {
         console.log(x.join(''));
@@ -92,16 +114,20 @@ function main() {
         for (let x = 0; x < map[0].length; x++) {
             const h = map[y][x];
 
-            const isLowPoint = getAdjacents({ x, y }).every((p) => isValid(p, map) ? h < height(p, map) : h < 9 );
+            const isLowPoint = getAdjacents({ x, y }).every((p) =>
+                isValid(p, map) ? h < height(p, map) : h < 9
+            );
             if (isLowPoint) {
-                const basin = findBasin({x, y}, map);
+                const basin = findBasin({ x, y }, map);
                 basins.push(basin);
                 // console.log('basin', x, y, height, basin.length, basin);
             }
         }
     }
 
-    basins.sort((a, b) => { return b.length - a.length; });
+    basins.sort((a, b) => {
+        return b.length - a.length;
+    });
 
     const sum = basins[0].length * basins[1].length * basins[2].length;
     console.log(sum, basins[0].length, basins[1].length, basins[2].length);

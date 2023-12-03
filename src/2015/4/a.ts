@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import { aoc } from '../../utils/aoc';
+import { aoc } from '../../ts-utils/aoc';
 import { input4 } from './input';
 
 aoc(() => {
@@ -9,7 +9,7 @@ aoc(() => {
     let hash = '';
     while (!hash.startsWith('00000')) {
         i++;
-        hash = md5(input+i);
+        hash = md5(input + i);
     }
 
     return {
@@ -17,4 +17,3 @@ aoc(() => {
         hash,
     };
 });
-

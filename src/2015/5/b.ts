@@ -9,9 +9,8 @@ const result = input.filter((x) => {
     let double = false;
     let nextPair = undefined;
     for (let i = 0; i < splits.length; i++) {
-
         if (i > 0) {
-            const pair = [splits[i-1], splits[i]].join('');
+            const pair = [splits[i - 1], splits[i]].join('');
             if (pairs.has(pair)) {
                 twoPair = true;
             }
@@ -21,7 +20,7 @@ const result = input.filter((x) => {
             nextPair = pair;
         }
         if (i > 1) {
-            if (splits[i-2] === splits[i]) {
+            if (splits[i - 2] === splits[i]) {
                 double = true;
             }
         }

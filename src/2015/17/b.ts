@@ -1,14 +1,16 @@
 import { input17 } from './input';
 
-
 const input = input17;
 const totalLiters = 150;
 
-function combinations(source: number[], path: number[], sum: number): number[][] {
+function combinations(
+    source: number[],
+    path: number[],
+    sum: number
+): number[][] {
     if (sum === totalLiters) {
         return [path];
-    }
-    else if (sum > totalLiters) {
+    } else if (sum > totalLiters) {
         return [];
     }
 
@@ -19,7 +21,10 @@ function combinations(source: number[], path: number[], sum: number): number[][]
     const head = source[0];
     const tail = source.slice(1, source.length);
 
-    return [...combinations(tail, path, sum), ...combinations(tail, [...path, head], sum + head)];
+    return [
+        ...combinations(tail, path, sum),
+        ...combinations(tail, [...path, head], sum + head),
+    ];
 }
 
 const c = combinations(input, [], 0);

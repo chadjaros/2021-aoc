@@ -1,21 +1,21 @@
 import { Board, inputBoards, inputNumbers } from './input';
 
 class BoardStatus {
-    values: { number: number, called: boolean }[][];
+    values: { number: number; called: boolean }[][];
 
     constructor(board: Board) {
         this.values = [];
         for (const line of board) {
-            const v:  { number: number, called: boolean }[] = [];
+            const v: { number: number; called: boolean }[] = [];
             for (const item of line) {
-                v.push({number: item, called: false});
+                v.push({ number: item, called: false });
             }
             this.values.push(v);
         }
     }
 
     callNumber(number: number) {
-        for(const line of this.values) {
+        for (const line of this.values) {
             for (const value of line) {
                 if (value.number === number) {
                     value.called = true;
@@ -70,8 +70,7 @@ function main() {
             if (checkWin) {
                 console.log(boards[i].calculate(n), n, boards[i].values);
                 return;
-            }
-            else if (boards[i].isWinner()) {
+            } else if (boards[i].isWinner()) {
                 boards.splice(i, 1);
                 i--;
             }

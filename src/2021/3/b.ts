@@ -10,14 +10,17 @@ function calculateBinary(number: number[]): number {
     return sum;
 }
 
-function countAndFilter(list: number[][], index: number, most: boolean): number[][] {
+function countAndFilter(
+    list: number[][],
+    index: number,
+    most: boolean
+): number[][] {
     let zeroes = 0;
     let ones = 0;
     for (const number of list) {
         if (number[index] === 0) {
             zeroes++;
-        }
-        else {
+        } else {
             ones++;
         }
     }
@@ -25,11 +28,9 @@ function countAndFilter(list: number[][], index: number, most: boolean): number[
     let filter = 0;
     if (zeroes === ones) {
         filter = most ? 1 : 0;
-    }
-    else if (zeroes > ones) {
+    } else if (zeroes > ones) {
         filter = most ? 0 : 1;
-    }
-    else {
+    } else {
         filter = most ? 1 : 0;
     }
 
@@ -42,7 +43,6 @@ function main() {
 
     let index = 0;
     while (o2genList.length > 1) {
-
         o2genList = countAndFilter(o2genList, index, true);
 
         index++;
@@ -53,7 +53,6 @@ function main() {
 
     index = 0;
     while (co2scrubList.length > 1) {
-
         co2scrubList = countAndFilter(co2scrubList, index, false);
 
         index++;
@@ -63,8 +62,14 @@ function main() {
     }
 
     console.log(o2genList.length, o2genList[0], calculateBinary(o2genList[0]));
-    console.log(co2scrubList.length, co2scrubList[0], calculateBinary(co2scrubList[0]));
-    console.log(calculateBinary(o2genList[0]) * calculateBinary(co2scrubList[0]));
+    console.log(
+        co2scrubList.length,
+        co2scrubList[0],
+        calculateBinary(co2scrubList[0])
+    );
+    console.log(
+        calculateBinary(o2genList[0]) * calculateBinary(co2scrubList[0])
+    );
 }
 
 main();

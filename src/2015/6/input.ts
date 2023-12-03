@@ -1,4 +1,4 @@
-import { Point } from '../../utils/point-2d';
+import { Point } from '../../ts-utils/point-2d';
 
 const raw = `toggle 461,550 through 564,900
 turn off 370,39 through 425,839
@@ -301,13 +301,21 @@ turn off 209,780 through 572,894
 turn on 766,112 through 792,868
 turn on 222,12 through 856,241`;
 
-export const input6 = raw.split('\n')
-    .map((x) => {
-        const splits = x.split(' ')
-            .filter((y) => y !== 'turn' && y !== 'through');
-        return {
-            action: splits[0],
-            start: new Point(...(splits[1].split(',').map((n) => parseInt(n))) as [number, number]),
-            end: new Point(...(splits[2].split(',').map((n) => parseInt(n))) as [number, number]),
-        }
-    }) 
+export const input6 = raw.split('\n').map((x) => {
+    const splits = x.split(' ').filter((y) => y !== 'turn' && y !== 'through');
+    return {
+        action: splits[0],
+        start: new Point(
+            ...(splits[1].split(',').map((n) => parseInt(n)) as [
+                number,
+                number,
+            ])
+        ),
+        end: new Point(
+            ...(splits[2].split(',').map((n) => parseInt(n)) as [
+                number,
+                number,
+            ])
+        ),
+    };
+});

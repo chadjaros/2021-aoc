@@ -1,5 +1,4 @@
 export class ALU {
-
     private inputs: number[];
 
     public vars = new Map<string, number>([
@@ -11,30 +10,42 @@ export class ALU {
 
     private count = 0;
 
-    public operations = new Map<string, (a: string, b: string|number|undefined) => void>([
+    public operations = new Map<
+        string,
+        (a: string, b: string | number | undefined) => void
+    >([
         ['inp', (a) => this.vars.set(a, this.getInput())],
         ['add', (a, b) => this.vars.set(a, this.getA(a) + this.getB(b))],
         ['mul', (a, b) => this.vars.set(a, this.getA(a) * this.getB(b))],
-        ['div', (a, b) => {
-            const bval = this.getB(b);
-            if (bval === 0) throw new Error('div by zero');
-            this.vars.set(a, Math.trunc(this.getA(a) / bval));
-        }],
-        ['mod', (a, b) => {
-            const aval = this.getA(a);
-            if (aval < 0) throw new Error('mod of negative');
-            const bval = this.getB(b);
-            if (bval <= 0) throw new Error('mod by non-positive');
-            this.vars.set(a, aval % bval);
-        }],
-        ['eql', (a, b) => this.vars.set(a, this.getA(a) === this.getB(b) ? 1 : 0)],
+        [
+            'div',
+            (a, b) => {
+                const bval = this.getB(b);
+                if (bval === 0) throw new Error('div by zero');
+                this.vars.set(a, Math.trunc(this.getA(a) / bval));
+            },
+        ],
+        [
+            'mod',
+            (a, b) => {
+                const aval = this.getA(a);
+                if (aval < 0) throw new Error('mod of negative');
+                const bval = this.getB(b);
+                if (bval <= 0) throw new Error('mod by non-positive');
+                this.vars.set(a, aval % bval);
+            },
+        ],
+        [
+            'eql',
+            (a, b) => this.vars.set(a, this.getA(a) === this.getB(b) ? 1 : 0),
+        ],
     ]);
 
     getA(v: string): number {
         return this.vars.get(v)!;
     }
 
-    getB(value: string|number|undefined): number {
+    getB(value: string | number | undefined): number {
         if (typeof value === 'string') {
             return this.vars.get(value)!;
         }
@@ -58,10 +69,13 @@ export class ALU {
         this.count = 0;
     }
 
-    run(v: number, instructions: [string, string, string|number|undefined][]): boolean {
+    run(
+        v: number,
+        instructions: [string, string, string | number | undefined][]
+    ): boolean {
         this.inputs = `${v}`.split('').map((x) => parseInt(x));
 
-        if(this.inputs.some((x) => x === 0)) {
+        if (this.inputs.some((x) => x === 0)) {
             return false;
         }
 
@@ -78,7 +92,9 @@ export class ALU {
     }
 
     state() {
-        return `w:${this.getA('w')} x:${this.getA('x')} y:${this.getA('y')} z:${this.getA('z')} c: ${this.count}`;
+        return `w:${this.getA('w')} x:${this.getA('x')} y:${this.getA(
+            'y'
+        )} z:${this.getA('z')} c: ${this.count}`;
     }
 
     clone(): ALU {

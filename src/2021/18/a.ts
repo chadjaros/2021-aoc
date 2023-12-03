@@ -1,4 +1,4 @@
-import { Possible } from '../../utils/util-types';
+import { Possible } from '../../ts-utils/util-types';
 import { input18, SNNumber } from './input';
 
 const input = input18;
@@ -7,8 +7,7 @@ let sum: Possible<SNNumber> = undefined;
 for (const n of input) {
     if (!sum) {
         sum = n;
-    }
-    else {
+    } else {
         sum = sum.plus(n);
     }
 }

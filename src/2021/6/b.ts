@@ -11,7 +11,7 @@ function main() {
     for (let i = 0; i < 9; i++) {
         const cohortCount = input6.filter((x) => x === i).length;
         if (cohortCount != 0) {
-            current.push({ days: i, count: cohortCount});
+            current.push({ days: i, count: cohortCount });
         }
     }
 
@@ -26,18 +26,15 @@ function main() {
                 const six = next.find((x) => x.days === 6);
                 if (six) {
                     six.count += current[i].count;
-                }
-                else {
+                } else {
                     next.push({ days: 6, count: current[i].count });
                 }
-                next.push({days: 8, count: current[i].count});
-            }
-            else {
+                next.push({ days: 8, count: current[i].count });
+            } else {
                 const existing = next.find((x) => x.days === nextval);
                 if (existing) {
                     existing.count += current[i].count;
-                }
-                else {
+                } else {
                     next.push({ days: nextval, count: current[i].count });
                 }
             }
