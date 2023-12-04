@@ -1,8 +1,13 @@
 package `2016`.`1`
 
+import scala_utils.Aoc
+
 object a {
-  def main() = {
-    val x = "aa";
-    println(x);
+  def main(args: Array[String]) = Aoc { infile =>
+    val result = "aa";
+    println(result)
+
+    result
   }
+
 }
