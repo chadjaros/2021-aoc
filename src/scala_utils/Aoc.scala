@@ -1,41 +1,152 @@
 package scala_utils
 
 import scala.collection.mutable.Buffer
-import java.nio.CharBuffer
 import scala.annotation.constructorOnly
+import java.nio.file.Paths
+import scala.io.Source
+import java.io.File
+import scala.io.BufferedSource
+import java.nio.file.Path
+import java.nio.file.Files
+import java.net.http.HttpClient
+import java.net.http.HttpResponse.BodyHandlers
+import java.net.http.HttpRequest
+import java.net.URI
 
 object Aoc {
+
+  implicit class Context(val typ: Any) {}
 
   @annotation.implicitNotFound(
     "Aoc return value must be Int, Long, Float, Double, or String"
   )
   sealed trait Result[T]
 
-  object Result {
-    implicit val intResult: Result[Int] = new Result[Int] {}
-    implicit val lngResult: Result[Long] = new Result[Long] {}
-    implicit val strResult: Result[String] = new Result[String] {}
-    implicit val floResult: Result[Float] = new Result[Float] {}
-    implicit val idouResult: Result[Double] = new Result[Double] {}
-  }
+  type ValueType = String | Integer | Long | Double;
+  type ResultType = ValueType | (ValueType, Any)
 
   class FileHelper(filePath: String) {
 
-    def sample(filename: String): FileHelper = {
-      throw new Error();
+    def sample(filename: String = "sample-input.txt"): FileHelper = {
+      new FileHelper(
+        Paths
+          .get(Paths.get(filePath).getParent().toString(), filename)
+          .toString()
+      )
     }
 
-    def buffer(): CharBuffer = {
-      throw new Error();
+    private def read[T](op: (file: BufferedSource) => T): T = {
+      val source = Source.fromFile(filePath)
+      try {
+        return op(source)
+      } finally {
+        source.close()
+      }
+
+    }
+
+    def buffer: Buffer[Char] = {
+      this.read { file =>
+        file.toBuffer
+      }
+    }
+
+    def string: String = {
+      this.read { file =>
+        file.mkString.trim()
+      }
+    }
+
+    def lines: Seq[String] = {
+      this.string.split("\n").toSeq
+    }
+
+    def split(break: String): Seq[String] = {
+      this.string.split(break).toSeq
     }
   }
 
-  def apply[T](method: (infile: FileHelper) => T)(implicit ev: Result[T]) = {
-    val file = new FileHelper("file");
+  def fetchInput(toFile: Path): Unit = {
+    if (Files.exists(toFile)) {
+      return;
+    }
+
+    val session = System.getenv("AOC_SESSION");
+    if (session == null) {
+      throw new Error(
+        "Please set environment variable AOC_SESSION to session cookie from AOC website to automatically download inputs"
+      );
+    }
+
+    val regex = "src.(\\d{4}).(\\d+).input\\.txt".r.unanchored
+    val regex(year, day) = toFile.toAbsolutePath().toString(): @unchecked
+    val uri = new URI(s"https://adventofcode.com/$year/day/$day/input")
+
+    println(
+      s"Fetching input data from $uri"
+    )
+
+    val start = System.nanoTime()
+
+    val request = HttpRequest
+      .newBuilder()
+      .uri(uri)
+      .header("cookie", session.replace(':', '='))
+      .header(
+        "User-Agent",
+        "https://github.com/chadjaros/advent-of-code chad.jaros@gmail.com"
+      )
+      .GET()
+      .build()
+
+    val response = HttpClient
+      .newBuilder()
+      .build()
+      .send(request, BodyHandlers.ofFile(toFile))
+
+    if (response.statusCode() != 200) {
+      Files.delete(toFile)
+      throw new Error(
+        s"Failed with status ${response.statusCode()}"
+      );
+    }
+
+    val dur = (System.nanoTime() - start) / 10000000.0;
+    println(
+      f"Fetched and written to ${toFile.toAbsolutePath()} in $dur%.3f ms"
+    );
+    println("---")
+  }
+
+  def apply[T](
+      method: (infile: FileHelper) => ResultType
+  )(implicit ctx: Context) = {
+    val regex = "(\\d{4})\\.(\\d+)\\.([ab])\\$?".r
+    val regex(year, day, part) = ctx.typ.getClass().getName(): @unchecked
+
+    val inputPath =
+      Paths.get("src", year, day, "input.txt")
+
+    val file = new FileHelper(inputPath.toAbsolutePath.toString)
+
+    this.fetchInput(inputPath)
+
+    val start = System.nanoTime()
 
     val result = method(file);
 
-    println(System.getProperty("sun.java.command"));
-    println(s"Result: $result");
+    val dur = (System.nanoTime() - start) / 10000000.0;
+
+    val tuple = result match {
+      case (a: (ValueType, Any)) => a
+      case (it: ValueType)       => (it, "")
+    }
+
+    println("")
+    println("---")
+    println(s"value: ${tuple._1}");
+    println(s"extra: ${tuple._2}");
+    println("---")
+    println(f"time: $dur%.3f ms")
   }
 }
