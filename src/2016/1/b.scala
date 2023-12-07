@@ -2,59 +2,64 @@ package `2016`.`1`
 
 import scala_utils.Aoc
 import scala.util.boundary
-import scala.collection.mutable.Set
+import scala.annotation.tailrec
+
+case class Point(x: Int, y: Int)
 
 object b {
   implicit val ctx: Aoc.Context = new Aoc.Context(this);
 
-  def main(args: Array[String]) = Aoc { infile =>
-    var x = 0;
-    var y = 0;
+  type Dir = (p: Point, moves: Int) => Seq[Point]
 
-    def N = (moves: Int) => y += moves;
-    def E = (moves: Int) => x += moves
-    def S = (moves: Int) => y -= moves
-    def W = (moves: Int) => x -= moves
+  val N = (p: Point, moves: Int) => (p.y + 1).to(p.y + moves).map(Point(p.x, _))
+  val E = (p: Point, moves: Int) => (p.x + 1).to(p.x + moves).map(Point(_, p.y))
+  val S = (p: Point, moves: Int) =>
+    (p.y - 1).to(p.y - moves, -1).map(Point(p.x, _))
+  val W = (p: Point, moves: Int) =>
+    (p.x - 1).to(p.x - moves, -1).map(Point(_, p.y))
 
-    val dirs = Map(
-      "N" -> N,
-      "E" -> E,
-      "S" -> S,
-      "W" -> W
-    )
+  def turn(turn: Char, currDir: Dir): Dir = {
+    if (currDir == N) {
+      if (turn == 'R') E else W
+    } else if (currDir == E) {
+      if (turn == 'R') S else N
+    } else if (currDir == S) {
+      if (turn == 'R') W else E
+    } else {
+      if (turn == 'R') N else S
+    }
+  }
 
-    var currDir = "N";
+  def dirName(dir: Dir) = dir match {
+    case N => "N"
+    case W => "W"
+    case S => "S"
+    case _ => "E"
+  }
 
-    val visits = Set[(Int, Int)]()
+  @tailrec
+  def calculate(
+      current: Point,
+      dir: Dir,
+      visited: Set[Point],
+      instructions: Seq[String]
+  ): Int = {
+    val turn = instructions.head.charAt(0)
+    val move = instructions.head.substring(1).toInt
 
-    boundary {
-      for (dir <- "R8, R4, R4, R8".split(", ")) {
-        val turn = dir.charAt(0)
-        val move = dir.substring(1).toInt;
+    val nextDir = this.turn(turn, dir)
+    val steps = nextDir(current, move)
 
-        val orignalDir = currDir;
-
-        currDir = if (currDir == "N") {
-          if (turn == 'R') "E" else "W"
-        } else if (currDir == "E") {
-          if (turn == 'R') "S" else "N"
-        } else if (currDir == "S") {
-          if (turn == 'R') "W" else "E"
-        } else {
-          if (turn == 'R') "N" else "S"
-        }
-
-        dirs.get(currDir).get(move)
-        println(s"$turn $move $orignalDir>$currDir $x,$y")
-
-        if (visits.contains((x, y))) {
-          println("yay");
-          boundary.break()
-        }
-        visits.addOne((x, y))
-      }
+    val intersection = steps.find(visited.contains(_))
+    if (intersection.isDefined) {
+      return Math.abs(intersection.get.x) + Math.abs(intersection.get.y)
     }
 
-    Math.abs(x) + Math.abs(y)
+    calculate(steps.last, nextDir, visited ++ steps, instructions.tail)
+  }
+
+  def main(args: Array[String]) = Aoc { infile =>
+    var start = Point(0, 0)
+    calculate(start, this.N, Set(start), infile.split(", "))
   }
 }

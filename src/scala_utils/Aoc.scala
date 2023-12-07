@@ -66,9 +66,12 @@ object Aoc {
     }
   }
 
-  def fetchInput(toFile: Path): Unit = {
+  def fetchInput(year: String, day: String): Path = {
+
+    val toFile = Paths.get("src", year, day, "input.txt")
+
     if (Files.exists(toFile)) {
-      return;
+      return toFile;
     }
 
     val session = System.getenv("AOC_SESSION");
@@ -78,8 +81,6 @@ object Aoc {
       );
     }
 
-    val regex = "src.(\\d{4}).(\\d+).input\\.txt".r.unanchored
-    val regex(year, day) = toFile.toAbsolutePath().toString(): @unchecked
     val uri = new URI(s"https://adventofcode.com/$year/day/$day/input")
 
     println(
@@ -116,6 +117,8 @@ object Aoc {
       f"Fetched and written to ${toFile.toAbsolutePath()} in $dur%.3f ms"
     );
     println("---")
+
+    toFile
   }
 
   def apply[T](
@@ -124,12 +127,9 @@ object Aoc {
     val regex = "(\\d{4})\\.(\\d+)\\.([ab])\\$?".r
     val regex(year, day, part) = ctx.typ.getClass().getName(): @unchecked
 
-    val inputPath =
-      Paths.get("src", year, day, "input.txt")
+    val inputPath = this.fetchInput(year, day)
 
     val file = new FileHelper(inputPath.toAbsolutePath.toString)
-
-    this.fetchInput(inputPath)
 
     val start = System.nanoTime()
 

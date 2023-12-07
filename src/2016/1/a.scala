@@ -11,19 +11,12 @@ object a {
     var x = 0;
     var y = 0;
 
-    def N = (moves: Int) => y += moves;
-    def E = (moves: Int) => x += moves
-    def S = (moves: Int) => y -= moves
-    def W = (moves: Int) => x -= moves
+    val N = (moves: Int) => y += moves;
+    val E = (moves: Int) => x += moves
+    val S = (moves: Int) => y -= moves
+    val W = (moves: Int) => x -= moves
 
-    val dirs = Map(
-      "N" -> N,
-      "E" -> E,
-      "S" -> S,
-      "W" -> W
-    )
-
-    var currDir = "N";
+    var currDir = N;
 
     infile
       .split(", ")
@@ -34,18 +27,17 @@ object a {
 
         val orignalDir = currDir;
 
-        currDir = if (currDir == "N") {
-          if (turn == 'R') "E" else "W"
-        } else if (currDir == "E") {
-          if (turn == 'R') "S" else "N"
-        } else if (currDir == "S") {
-          if (turn == 'R') "W" else "E"
+        currDir = if (currDir == N) {
+          if (turn == 'R') E else W
+        } else if (currDir == E) {
+          if (turn == 'R') S else N
+        } else if (currDir == S) {
+          if (turn == 'R') W else E
         } else {
-          if (turn == 'R') "N" else "S"
+          if (turn == 'R') N else S
         }
 
-        dirs.get(currDir).get(move)
-        println(s"$turn $move $orignalDir>$currDir $x,$y")
+        currDir(move)
       })
 
     Math.abs(x) + Math.abs(y)
