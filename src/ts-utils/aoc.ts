@@ -60,11 +60,16 @@ export const fetchInputFile = async (inputpath: string): Promise<void> => {
     if (!existsSync(inputpath)) {
         const day = inputpath.match(/src\/(\d+)\/(\d+)\/input.txt/);
         if (!day) {
-            throw new Error(`Could not parse day from '${inputpath}'`);
+            throw new Error(`Could not parse year and day from '${inputpath}'`);
         }
         if (!env.AOC_SESSION) {
             throw new Error(
                 'Please set environment variable AOC_SESSION to session cookie from AOC website to automatically download inputs'
+            );
+        }
+        if (!env.AOC_USERSESSION) {
+            throw new Error(
+                'Please set environment variable AOC_USERAGENT'
             );
         }
 

@@ -80,6 +80,12 @@ object Aoc {
         "Please set environment variable AOC_SESSION to session cookie from AOC website to automatically download inputs"
       );
     }
+    val userAgent = System.getenv("AOC_USERAGENT")
+    if (session == null) {
+      throw new Error(
+        "Please set environment variable AOC_USERAGENT"
+      );
+    }
 
     val uri = new URI(s"https://adventofcode.com/$year/day/$day/input")
 
@@ -95,7 +101,7 @@ object Aoc {
       .header("cookie", session.replace(':', '='))
       .header(
         "User-Agent",
-        "https://github.com/chadjaros/advent-of-code chad.jaros@gmail.com"
+        userAgent
       )
       .GET()
       .build()

@@ -1,3 +1,9 @@
+## Setup
+
+Set up env vars using `direnv`, or similar
+- AOC_SESSION - The Session cookie from your browser once you've logged into the AOC website
+- AOC_USERAGENT - A string indicating who you are
+
 ## Years
 
 - 2016: Typescript
@@ -10,7 +16,7 @@
 
 ### Typescript
 ```bash
-# Run file (and download input)
+# Downwload input and run file
 > npm start --file=2015/1/a
 
 # Init directory and download input
@@ -19,7 +25,7 @@
 
 ### Scala
 ```bash
-# Run file
+# Download input and run file
 > sbt "runMain 2016.1.a"
 
 # Init directory and download input
