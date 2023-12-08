@@ -3,8 +3,7 @@ package `2016`.`1`
 import scala_utils.Aoc
 import scala.util.boundary
 import scala.annotation.tailrec
-
-case class Point(x: Int, y: Int)
+import scala_utils.Point
 
 object b {
   implicit val ctx: Aoc.Context = new Aoc.Context(this);

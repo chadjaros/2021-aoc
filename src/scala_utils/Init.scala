@@ -15,7 +15,7 @@ object Init {
   def fileContents(year: String, day: String, part: String): String = {
     s"""package `$year`.`$day`
         |
-        |import scala_utils.Aoc
+        |import scala_utils._
         |
         |object $part {
         |  implicit val ctx: Aoc.Context = new Aoc.Context(this);

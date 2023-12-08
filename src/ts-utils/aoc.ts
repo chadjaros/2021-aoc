@@ -67,7 +67,7 @@ export const fetchInputFile = async (inputpath: string): Promise<void> => {
                 'Please set environment variable AOC_SESSION to session cookie from AOC website to automatically download inputs'
             );
         }
-        if (!env.AOC_USERSESSION) {
+        if (!env.AOC_USERAGENT) {
             throw new Error(
                 'Please set environment variable AOC_USERAGENT'
             );
@@ -84,8 +84,7 @@ export const fetchInputFile = async (inputpath: string): Promise<void> => {
                 method: 'GET',
                 headers: {
                     cookie: env.AOC_SESSION.replace(':', '='),
-                    'User-Agent':
-                        'https://github.com/chadjaros/advent-of-code chad.jaros@gmail.com',
+                    'User-Agent': env.AOC_USERAGENT,
                 },
             }
         );
