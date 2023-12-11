@@ -3,7 +3,7 @@ export class Point {
     constructor(
         public x: number,
         public y: number
-    ) {}
+    ) { }
 
     static fromKey(s: string): Point {
         const x: number[] = s.split('-').map((n) => parseFloat(n));
@@ -53,7 +53,7 @@ export class Point {
         return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
     }
 
-    static minMax(points: Point[]): { min: Point; max: Point } {
+    static minMax(points: Point[]): { min: Point; max: Point; } {
         let minX = points[0].x;
         let minY = points[0].y;
         let maxX = points[0].x;
@@ -76,13 +76,17 @@ export class Point {
 
         return { min: new Point(minX, minY), max: new Point(maxX, maxY) };
     }
+
+    equals(other: Point): boolean {
+        return this.x === other.x && this.y === other.y;
+    }
 }
 
 export class Vector2 {
     constructor(
         public x: number,
         public y: number
-    ) {}
+    ) { }
 
     get magnitude(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);

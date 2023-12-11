@@ -10,7 +10,7 @@ export class GridNode<T> implements Node {
         public point: Point,
         public grid: Grid<T>,
         private edgefn: GridEdgeFunction<T>
-    ) {}
+    ) { }
 
     get id() {
         return this.point.key;
@@ -126,6 +126,30 @@ export class Grid<T> implements Graph<GridNode<T>> {
                 }
             }
         }
+    }
+
+    find(cb: GridScanCallback<T>): Possible<Point> {
+        for (let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.height; y++) {
+                const p = new Point(x, y);
+                if (cb(this.getValue(p), p)) {
+                    return p;
+                }
+            }
+        }
+    }
+
+    filter(cb: GridScanCallback<T>): Point[] {
+        const result: Point[] = [];
+        for (let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.height; y++) {
+                const p = new Point(x, y);
+                if (cb(this.getValue(p), p)) {
+                    result.push(p);
+                }
+            }
+        }
+        return result;
     }
 
     scanDecXFrom(point: Point, cb: GridScanCallback<T>): Possible<Point> {
