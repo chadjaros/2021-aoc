@@ -27,7 +27,6 @@ aoc((infile) => {
     const startEdges = start.adjacents()
         .filter((x) => edges(x, grid.getValue(x)).some((y) => y.equals(start)));
 
-
     let loopLength = 1;
     let curr = startEdges[0];
     let last = start;
