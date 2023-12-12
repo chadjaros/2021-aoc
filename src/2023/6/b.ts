@@ -21,9 +21,6 @@ aoc((infile) => {
     const factors = quadFormula(-1, race.time, -1 * race.record);
 
     return {
-        value:
-            Math.floor(Math.max(...factors)) -
-            Math.ceil(Math.min(...factors)) +
-            1,
+        value: Math.floor(Math.max(...factors)) - Math.ceil(Math.min(...factors)) + 1,
     };
 });

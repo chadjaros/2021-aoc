@@ -19,9 +19,7 @@ aoc((infile) => {
     };
 
     const winners = (race: { time: number; record: number }): number => {
-        return [...Series.range(0, race.time)].filter(
-            (x) => getDist(x, race.time) > race.record
-        ).length;
+        return [...Series.range(0, race.time)].filter((x) => getDist(x, race.time) > race.record).length;
     };
 
     const value = races.reduce((acc, race) => {
