@@ -141,7 +141,7 @@ object Aoc {
 
     val result = method(file);
 
-    val dur = (System.nanoTime() - start) / 10000000.0;
+    val dur = (System.nanoTime() - start) / 1_000_000.0;
 
     val tuple = result match {
       case (a: (ValueType, Any)) => a
