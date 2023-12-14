@@ -29,6 +29,14 @@ export class Series {
         };
     }
 
+    static to(from: number, to: number): Iterable<number> {
+        return this.range(from, to);
+    }
+
+    static until(from: number, until: number): Iterable<number> {
+        return this.range(from, from <= until ? until - 1 : until + 1);
+    }
+
     static range(from: number, to: number): Iterable<number> {
         let i = from;
 

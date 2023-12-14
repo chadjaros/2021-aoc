@@ -128,6 +128,17 @@ export class Grid<T> implements Graph<GridNode<T>> {
         }
     }
 
+    forEachRev(cb: GridScanCallback<T>): void {
+        for (let x = this.width - 1; x >= 0; x--) {
+            for (let y = this.height - 1; y >= 0; y--) {
+                const p = new Point(x, y);
+                if (cb(this.getValue(p), p)) {
+                    return;
+                }
+            }
+        }
+    }
+
     find(cb: GridScanCallback<T>): Possible<Point> {
         for (let x = 0; x < this.width; x++) {
             for (let y = 0; y < this.height; y++) {
@@ -240,6 +251,14 @@ export class Grid<T> implements Graph<GridNode<T>> {
         for (const line of this.values) {
             console.log(line.map(fn).join(''));
         }
+    }
+
+    toString(fn: (x: T) => string = (x) => x as string): string {
+        let result = '';
+        for (const line of this.values) {
+            result += line.map(fn).join('') + '\n';
+        }
+        return result;
     }
 
     clone(deepCopyFn: (value: T) => T): Grid<T> {

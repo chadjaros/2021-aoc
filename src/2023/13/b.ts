@@ -1,7 +1,7 @@
 import { aoc } from '../../ts-utils/aoc';
 import { Grid } from '../../ts-utils/grid';
 import { rotationMatrices } from '../../2021/19/input';
-import { transpose } from '../../ts-utils/array-rotate';
+import { ArrayUtils } from '../../ts-utils/array-utils';
 
 const checkMirror = (array: string[], topIdx: number, botIdx: number): boolean => {
     if (topIdx < 0 || botIdx >= array.length) {
@@ -29,7 +29,7 @@ const calculateGrid = (grid: string[], prevValue?: number): number => {
     let value = 100 * (findMirrorIndex(grid, prevHValue) ?? 0);
     if (value === 0) {
         const prevVValue = prevValue === undefined || prevValue >= 100 ? undefined : prevValue;
-        const transposed = transpose(grid.map((_) => _.split(''))).map((_) => _.join(''));
+        const transposed = ArrayUtils.transpose(grid.map((_) => _.split(''))).map((_) => _.join(''));
         value = findMirrorIndex(transposed, prevVValue) ?? 0;
     }
     return value;
