@@ -26,4 +26,8 @@ export class ArrayUtils {
         }
         return result;
     }
+
+    static removeIndex<T>(arr: T[], idx: number): T[] {
+        return [...arr.slice(0, idx), ...arr.slice(idx + 1)];
+    }
 }
