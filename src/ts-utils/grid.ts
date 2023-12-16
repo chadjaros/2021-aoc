@@ -3,6 +3,7 @@ import { Point } from './point-2d';
 import { Possible } from './util-types';
 
 export type GridScanCallback<T> = (value: T, point: Point) => boolean | void;
+export type GridReduceCallback<T, U> = (acc: U, value: T, point: Point) => U;
 export type GridEdgeFunction<T> = (p: Point, g: Grid<T>) => Edge[];
 
 export class GridNode<T> implements Node {
@@ -127,6 +128,18 @@ export class Grid<T> implements Graph<GridNode<T>> {
             }
         }
     }
+
+    reduce<U>(cb: GridReduceCallback<T, U>, init: U): U {
+        let value = init;
+        for (let x = 0; x < this.width; x++) {
+            for (let y = 0; y < this.height; y++) {
+                const p = new Point(x, y);
+                value = cb(value, this.getValue(p), p);
+            }
+        }
+        return value;
+    }
+
 
     forEachRev(cb: GridScanCallback<T>): void {
         for (let x = this.width - 1; x >= 0; x--) {
