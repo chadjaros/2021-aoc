@@ -15,7 +15,7 @@ export function aStar<T extends Node>(
     end: T | ((n: T) => boolean),
     h: (node: T) => number,
     graph: Graph<T>
-): Possible<{ path: T[]; pathCost: number[]; cost: number }> {
+): Possible<{ path: T[]; pathCost: number[]; cost: number; }> {
     const isEnd = typeof end === 'function' ? end : (n: T) => end.id === n.id;
 
     const gScore = new Map<string, number>();
@@ -109,7 +109,7 @@ export function dijkstra<T extends Node>(
         if (isEnd(current)) {
             return {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                distances: new Map([[current.id, distances.get(current.id)!]]),
+                distances,
                 previous,
                 target: current,
                 costToTarget: distances.get(current.id),
@@ -133,4 +133,23 @@ export function dijkstra<T extends Node>(
     }
 
     return { distances, previous };
+}
+
+export function dijkstraSolution<T extends Node>(result?: {
+    distances: Map<string, number>;
+    previous: Map<string, T>;
+    target?: T;
+    costToTarget?: number;
+}): Possible<T[]> {
+    if (result?.target) {
+        let current = result.target;
+        const res: T[] = [];
+        res.push(current);
+        while (result.previous.has(current.id)) {
+            current = result.previous.get(current.id)!;
+            res.unshift(current);
+        }
+        return res;
+    }
+    return undefined;
 }

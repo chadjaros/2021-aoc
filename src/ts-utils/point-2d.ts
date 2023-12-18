@@ -17,6 +17,22 @@ export class Point {
         return this._key;
     }
 
+    static adjacentDirs(diagonals = false): Point[] {
+        const result = [
+            new Point(-1, 0),
+            new Point(1, 0),
+            new Point(0, -1),
+            new Point(0, 1),
+        ];
+        if (diagonals) {
+            result.push(new Point(-1, -1));
+            result.push(new Point(-1, 1));
+            result.push(new Point(1, -1));
+            result.push(new Point(1, 1));
+        }
+        return result;
+    }
+
     adjacents(diagonals = false): Point[] {
         const result = [
             new Point(this.x - 1, this.y),
@@ -39,6 +55,10 @@ export class Point {
 
     plus(p: Point): Point {
         return new Point(this.x + p.x, this.y + p.y);
+    }
+
+    times(n: number): Point {
+        return new Point(this.x * n, this.y * n);
     }
 
     vectorTo(p: Point): Vector2 {

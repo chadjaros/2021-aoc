@@ -260,9 +260,14 @@ export class Grid<T> implements Graph<GridNode<T>> {
         }
     }
 
-    print(fn: (x: T) => string = (x) => x as string): void {
-        for (const line of this.values) {
-            console.log(line.map(fn).join(''));
+    print(fn: (x: T, p: Point) => string = (x) => x as string): void {
+        for (let y = 0; y < this.height; y++) {
+            let str = '';
+            for (let x = 0; x < this.width; x++) {
+                const p = new Point(x, y);
+                str += fn(this.getValue(p), p);
+            }
+            console.log(str);
         }
     }
 
