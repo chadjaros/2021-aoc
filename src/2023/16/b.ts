@@ -78,8 +78,6 @@ function test(startGrid: Grid<{ char: string; beams: Set<string>; }>, start: { d
         }
     }
 
-    // grid.print((x) => x.beams.size === 0 ? '.' : '#');
-
     return grid.reduce((acc, v) => {
         return acc + (v.beams.size > 0 ? 1 : 0);
     }, 0);

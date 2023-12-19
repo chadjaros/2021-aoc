@@ -1,9 +1,66 @@
+export interface Cardinals {
+    readonly Up: Point;
+    readonly Down: Point;
+    readonly Left: Point;
+    readonly Right: Point;
+}
+
 export class Point {
+
+    static readonly Cardinals: Cardinals = {
+        Up: new Point(0, -1),
+        Down: new Point(0, 1),
+        Right: new Point(1, 0),
+        Left: new Point(-1, 0),
+    };
+
+    static adjacentDirs(diagonals = false): Point[] {
+        const result = [
+            this.Cardinals.Up, this.Cardinals.Down, this.Cardinals.Left, this.Cardinals.Right
+        ];
+        if (diagonals) {
+            result.push(new Point(-1, -1));
+            result.push(new Point(-1, 1));
+            result.push(new Point(1, -1));
+            result.push(new Point(1, 1));
+        }
+        return result;
+    }
+
+    static boundingBox(points: Point[]): { min: Point, max: Point; } {
+        let minX = points[0].x;
+        let minY = points[0].x;
+        let maxX = points[0].y;
+        let maxY = points[0].y;
+
+        points.slice(1).forEach((p) => {
+            if (p.x < minX) {
+                minX = p.x;
+            }
+            else if (p.x > maxX) {
+                maxX = p.x;
+            }
+
+            if (p.y < minY) {
+                minY = p.y;
+            }
+            else if (p.y > maxY) {
+                maxY = p.y;
+            }
+        });
+
+        return {
+            min: new Point(minX, minY),
+            max: new Point(maxX, maxY),
+        };
+    }
+
     private _key: string | undefined = undefined;
     constructor(
         public x: number,
         public y: number
     ) { }
+
 
     static fromKey(s: string): Point {
         const x: number[] = s.split('-').map((n) => parseFloat(n));
@@ -17,27 +74,11 @@ export class Point {
         return this._key;
     }
 
-    static adjacentDirs(diagonals = false): Point[] {
-        const result = [
-            new Point(-1, 0),
-            new Point(1, 0),
-            new Point(0, -1),
-            new Point(0, 1),
-        ];
-        if (diagonals) {
-            result.push(new Point(-1, -1));
-            result.push(new Point(-1, 1));
-            result.push(new Point(1, -1));
-            result.push(new Point(1, 1));
-        }
-        return result;
-    }
-
     adjacents(diagonals = false): Point[] {
         const result = [
             new Point(this.x - 1, this.y),
-            new Point(this.x + 1, this.y),
             new Point(this.x, this.y - 1),
+            new Point(this.x + 1, this.y),
             new Point(this.x, this.y + 1),
         ];
         if (diagonals) {
