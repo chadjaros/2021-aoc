@@ -64,4 +64,11 @@ export class Range {
 
         return merges;
     }
+
+    clone(overrides: Partial<Range> = {}) {
+        return new Range(
+            overrides.start ?? this.start,
+            overrides.end ?? this.end
+        );
+    }
 }
