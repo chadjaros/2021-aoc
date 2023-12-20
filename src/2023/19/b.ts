@@ -1,5 +1,6 @@
 import { aoc } from '../../ts-utils/aoc';
 import { Range } from '../../ts-utils/range';
+import { Possible } from '../../ts-utils/util-types';
 
 interface Rule {
     cat: string;
@@ -16,7 +17,15 @@ interface Wf {
 const ruleRegex = /(\w+)([<>])(\d+):(\w+)/;
 
 type Part = Map<string, Range>;
-interface Result { part: Part, result: string; }
+const clonePart = (p: Part, replace?: [string, Range]): Part => {
+    const clone = new Map(p);
+    if (replace) {
+        clone.set(...replace);
+    }
+    return clone;
+};
+
+interface Result { part: Part, next: string; }
 
 aoc((infile) => {
     const wfs = infile.lines
@@ -48,21 +57,35 @@ aoc((infile) => {
 
 
     const doRules = (rules: Rule[], part: Part): Result[] => {
-        const current = part;
+        let current = part;
         const result: Result[] = [];
         for (const rule of rules) {
-            const range = part.get(rule.cat)!;
+            const range = current.get(rule.cat)!;
             if (range === undefined) {
-                result.push({ part: current, result: rule.then });
+                result.push({ part: current, next: rule.then });
             }
             else if (rule.op === '<') {
-                if (part.get(rule.cat)! < rule.val) {
-                    return rule.then;
+                const inBound = rule.val - 1;
+
+                const insect = range.intersection(new Range(-Infinity, inBound));
+                if (insect) {
+                    result.push({ part: clonePart(current, [rule.cat, insect]), next: rule.then });
+                }
+                const outsect = range.intersection(new Range(rule.val, Infinity));
+                if (outsect) {
+                    current = clonePart(current, [rule.cat, outsect]);
                 }
             }
             else if (rule.op === '>') {
-                if (part.get(rule.cat)! > rule.val) {
-                    return rule.then;
+                const inBound = rule.val + 1;
+
+                const insect = range.intersection(new Range(inBound, Infinity));
+                if (insect) {
+                    result.push({ part: clonePart(current, [rule.cat, insect]), next: rule.then });
+                }
+                const outsect = range.intersection(new Range(-Infinity, rule.val));
+                if (outsect) {
+                    current = clonePart(current, [rule.cat, outsect]);
                 }
             }
         }
@@ -74,16 +97,32 @@ aoc((infile) => {
 
     const result: Result[] = [];
 
-    const stack = [{ part: startPart, wf: 'in' }];
-
+    const stack = [{ part: startPart, next: 'in' }];
+    let i = 0;
     while (stack.length > 0) {
+        i++;
         const current = stack.shift()!;
-        const rules = wfs.get(current.wf)!;
+        const wf = wfs.get(current.next)!;
 
+        const next = doRules(wf.rules, current.part)
+            .filter((_) => {
+                if (_.next === 'R') {
+                    return false;
+                }
+                else if (_.next === 'A') {
+                    result.push(_);
+                    return false;
+                }
+                return true;
+            });
 
-
+        stack.push(...next);
     }
 
-    const value = 0;
+    const value = result.reduce((acc, v) => {
+        return acc + [...v.part.values()].reduce((iacc, r) => {
+            return iacc * r.length;
+        }, 1);
+    }, 0);
     return { value };
 });

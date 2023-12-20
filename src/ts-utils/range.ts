@@ -1,3 +1,5 @@
+import { Possible } from './util-types';
+
 export class Range {
     readonly start: number;
     readonly end: number;
@@ -22,6 +24,27 @@ export class Range {
             r.includes(this.start) ||
             r.includes(this.end)
         );
+    }
+
+    intersection(r: Range): Possible<Range> {
+        if (this.overlaps(r)) {
+            return new Range(Math.max(this.start, r.start), Math.min(this.end, r.end));
+        }
+    }
+
+    difference(r: Range): Range[] {
+        const result: Range[] = [];
+        if (!this.overlaps(r)) {
+            return [this];
+        }
+        if (this.start < r.start) {
+            result.push(new Range(this.start, r.start - 1));
+        }
+        if (this.end > r.end) {
+            result.push(new Range(r.end + 1, this.end));
+        }
+
+        return result;
     }
 
     merge(r: Range): Range {
