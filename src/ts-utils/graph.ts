@@ -8,7 +8,7 @@ export interface Node {
     edges: Edge[];
 }
 
-export interface Graph<T extends Node> {
+export interface Graph<T extends Node = Node> {
     getNode(s: string): T;
 }
 

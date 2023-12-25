@@ -12,7 +12,7 @@ function dijkstra() {
     const previous = new Map<string, Point>();
 
     const allPoints = new Map<string, Point>();
-    grid.forEach((v, p) => allPoints.set(p.key, p));
+    grid.forEach((v, p) => { allPoints.set(p.key, p); });
 
     distances.set(start.key, 0);
 

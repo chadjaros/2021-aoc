@@ -25,6 +25,8 @@ for (const r of Series.range(1, 100)) {
 }
 
 let count = 0;
-current.forEach((v) => (count += v ? 1 : 0));
+current.forEach((v) => {
+    count += (v ? 1 : 0);
+});
 
 console.log(count);

@@ -1,5 +1,5 @@
 import { aoc } from '../../ts-utils/aoc';
-import { Factor } from '../../ts-utils/factor';
+import { AdvMath } from '../../ts-utils/adv-math';
 
 aoc((infile) => {
     const lines = infile.lines;
@@ -49,5 +49,5 @@ aoc((infile) => {
 
     const dists = locations.map((_) => dist(_));
 
-    return { value: Factor.leastCommonMultiple(dists) };
+    return { value: AdvMath.lcm(dists) };
 });

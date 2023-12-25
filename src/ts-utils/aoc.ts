@@ -47,9 +47,9 @@ export class AocInputFileHelper {
         return this.lines.map((line) => line.split(s).map(mapFn)) as T[][];
     }
 
-    grid<T>(
-        s: string | RegExp,
-        mapFn: (x: string) => T,
+    grid<T = string>(
+        s: string | RegExp = '',
+        mapFn: (x: string) => T = (_) => _ as T,
         edgeFn?: GridEdgeFunction<T>
     ): Grid<T> {
         return new Grid(this.splitLinesAndMap(s, mapFn), edgeFn);

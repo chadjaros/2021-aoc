@@ -1,5 +1,5 @@
 import { Matrix } from './matrix';
-import { Point } from './point-2d';
+import { BoundingBox2, Point } from './point-2d';
 import { Possible } from './util-types';
 
 export class Vector3 extends Matrix {
@@ -49,6 +49,14 @@ export class Vector3 extends Matrix {
             Math.abs(this.y - v.y) +
             Math.abs(this.z - v.z)
         );
+    }
+
+    private _key?: string;
+    get key(): string {
+        if (!this._key) {
+            this._key = `${this.x},${this.y},${this.z}`;
+        }
+        return this._key;
     }
 }
 
@@ -103,8 +111,12 @@ export class Point3 {
         return JSON.stringify(this.array);
     }
 
+    private _key?: string;
     get key(): string {
-        return this.toString();
+        if (!this._key) {
+            this._key = `${this.x},${this.y},${this.z}`;
+        }
+        return this._key;
     }
 
     adjacents(diagonals = false): Point3[] {
@@ -172,18 +184,18 @@ export class BoundingBox3 {
             Math.abs(
                 this.min.x + this.width * 0.5 - (bb.min.x + bb.width * 0.5)
             ) *
-                2 <
-                this.width + bb.width &&
+            2 <
+            this.width + bb.width &&
             Math.abs(
                 this.min.y + this.height * 0.5 - (bb.min.y + bb.height * 0.5)
             ) *
-                2 <
-                this.height + bb.height &&
+            2 <
+            this.height + bb.height &&
             Math.abs(
                 this.min.z + this.depth * 0.5 - (bb.min.z + bb.depth * 0.5)
             ) *
-                2 <
-                this.depth + bb.depth
+            2 <
+            this.depth + bb.depth
         );
     }
 
@@ -290,7 +302,7 @@ export class BoundingBox3 {
      */
     intersectionAndRemainder(
         bb: BoundingBox3
-    ): Possible<{ segments: BoundingBox3[]; intersection: BoundingBox3 }> {
+    ): Possible<{ segments: BoundingBox3[]; intersection: BoundingBox3; }> {
         const intersection = this.intersection(bb);
         if (intersection === undefined) {
             return;
@@ -391,10 +403,29 @@ export class BoundingBox3 {
         };
     }
 
+    private _xyProjection?: BoundingBox2;
+    xyProjection(): BoundingBox2 {
+        if (!this._xyProjection) {
+            this._xyProjection = new BoundingBox2(
+                new Point(this.min.x, this.min.y),
+                new Point(this.max.x, this.max.y)
+            );
+        }
+        return this._xyProjection;
+    }
+
+
+    private _key?: string;
+    get key(): string {
+        if (!this._key) {
+            this._key = `${this.min.key}-${this.max.key}`;
+        }
+        return this._key;
+    }
+
     descriptionString(): string {
-        return `${this.width}x${this.height}x${
-            this.depth
-        }, ${this.min.toString()}, ${this.max.toString()}`;
+        return `${this.width}x${this.height}x${this.depth
+            }, ${this.min.toString()}, ${this.max.toString()}`;
     }
 
     equals(other: BoundingBox3): boolean {
