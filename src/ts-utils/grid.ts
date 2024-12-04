@@ -26,7 +26,7 @@ export class GridNode<T> implements Node {
     }
 }
 
-export class Grid<T> implements Graph<GridNode<T>> {
+export class Grid<T = string> implements Graph<GridNode<T>> {
     private nodeCache: Map<string, GridNode<T>> = new Map();
     private values: T[][];
 

@@ -158,3 +158,55 @@ export class Vector2 {
         return new Vector2(this.x * mag, this.y * mag);
     }
 }
+
+export class BoundingBox2 {
+    readonly min: Point;
+    readonly max: Point;
+
+    constructor(min: Point, max: Point) {
+        this.min = min;
+        this.max = max;
+    }
+
+    pointsIntersect(bb: BoundingBox2): boolean {
+        return (
+            Math.abs(
+                this.min.x + this.width * 0.5 - (bb.min.x + bb.width * 0.5)
+            ) * 2 <= this.width + bb.width
+            &&
+            Math.abs(
+                this.min.y + this.height * 0.5 - (bb.min.y + bb.height * 0.5)
+            ) * 2 <= this.height + bb.height
+        );
+    }
+
+    intersects(bb: BoundingBox2): boolean {
+        return (
+            Math.abs(
+                this.min.x + this.width * 0.5 - (bb.min.x + bb.width * 0.5)
+            ) * 2 < this.width + bb.width
+            &&
+            Math.abs(
+                this.min.y + this.height * 0.5 - (bb.min.y + bb.height * 0.5)
+            ) * 2 < this.height + bb.height
+        );
+    }
+
+    containsPoint(v: Point): boolean {
+        return (
+            v.x >= this.min.x &&
+            v.x <= this.max.x &&
+            v.y >= this.min.y &&
+            v.y <= this.max.y
+        );
+    }
+
+    get height(): number {
+        return this.max.y - this.min.y;
+    }
+
+    get width(): number {
+        return this.max.x - this.min.x;
+    }
+
+}
