@@ -28,7 +28,6 @@ aoc((infile) => {
                     match[p.x][p.y] === grid.getValue(point.plus(p))
                 )
             );
-            // console.log(point, match);
         }
         return acc + (match ? 1 : 0);
     }, 0);
