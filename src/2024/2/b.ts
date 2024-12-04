@@ -21,7 +21,6 @@ aoc((infile) => {
     const value = infile.lines.map((_) =>
         _.split(' ').map((v) => parseInt(v))
     ).filter((report) => {
-        // console.log(report);
         const natural = safeCheck(report);
         if (natural[0]) {
             return true;
@@ -29,7 +28,6 @@ aoc((infile) => {
 
         const removeFirst = [...report];
         removeFirst.splice(natural[1]!, 1);
-        // console.log(natural[1], removeFirst);
         const rfResult = safeCheck(removeFirst);
         if (rfResult[0]) {
             return true;
@@ -37,7 +35,6 @@ aoc((infile) => {
 
         const removeSecond = [...report];
         removeSecond.splice(natural[1]! + 1, 1);
-        // console.log(natural[1]! + 1, removeSecond);
         const rsResult = safeCheck(removeSecond);
         if (rsResult[0]) {
             return true;
