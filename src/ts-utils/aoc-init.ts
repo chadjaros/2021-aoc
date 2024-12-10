@@ -8,8 +8,9 @@ const init = async (): Promise<void> => {
         `import { aoc } from '../../ts-utils/aoc';
 
 aoc((infile) => {
-    const value = infile.lines[0].length;
+    const input = infile.lines;
 
+    const value = 0;
     return { value };
 });
 `;
