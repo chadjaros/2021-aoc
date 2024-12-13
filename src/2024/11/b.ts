@@ -12,7 +12,6 @@ aoc((infile) => {
     }, new Map<number, number>());
 
     for (let time = 0; time < 75; time++) {
-
         uniqueValues = [...uniqueValues.entries()].reduce((acc, [_, count]) => {
             const digits = _.toString();
             let vals: number[] = [];
@@ -37,5 +36,5 @@ aoc((infile) => {
     }
 
     const value = [...uniqueValues.values()].reduce((acc, _) => acc + _, 0);
-    return { value };
+    return { value, uniques: uniqueValues.size };
 });
