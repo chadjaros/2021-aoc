@@ -29,6 +29,7 @@ aoc((infile) => {
         };
     });
 
+    // Solve system of equations
     const _ = input[0];
     const value = input.reduce((acc, _) => {
         const lcmA = BigInt(AdvMath.lcm([_.xA, _.yA]));

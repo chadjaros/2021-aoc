@@ -116,8 +116,6 @@ export function dijkstra<T extends Node>(
             };
         }
 
-        // openSet.delete(current.id);
-
         current.edges.forEach((neighborEdge) => {
             const alt = (distances.get(current.id) ?? 0) + neighborEdge.weight;
             if (alt < (distances.get(neighborEdge.nodeId) ?? Infinity)) {

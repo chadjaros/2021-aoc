@@ -94,6 +94,10 @@ export class Point {
         return new Point(this.x - p.x, this.y - p.y);
     }
 
+    add(x: number, y: number) {
+        return new Point(this.x + x, this.y + y);
+    }
+
     plus(p: Point): Point {
         return new Point(this.x + p.x, this.y + p.y);
     }
@@ -171,24 +175,24 @@ export class BoundingBox2 {
     pointsIntersect(bb: BoundingBox2): boolean {
         return (
             Math.abs(
-                this.min.x + this.width * 0.5 - (bb.min.x + bb.width * 0.5)
-            ) * 2 <= this.width + bb.width
+                this.min.x + this.innerWidth * 0.5 - (bb.min.x + bb.innerWidth * 0.5)
+            ) * 2 <= this.innerWidth + bb.innerWidth
             &&
             Math.abs(
-                this.min.y + this.height * 0.5 - (bb.min.y + bb.height * 0.5)
-            ) * 2 <= this.height + bb.height
+                this.min.y + this.innerHeight * 0.5 - (bb.min.y + bb.innerHeight * 0.5)
+            ) * 2 <= this.innerHeight + bb.innerHeight
         );
     }
 
     intersects(bb: BoundingBox2): boolean {
         return (
             Math.abs(
-                this.min.x + this.width * 0.5 - (bb.min.x + bb.width * 0.5)
-            ) * 2 < this.width + bb.width
+                this.min.x + this.innerWidth * 0.5 - (bb.min.x + bb.innerWidth * 0.5)
+            ) * 2 < this.innerWidth + bb.innerWidth
             &&
             Math.abs(
-                this.min.y + this.height * 0.5 - (bb.min.y + bb.height * 0.5)
-            ) * 2 < this.height + bb.height
+                this.min.y + this.innerHeight * 0.5 - (bb.min.y + bb.innerHeight * 0.5)
+            ) * 2 < this.innerHeight + bb.innerHeight
         );
     }
 
@@ -201,12 +205,21 @@ export class BoundingBox2 {
         );
     }
 
-    get height(): number {
+    private get innerHeight(): number {
         return this.max.y - this.min.y;
     }
 
-    get width(): number {
+    private get innerWidth(): number {
         return this.max.x - this.min.x;
     }
+
+    get height(): number {
+        return this.max.y - this.min.y + 1;
+    }
+
+    get width(): number {
+        return this.max.x - this.min.x + 1;
+    }
+
 
 }

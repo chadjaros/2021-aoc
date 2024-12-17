@@ -1,6 +1,6 @@
 import { aoc } from '../../ts-utils/aoc';
 import { Point } from '../../ts-utils/point-2d';
-import { findFill } from '../../ts-utils/simple-fill';
+import { findGridFill } from '../../ts-utils/simple-fill';
 
 aoc((infile) => {
     const input = infile.grid();
@@ -12,7 +12,7 @@ aoc((infile) => {
             return acc;
         }
 
-        const group = findFill(input, point, (v) => v === _);
+        const group = findGridFill(input, point, (v) => v === _);
         group.forEach((p) => visited.add(p.key));
         const perim = [...group.values()].reduce((acc, _) => {
             return acc + (4 - _.adjacents().filter((p) => group.has(p.key)).length);
