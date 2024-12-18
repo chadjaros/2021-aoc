@@ -63,13 +63,13 @@ export class Point {
 
 
     static fromKey(s: string): Point {
-        const x: number[] = s.split('-').map((n) => parseFloat(n));
+        const x: number[] = s.split(',').map((n) => parseFloat(n));
         return new Point(x[0], x[1]);
     }
 
     get key(): string {
         if (this._key === undefined) {
-            this._key = `${this.x}-${this.y}`;
+            this._key = `${this.x},${this.y}`;
         }
         return this._key;
     }
