@@ -142,6 +142,10 @@ export class Point {
         return { min: new Point(minX, minY), max: new Point(maxX, maxY) };
     }
 
+    unit(): Point {
+        return new Point(this.x === 0 ? 0 : this.x / Math.abs(this.x), this.y === 0 ? 0 : this.y / Math.abs(this.y));
+    }
+
     equals(other: Point): boolean {
         return this.x === other.x && this.y === other.y;
     }
