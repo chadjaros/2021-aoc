@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
-        "lib": ["es2021"],
+        "lib": ["esnext"],
         "module": "commonjs",
         "declaration": true,
         "removeComments": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "target": "es6",
+        "target": "es2020",
         "sourceMap": true,
         "baseUrl": "./",
         "incremental": true,
