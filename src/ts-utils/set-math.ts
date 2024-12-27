@@ -21,3 +21,12 @@ export function difference<T>(a: Set<T>, b: Set<T>): Set<T> {
 export function symmetricDifference<T>(a: Set<T>, b: Set<T>): Set<T> {
     return new Set([...a, ...b].filter((x) => !(a.has(x) && b.has(x))));
 }
+
+export function aIncludesAllB<T>(a: Set<T>, b: Set<T>): boolean {
+    for (const _ of [...b]) {
+        if (!a.has(_)) {
+            return false;
+        }
+    }
+    return true;
+}
